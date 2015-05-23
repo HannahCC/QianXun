@@ -6525,3 +6525,9 @@ ValueError: The view utils.Decorator._view1 didn't return an HttpResponse object
 2015-05-23 21:04:41,494 [Dummy-1:10052] [django.db.backends:91] [DEBUG]- (0.000) SET SQL_AUTO_IS_NULL = 0; args=None
 2015-05-23 21:04:41,494 [Dummy-1:10052] [django.db.backends:91] [DEBUG]- (0.000) SHOW TABLES; args=None
 2015-05-23 21:04:41,496 [Dummy-1:10052] [django.db.backends:91] [DEBUG]- (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+2015-05-23 21:56:17,706 [Dummy-1:7132] [django.db.backends:91] [DEBUG]- (0.000) SET SQL_AUTO_IS_NULL = 0; args=None
+2015-05-23 21:56:17,707 [Dummy-1:7132] [django.db.backends:91] [DEBUG]- (0.000) SHOW TABLES; args=None
+2015-05-23 21:56:17,709 [Dummy-1:7132] [django.db.backends:91] [DEBUG]- (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+2015-05-23 22:07:50,173 [Dummy-1:8212] [django.db.backends:91] [DEBUG]- (0.000) SET SQL_AUTO_IS_NULL = 0; args=None
+2015-05-23 22:07:50,174 [Dummy-1:8212] [django.db.backends:91] [DEBUG]- (0.000) SHOW TABLES; args=None
+2015-05-23 22:07:50,176 [Dummy-1:8212] [django.db.backends:91] [DEBUG]- (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
