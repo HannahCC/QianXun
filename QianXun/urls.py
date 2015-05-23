@@ -15,5 +15,5 @@ urlpatterns = patterns('',
                        url(r'^qianxun/1/common/index$', com_views.index),
                        url(r'^qianxun/1/comment/display/bydish$', com_views.comment_display_bydish),
 
-
+                       url(r'^qianxun/1/manager/', include('QianXun.manager.urls')),
                        )
