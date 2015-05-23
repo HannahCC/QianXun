@@ -39,10 +39,26 @@
 
     <h1>用户登录</h1>
     <form action="/qianxun/1/manager/login" method="post",  enctype="multipart/form-data" >
+               <input type="radio" name="login_type" value="0" /> 学校管理员
+                <br />
+               <input type="radio" name="login_type" value="1" /> 餐厅管理员
             <li><label for="id_password">用户密码:</label> <input id="id_password" maxlength="64" name="password" type="text" /></li>
             <li><label for="id_user_name">User name:</label> <input id="id_user_name" maxlength="11" name="user_name" type="text" /></li>
         <input type="submit" value="Submit">
     </form>
+
+     <h1>重置用户密码</h1>
+    <form action="/qianxun/1/manager/password/reset" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_verify_code">Verify code:</label> <input id="id_verify_code" maxlength="6" name="verify_code" type="text" /></li>
+            <li><label for="id_password">Password:</label> <input id="id_password" maxlength="64" name="password" type="text" /></li>
+            <li><label for="id_password2">Password2:</label> <input id="id_password2" maxlength="64" name="password2" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+
     <h1>登出</h1>
     <form action="/qianxun/1/customer/account/logout" method="post">
         <li><label for="id_token1">Token:</label> <input id="id_token1" maxlength="64" name="token" type="text" /></li>

@@ -16,5 +16,5 @@ urlpatterns = patterns('',
                        url(r'^qianxun/1/common/', include('QianXun.orders.com_urls')),
 
 
-
+                       url(r'^qianxun/1/manager/', include('QianXun.manager.urls')),
                        )
