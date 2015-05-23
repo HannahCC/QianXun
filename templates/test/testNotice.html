@@ -1,0 +1,30 @@
+{% extends "./base.html" %}
+{% block title %}Send Email{% endblock %}
+
+{% block content %}
+    <h1>显示食堂通知</h1>
+    <form action="/qianxun/1/window/notice/display" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>显示通知详情</h1>
+    <form action="/qianxun/1/window/notice/display/detail" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token12" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_notice">Order:</label> <input id="id_notice" name="notice" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>其他</h1>
+    <form action="/qianxun/1/window/delivertime/create" method="post",  enctype="multipart/form-data" >
+        <table>
+            {{form.as_ul }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

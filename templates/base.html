@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-cn" >
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css" /> -->
+
+    <meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+<body>
+<h1>My helpful timestamp site</h1>
+{% block content %}{% endblock %}
+{% block footer %}
+    <hr>
+    <p>Thanks for visiting my site.</p>
+{% endblock %}
+</body>
+<script src="/static/api/js/jquery.min.js" type="text/javascript"></script>
+{% block scripts %}
+<!--custom scripts-->
+{% endblock %}
+</html>

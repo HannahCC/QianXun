@@ -1,0 +1,199 @@
+{% extends "./base.html" %}
+{% block title %}Send Email{% endblock %}
+
+{% block content %}
+
+    <form action="/qianxun/1/customer/account/registration" method="post",  enctype="multipart/form-data" >
+        <table>
+            {{form.as_ul }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>用户注册</h1>
+    <form action="/qianxun/1/customer/account/registration" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_school">学校:</label> <select id="id_school" name="school">
+                <option value="" selected="selected">---------</option>
+                <option value="1">华中师范大学</option>
+                <option value="2">武汉大学</option>
+            </select></li>
+            <li><label for="id_user_type">用户类别:</label> <select id="id_user_type" name="user_type">
+                <option value="" selected="selected">---------</option>
+                <option value="1">学生</option>
+                <option value="2">教工</option>
+                <option value="3">其他</option>
+            </select></li>
+            <li><label for="id_user_name">联系方式:</label> <input id="id_user_name" maxlength="11" name="user_name" type="text" /></li>
+            <li><label for="id_nick_name">用户昵称:</label> <input id="id_nick_name" maxlength="64" name="nick_name" type="text" /></li>
+            <li><label for="id_password">用户密码:</label> <input id="id_password" maxlength="64" name="password" type="text" /></li>
+            <li><label for="id_client_id">用户设备:</label> <input id="id_client_id" maxlength="64" name="client_id" type="text" /></li>
+            <li><label for="id_version">应用版本:</label> <input id="id_version" maxlength="64" name="version" type="text" /></li>
+            <li><label for="id_password2">Password2:</label> <input id="id_password2" maxlength="64" name="password2" type="text" /></li>
+            <li><label for="id_verify_code">Verify_code:</label> <input id="id_verify_code" maxlength="6" name="verify_code" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+
+
+    <h1>用户登录</h1>
+    <form action="/qianxun/1/customer/account/login" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_password">用户密码:</label> <input id="id_password" maxlength="64" name="password" type="text" /></li>
+            <li><label for="id_client_id">用户设备:</label> <input id="id_client_id" maxlength="64" name="client_id" type="text" /></li>
+            <li><label for="id_version">应用版本:</label> <input id="id_version" maxlength="64" name="version" type="text" /></li>
+            <li><label for="id_user_name">User name:</label> <input id="id_user_name" maxlength="11" name="user_name" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>登出</h1>
+    <form action="/qianxun/1/customer/account/logout" method="post">
+        <li><label for="id_token1">Token:</label> <input id="id_token1" maxlength="64" name="token" type="text" /></li>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>修改用户密码</h1>
+    <form action="/qianxun/1/customer/account/password/update" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_old_password">Old Password:</label> <input id="id_old_password" maxlength="64" name="old_password" type="text" /></li>
+            <li><label for="id_new_password">New Password:</label> <input id="id_new_password" maxlength="64" name="new_password" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>重置用户密码</h1>
+    <form action="/qianxun/1/customer/account/password/reset" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_verify_code">Verify code:</label> <input id="id_verify_code" maxlength="6" name="verify_code" type="text" /></li>
+            <li><label for="id_password">Password:</label> <input id="id_password" maxlength="64" name="password" type="text" /></li>
+            <li><label for="id_password2">Password2:</label> <input id="id_password2" maxlength="64" name="password2" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>重置用户手机号码</h1>
+    <form action="/qianxun/1/customer/account/uname/reset" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_verify_code">Verify code:</label> <input id="id_verify_code" maxlength="6" name="verify_code" type="text" /></li>
+            <li><label for="id_user_name">Username:</label> <input id="id_user_name" maxlength="11" name="user_name" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+
+    <h1>查看用户资料</h1>
+    <form action="/qianxun/1/customer/account/profile/dispaly" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>修改用户资料</h1>
+    <form action="/qianxun/1/customer/account/profile/update" method="post" >
+        <table>
+            <li><label for="id_school">学校:</label> <select id="id_school" name="school">
+                <option value="" selected="selected">---------</option>
+                <option value="1">华中师范大学</option>
+                <option value="2">武汉大学</option>
+            </select></li>
+            <li><label for="id_user_type">用户类别:</label> <select id="id_user_type" name="user_type">
+                <option value="" selected="selected">---------</option>
+                <option value="1">学生</option>
+                <option value="2">教工</option>
+                <option value="3">其他</option>
+            </select></li>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_nick_name">Nick name:</label> <input id="id_nick_name" maxlength="64" name="nick_name" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>显示用户地址</h1>
+    <form action="/qianxun/1/customer/addr/display" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>显示用户自定义地址</h1>
+    <form action="/qianxun/1/customer/addr/custom/display" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>创建用户地址</h1>
+    <form action="/qianxun/1/customer/addr/create" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_building">Building:</label> <input id="id_building" name="building" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>创建用户自定义地址</h1>
+    <form action="/qianxun/1/customer/addr/custom/create" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_addr">Addr:</label> <input id="id_addr" maxlength="64" name="addr" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>修改用户地址</h1>
+    <form action="/qianxun/1/customer/addr/update" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_new_building">New building:</label> <input id="id_new_building" name="new_building" type="number" /></li>
+            <li><label for="id_old_building">Old building:</label> <input id="id_old_building" name="old_building" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>修改用户自定义地址</h1>
+    <form action="/qianxun/1/customer/addr/custom/update" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_address">Address:</label> <input id="id_address" name="address" type="number" /></li>
+            <li><label for="id_addr">Addr:</label> <input id="id_addr" maxlength="64" name="addr" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>删除用户地址</h1>
+    <form action="/qianxun/1/customer/addr/delete" method="post",>
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_building">Building:</label> <input id="id_building" name="building" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>删除用户自定义地址</h1>
+    <form action="/qianxun/1/customer/addr/custom/delete" method="post",>
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_address">Address:</label> <input id="id_address" name="address" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+
+
+
+    <h1>意见反馈</h1>
+    <form action="/qianxun/1/customer/account/feedback" method="post">
+        <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+        <li><label for="id_type">Type:</label> <select id="id_type" name="type">
+            <option value="1">意见反馈</option>
+            <option value="2">奔溃报告</option>
+        </select></li>
+        <li><label for="id_subject">Subject:</label> <input id="id_subject" maxlength="64" name="subject" type="text" /></li>
+        <li><label for="id_message">Message:</label>
+            <textarea cols="40" id="id_message" maxlength="1024" name="message" rows="10"></textarea>
+        </li>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

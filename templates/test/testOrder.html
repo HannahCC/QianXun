@@ -1,0 +1,292 @@
+{% extends "./base.html" %}
+{% block title %}Send Email{% endblock %}
+
+{% block content %}
+
+    <h1>添加促销活动</h1>
+    <form action="/qianxun/1/window/promotion/create" method="post">
+        <li><label for="id_pro_type">活动类别:</label> <select id="id_pro_type" name="pro_type">
+            <option value="" selected="selected">---------</option>
+            <option value="1">满减</option>
+            <option value="2">满赠</option>
+        </select></li>
+        <li><label for="id_rules">活动规则:</label> <input id="id_rules" maxlength="64" name="rules" type="text" /></li>
+        <li><label for="id_token">Token:</label> <input id="id_token1" maxlength="64" name="token" type="text" /></li>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>更新促销活动</h1>
+    <form action="/qianxun/1/window/promotion/update" method="post">
+        <li><label for="id_pro_type">活动类别:</label> <select id="id_pro_type" name="pro_type">
+            <option value="" selected="selected">---------</option>
+            <option value="1">满减</option>
+            <option value="2">满赠</option>
+        </select></li>
+        <li><label for="id_rules">活动规则:</label> <input id="id_rules" maxlength="64" name="rules" type="text" /></li>
+        <li><label for="id_token">Token:</label> <input id="id_token2" maxlength="64" name="token" type="text" /></li>
+        <li><label for="id_promotion">Promotion:</label> <input id="id_promotion" name="promotion" type="number" /></li>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>删除促销活动</h1>
+    <form id="order_create"  method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token22" maxlength="64" name="token" type="text" /></li>
+        </table>
+        <button type="button" id="button22">Click me</button>
+    </form>
+
+    <h1>添加配送时间</h1>
+    <form action="/qianxun/1/window/delivertime/create" method="post">
+        <li><label for="id_date">配送日期:</label> <select id="id_date" name="date">
+            <option value="" selected="selected">---------</option>
+            <option value="1">当天</option>
+            <option value="2">第二天</option>
+        </select></li>
+        <li><label for="id_time">配送时间:</label> <input id="id_time" name="time" type="text" /></li>
+        <li><label for="id_token">Token:</label> <input id="id_token3" maxlength="64" name="token" type="text" /></li>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>更新配送时间</h1>
+    <form action="/qianxun/1/window/delivertime/update" method="post">
+        <li><label for="id_date">配送日期:</label> <select id="id_date" name="date">
+            <option value="" selected="selected">---------</option>
+            <option value="1">当天</option>
+            <option value="2">第二天</option>
+        </select></li>
+        <li><label for="id_time">配送时间:</label> <input id="id_time" name="time" type="text" /></li>
+        <li><label for="id_token">Token:</label> <input id="id_token4" maxlength="64" name="token" type="text" /></li>
+        <li><label for="id_deliver_time">Deliver_time:</label> <input id="id_deliver_time" name="deliver_time" type="number" /></li>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>删除配送时间</h1>
+    <form id="order_create"  method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token44" maxlength="64" name="token" type="text" /></li>
+        </table>
+        <button type="button" id="button44">Click me</button>
+    </form>
+
+    <h1>添加菜品</h1>
+    <form action="/qianxun/1/window/dish/create" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_dish_name">菜品名称:</label> <input id="id_dish_name" maxlength="64" name="dish_name" type="text" /></li>
+            <li><label for="id_price">价格:</label> <input id="id_price" name="price" step="any" type="number" /></li>
+            <li><label for="id_is_heat">是否加热:</label> <select id="id_is_heat" name="is_heat">
+                <option value="0" selected="selected">常温</option>
+                <option value="1">加热</option>
+            </select></li>
+            <li><label for="id_description">描述:</label> <input id="id_description" maxlength="64" name="description" type="text" /></li>
+            <li><label for="id_img_addr">菜品图片:</label> <input id="id_img_addr" name="img_addr" type="file" /></li>
+            <li><label for="id_token">Token:</label> <input id="id_token5" maxlength="64" name="token" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>更新菜品</h1>
+    <form action="/qianxun/1/window/dish/update" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_dish_name">菜品名称:</label> <input id="id_dish_name" maxlength="64" name="dish_name" type="text" /></li>
+            <li><label for="id_price">价格:</label> <input id="id_price" name="price" step="any" type="number" /></li>
+            <li><label for="id_is_heat">是否加热:</label> <select id="id_is_heat" name="is_heat">
+                <option value="0" selected="selected">常温</option>
+                <option value="1">加热</option>
+            </select></li>
+            <li><label for="id_description">描述:</label> <input id="id_description" maxlength="64" name="description" type="text" /></li>
+            <li><label for="id_img_addr">菜品图片:</label> <input id="id_img_addr" name="img_addr" type="file" /></li>
+            <li><label for="id_token">Token:</label> <input id="id_token6" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_dish">Dish:</label> <input id="id_dish" name="dish" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>删除菜品</h1>
+    <form id="order_create"  method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token66" maxlength="64" name="token" type="text" /></li>
+        </table>
+        <button type="button" id="button66">Click me</button>
+    </form>
+
+    <h1>创建订单</h1>
+    <form id="order_create"  method="post">
+        <table>
+            <li><label for="id_window">窗口:</label> <select id="id_window" name="window">
+                <option value="" selected="selected">---------</option>
+                <option value="1">华中师范大学-桂香园餐厅-自选窗口</option>
+                <option value="2">华中师范大学-沁园春食堂-石头家</option>
+            </select></li>
+            <li><label for="id_token">Token:</label> <input id="id_token7" maxlength="64" name="token" type="text" /></li>
+        </table>
+        <button type="button" id="button1">Click me</button>
+    </form>
+    <h1>确认订单</h1>
+    <form action="/qianxun/1/customer/order/confirm" method="post">
+        <table>
+            <li><label for="id_building">地址:</label> <select id="id_building" name="building">
+                <option value="" selected="selected">---------</option>
+                <option value="1">华中师范大学-东区-5栋</option>
+                <option value="2">华中师范大学-东区-9栋</option>
+            </select></li>
+            <li><label for="id_notes">备注:</label> <input id="id_notes" maxlength="64" name="notes" type="text" /></li>
+            <li><label for="id_deliver_time">送达时间:</label> <select id="id_deliver_time" name="deliver_time">
+                <option value="" selected="selected">---------</option>
+                <option value="1">当天 12:00:00</option>
+                <option value="2">当天 13:00:00</option>
+                <option value="3">第二天 12:00:00</option>
+                <option value="4">第二天 13:00:00</option>
+                <option value="5">当天 12:00:00</option>
+                <option value="6">当天 13:00:00</option>
+                <option value="7">当天 14:00:00</option>
+                <option value="8">当天 尽快配送</option>
+            </select></li>
+            <li><label for="id_token">Token:</label> <input id="id_token8" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_order">Order:</label> <input id="id_order" name="order" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>修改订单</h1>
+    <form action="/qianxun/1/customer/order/update" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token9" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_order">Order:</label> <input id="id_order" name="order" type="number" /></li>
+            <li><label for="id_old_order_status">Old order status:</label> <select id="id_old_order_status" name="old_order_status">
+                <option value="" selected="selected">---------</option>
+                <option value="11">未付款</option>
+                <option value="21">已付款</option>
+                <option value="30">已取消</option>
+                <option value="31">已受理</option>
+                <option value="320">已拒绝</option>
+                <option value="41">配送中</option>
+                <option value="50">已完成</option>
+            </select></li>
+            <li><label for="id_new_order_status">New order status:</label> <select id="id_new_order_status" name="new_order_status">
+                <option value="" selected="selected">---------</option>
+                <option value="11">未付款</option>
+                <option value="21">已付款</option>
+                <option value="30">已取消</option>
+                <option value="31">已受理</option>
+                <option value="320">已拒绝</option>
+                <option value="41">配送中</option>
+                <option value="50">已完成</option>
+            </select></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>删除订单</h1>
+    <form id="order_create"  method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token10" maxlength="64" name="token" type="text" /></li>
+        </table>
+        <button type="button" id="button2">Click me</button>
+    </form>
+    <h1>显示订单</h1>
+    <form action="/qianxun/1/customer/order/display" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token11" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+            <li><label for="id_order_status">Order status:</label> <select id="id_order_status" name="order_status">
+                <option value="" selected="selected">---------</option>
+                <option value="11">未付款</option>
+                <option value="21">已付款</option>
+                <option value="30">已取消</option>
+                <option value="31">已受理</option>
+                <option value="320">已拒绝</option>
+                <option value="41">配送中</option>
+                <option value="50">已完成</option>
+            </select></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>显示订单详情</h1>
+    <form action="/qianxun/1/customer/order/display/detail" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token12" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_order">Order:</label> <input id="id_order" name="order" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>添加评价</h1>
+    <form action="/qianxun/1/customer/comment/create" method="post">
+        <table>
+            <li><label for="id_grade">评分:</label> <input id="id_grade" name="grade" step="any" type="number" /></li>
+            <li><label for="id_text">评价:</label> <input id="id_text" maxlength="64" name="text" type="text" /></li>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_order">Order:</label> <input id="id_order" name="order" type="number" /></li>
+            <li><label for="id_orders_dishes">Orders dishes:</label> <input id="id_orders_dishes" name="orders_dishes" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>添加回复</h1>
+    <form action="/qianxun/1/window/comment/reply" method="post">
+        <table>
+            <li><label for="id_reply">回复:</label> <input id="id_reply" maxlength="64" name="reply" type="text" /></li>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_order">Order:</label> <input id="id_order" name="order" type="number" /></li>
+            <li><label for="id_orders_dishes">Orders dishes:</label> <input id="id_orders_dishes" name="orders_dishes" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>统计菜品销量</h1>
+    <form action="/qianxun/1/window/sales/dish" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_start_date">Start date:</label> <input id="id_start_date" name="start_date" type="text" /></li>
+            <li><label for="id_end_date">End date:</label> <input id="id_end_date" name="end_date" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>其他</h1>
+    <form action="/qianxun/1/window/delivertime/create" method="post",  enctype="multipart/form-data" >
+        <table>
+            {{form.as_ul }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
+
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#button1").click(function(){
+                $.post("/qianxun/1/customer/order/create",
+                        { window: ($("#id_window").val()),
+                            token:($("#id_token7").val()),
+                            dish_list:"[{\"dish_id\":1,\"number\":1},{\"dish_id\":2,\"number\":2}]"
+                        },
+                        function(data){
+                            alert("Data Loaded: " + data.toString());
+                        });
+            });
+            $("#button2").click(function(){
+                $.post("/qianxun/1/customer/order/delete",
+                        {   token:($("#id_token10").val()),
+                            data:"[{\"order\":52},{\"order\":53}]"
+                        }
+                )
+            })
+            $("#button22").click(function(){
+                $.post("/qianxun/1/window/promotion/delete",
+                        {   token:($("#id_token22").val()),
+                            data:"[{\"promotion\":13},{\"promotion\":14}]"
+                        }
+                )
+            })
+            $("#button44").click(function(){
+                $.post("/qianxun/1/window/delivertime/delete",
+                        {   token:($("#id_token44").val()),
+                            data:"[{\"deliver_time\":11},{\"deliver_time\":16}]"
+                        }
+                )
+            })
+            $("#button66").click(function(){
+                $.post("/qianxun/1/window/dish/delete",
+                        {   token:($("#id_token66").val()),
+                            data:"[{\"dish\":7},{\"dish\":8}]"
+                        }
+                )
+            })
+        });
+    </script>
+{% endblock %}
