@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
 from utils.Decorator import window_token_required, post_required, exception_handled
-from utils.Serializer import json_response, json_response_from_object, json_back
+from utils.Serializer import json_response, json_response_from_object
 from conf.resp_code import *
 from QianXun.notice.forms import PaginationForm, NoticeDetailDisplayForm
 from db import notice

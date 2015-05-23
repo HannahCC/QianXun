@@ -23,10 +23,14 @@ def get_by_username(window_login_dict):
     return window_model
 
 
-def get_window_list(canteen_id, pagination_dict):
+def get_window_bean_list_bycanteen(canteen_id, pagination_dict):
     paginator = get_paginator(pagination_dict)
     window_model_list = Window.objects.filter(canteen__exact=canteen_id, is_valid=1).order_by('window_name')[paginator[0]: paginator[1]]
-    return window_model_list
+    window_bean_list = []
+    for window_model in window_model_list:
+        window_bean = window_model_to_bean(window_model)
+        window_bean_list.append(window_bean)
+    return window_bean_list
 
 
 def update_username(window_id, user_name):
@@ -68,7 +72,7 @@ def update_profile(window_model, window_profile_dict):
     return window_model
 
 
-def update_token(window_model ,window_login_dict):
+def update_token(window_model, window_login_dict):
     window_model.client_id = window_login_dict['client_id']
     window_model.version = window_login_dict['version']
     window_model.token = get_serial_number(window_model.id)

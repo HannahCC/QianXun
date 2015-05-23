@@ -6,6 +6,16 @@ from conf.default_value import PROMOTION_MAX
 from utils.Pagination import get_paginator
 
 
+def get_window_bean_list_byprotype(pro_type_id, pagination_dict):
+    paginator = get_paginator(pagination_dict)
+    window_model_list = Promotions.objects.filter(pro_type_id__exact=pro_type_id, window__canteen__school_id__ex  is_valid=1).order_by('window_name')[paginator[0]: paginator[1]]
+    window_bean_list = []
+    for window_model in window_model_list:
+        window_bean = window_model_to_bean(window_model)
+        window_bean_list.append(window_bean)
+    return window_bean_list
+
+
 def get_promotion_list_bywindow(window_id, pagination_dict, order_by='-rules'):
     paginator = get_paginator(pagination_dict)
     promotion_list = Promotions.objects.filter(window__exact=window_id, is_valid=1).order_by(order_by)[paginator[0]: paginator[1]]

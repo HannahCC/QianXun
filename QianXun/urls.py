@@ -11,9 +11,10 @@ urlpatterns = patterns('',
                        url(r'^qianxun/1/customer/addr/', include('QianXun.account.cus_addr_urls')),
                        url(r'^qianxun/1/customer/', include('QianXun.orders.cus_urls')),
 
+                       url(r'^qianxun/1/common/window/', include('QianXun.account.com_urls')),
+                       url(r'^qianxun/1/common/list/', include('QianXun.list.com_urls')),
+                       url(r'^qianxun/1/common/', include('QianXun.orders.com_urls')),
 
-                       url(r'^qianxun/1/common/index$', com_views.index),
-                       url(r'^qianxun/1/comment/display/bydish$', com_views.comment_display_bydish),
 
 
                        )

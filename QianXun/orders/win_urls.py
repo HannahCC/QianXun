@@ -17,5 +17,4 @@ urlpatterns = patterns('',
                        url(r'^dish/delete$', window_dish_delete),
                        url(r'^comment/reply$', window_comment_reply),
                        url(r'^sales/dish$', window_sales_dish),
-
 )

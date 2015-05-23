@@ -48,15 +48,14 @@ class DistrictAdmin(admin.ModelAdmin):
 class CanteenAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('canteen_name', 'school', 'is_valid', 'grade', 'sales', 'img_addr',)
+            'fields': ('canteen_name', 'school', 'is_valid', 'img_addr',)
         }),
     )
-    list_display = ('canteen_name',  'school', 'sales',  'is_valid', 'update_time')
+    list_display = ('canteen_name', 'is_valid', 'update_time')
     list_display_links = ('canteen_name',)
     list_filter = ('is_valid', 'update_time', 'school',)
     search_fields = ('canteen_name',)
     ordering = ('school', 'canteen_name', 'update_time',)
-    readonly_fields = ('grade', 'sales',)
 
 
 class SchoolAdmin(admin.ModelAdmin):

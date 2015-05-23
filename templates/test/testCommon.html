@@ -2,8 +2,56 @@
 {% block title %}Send Email{% endblock %}
 
 {% block content %}
+    <h1>显示学校列表</h1>
+    <form action="/qianxun/1/common/list/school/display" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>显示校区列表</h1>
+    <form action="/qianxun/1/common/list/district/display" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_school">School:</label> <input id="id_school" name="school" type="number" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>显示楼栋列表</h1>
+    <form action="/qianxun/1/common/list/building/display" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_district">Dish:</label> <input id="id_district" name="district" type="number" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>显示食堂列表</h1>
+    <form action="/qianxun/1/common/list/canteen/display" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_school">School:</label> <input id="id_school" name="school" type="number" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <h1>显示活动类别列表</h1>
+    <form action="/qianxun/1/common/list/protype/display" method="post",  enctype="multipart/form-data" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
+            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
     <h1>显示菜品评价</h1>
-    <form action="/qianxun/1/comment/display/bydish" method="post",  enctype="multipart/form-data" >
+    <form action="/qianxun/1/common/comment/display/bydish" method="post",  enctype="multipart/form-data" >
         <table>
             <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
             <li><label for="id_dish">Dish:</label> <input id="id_dish" name="dish" type="number" /></li>

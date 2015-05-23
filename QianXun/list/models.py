@@ -86,11 +86,9 @@ class Canteen(models.Model):
     """
     超级管理员要添加学校对应的食堂(admin中操作)
     """
-    school = models.ForeignKey(School, verbose_name=u'学校')
+    school = models.ForeignKey(School, verbose_name=u'学a校')
     canteen_name = models.CharField(u'食堂', max_length=64)
     img_addr = models.ImageField(u'食堂商标', blank=True, null=True, upload_to=r'canteens\%Y\%m\%d', max_length=100)
-    sales = models.IntegerField(u'销量', default=0)
-    grade = models.FloatField(u'评级', default=3.0)
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)
     update_time = models.DateTimeField(u'更新时间', auto_now=True)
     is_valid = models.SmallIntegerField(u'是否有效', choices=IS_VALID, default=1)

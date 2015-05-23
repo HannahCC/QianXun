@@ -32,7 +32,7 @@ CODE_MESSAGE = {
     OK: {},
     UNKNOWN_ERROR: {"error_info": u'未知错误'},  # ugettext("Unknown error."),
     HTTPS_REQUIRED: {"error_info": u'请使用HTTPS请求'},  # ugettext("HTTPS required."),
-    PARAM_REQUIRED: {"error_info": u'缺少必要参数'},  # ugettext("Parameter required."),
+    PARAM_REQUIRED: {"error_info": u'缺少必要参数或参数错误'},  # ugettext("Parameter required."),
     DATA_ERROR: {"error_info": u'数据错误'},  # ugettext("Data error."),
     DB_ERROR: {"error_info": u'数据库错误'},  # ugettext("Database error."),
     DB_INTEGRITY_ERROR: {"error_info": u'插入重复值或外键不存在'},
