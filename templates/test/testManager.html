@@ -84,78 +84,42 @@
     </form>
 
 
-    <h1>修改用户资料</h1>
-    <form action="/qianxun/1/customer/account/profile/update" method="post" >
+    <h1>查看上层通知</h1>
+    <form action="/qianxun/1/manager/school/notice" method="post" >
         <table>
-            <li><label for="id_school">学校:</label> <select id="id_school" name="school">
-                <option value="" selected="selected">---------</option>
-                <option value="1">华中师范大学</option>
-                <option value="2">武汉大学</option>
-            </select></li>
-            <li><label for="id_user_type">用户类别:</label> <select id="id_user_type" name="user_type">
-                <option value="" selected="selected">---------</option>
-                <option value="1">学生</option>
-                <option value="2">教工</option>
-                <option value="3">其他</option>
-            </select></li>
             <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_nick_name">Nick name:</label> <input id="id_nick_name" maxlength="64" name="nick_name" type="text" /></li>
         </table>
         <input type="submit" value="Submit">
     </form>
 
-    <h1>显示用户地址</h1>
-    <form action="/qianxun/1/customer/addr/display" method="post" >
+    <h1>查看本单位通知</h1>
+    <form action="/qianxun/1/manager/canteen/notice" method="post" >
         <table>
             <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
-            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
         </table>
         <input type="submit" value="Submit">
     </form>
-    <h1>显示用户自定义地址</h1>
-    <form action="/qianxun/1/customer/addr/custom/display" method="post" >
+
+    <h1>餐厅管理员关键字查询</h1>
+    <form action="/qianxun/1/manager/canteen/search" method="post" >
         <table>
             <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_page">Page:</label> <input id="id_page" name="page" type="number" value="1" /></li>
-            <li><label for="id_count">Count:</label> <input id="id_count" max="20" name="count" type="number" value="10" /></li>
+            <li><label for="key_words">关键字:</label> <input id="key_words" maxlength="64" name="key_words" type="text" /></li>
         </table>
         <input type="submit" value="Submit">
     </form>
-    <h1>创建用户地址</h1>
-    <form action="/qianxun/1/customer/addr/create" method="post" >
+
+
+    <h1>学校管理员关键字查询</h1>
+    <form action="/qianxun/1/manager/school/search" method="post" >
         <table>
             <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_building">Building:</label> <input id="id_building" name="building" type="number" /></li>
+            <li><label for="key_words">关键字:</label> <input id="key_words" maxlength="64" name="key_words" type="text" /></li>
         </table>
         <input type="submit" value="Submit">
     </form>
-    <h1>创建用户自定义地址</h1>
-    <form action="/qianxun/1/customer/addr/custom/create" method="post" >
-        <table>
-            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_addr">Addr:</label> <input id="id_addr" maxlength="64" name="addr" type="text" /></li>
-        </table>
-        <input type="submit" value="Submit">
-    </form>
-    <h1>修改用户地址</h1>
-    <form action="/qianxun/1/customer/addr/update" method="post">
-        <table>
-            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_new_building">New building:</label> <input id="id_new_building" name="new_building" type="number" /></li>
-            <li><label for="id_old_building">Old building:</label> <input id="id_old_building" name="old_building" type="number" /></li>
-        </table>
-        <input type="submit" value="Submit">
-    </form>
-    <h1>修改用户自定义地址</h1>
-    <form action="/qianxun/1/customer/addr/custom/update" method="post">
-        <table>
-            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_address">Address:</label> <input id="id_address" name="address" type="number" /></li>
-            <li><label for="id_addr">Addr:</label> <input id="id_addr" maxlength="64" name="addr" type="text" /></li>
-        </table>
-        <input type="submit" value="Submit">
-    </form>
+
+
 
     <h1>删除用户地址</h1>
     <form action="/qianxun/1/customer/addr/delete" method="post",>
