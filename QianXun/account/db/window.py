@@ -5,6 +5,7 @@ from datetime import datetime
 from utils.Pagination import get_paginator
 from utils.MakeSerialNumber import get_serial_number
 from utils.SalesCalculator import window_sales_calculate
+from conf.enum_value import WINDOW_STATUS
 
 
 def window_model_to_bean(window_model):
@@ -17,6 +18,11 @@ def get_by_token(token):
     window_model = Window.objects.get(token__exact=token, is_valid=1)
     return window_model
 
+
+def get_by_id(window_id):
+    window_model = Window.objects.get(id__exact=window_id)
+    window_bean = WindowBean(window_model)
+    return  window_bean
 
 def get_by_username(window_login_dict):
     window_model = Window.objects.get(user_name__exact=window_login_dict['user_name'], password__exact=window_login_dict['password'], is_valid=1)
@@ -132,3 +138,19 @@ def delete_token(window_model):
     window_model.token = ''
     window_model.save()
     return window_model
+
+
+def permit(window_id):
+    window_model = Window.objects.get(id__exact=window_id)
+    window_model.window_status = WINDOW_STATUS[1][0]
+    window_model.save()
+    window_model_bean = WindowBean(window_model)
+    return window_model_bean
+
+
+def not_permit(window_id):
+    window_model = Window.objects.get(id__exact=window_id)
+    window_model.window_status = WINDOW_STATUS[2][0]
+    window_model.save()
+    window_model_bean = WindowBean(window_model)
+    return window_model_bean

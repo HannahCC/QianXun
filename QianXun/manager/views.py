@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
 from forms import LoginForm, ManagerPasswordForm
 from QianXun.notice.db import notice
+from QianXun.account.db import window
 from db import manager
 from utils.Serializer import json_response, json_response_from_object
 from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required, exception_handled
@@ -105,4 +106,31 @@ def cm_find_notice_by_keyword(request):
     all_bean_list = school_notice_bean_list
     all_bean_list.extend(canteen_notice_bean_list)
     return json_response_from_object(OK, all_bean_list)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def view_window_info(request):
+    window_id = request.POST.get("window_id")
+    window_bean = window.get_by_id(window_id)
+    return json_response_from_object(OK, window_bean)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def permit_window(request):
+    window_id = request.POST.get("window_id")
+    window_model_bean = window.permit(window_id)
+    return json_response_from_object(OK, window_model_bean)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def not_permit_window(request):
+    window_id = request.POST.get("window_id")
+    window_model_bean = window.not_permit(window_id)
+    return json_response_from_object(OK, window_model_bean)
 
