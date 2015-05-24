@@ -13,4 +13,7 @@ urlpatterns = patterns('',
                        url(r'^canteen/notice$', view_canteen_notice),
                        url(r'^canteen/search$', cm_find_notice_by_keyword),
                        url(r'school/search$', sm_find_notice_by_keyword),
+                       url(r'^window$', view_window_info),
+                       url(r'^permit$', permit_window),
+                       url(r'^notpermit$', not_permit_window),
                        )
