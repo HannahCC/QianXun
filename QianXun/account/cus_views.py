@@ -129,18 +129,18 @@ def customer_feedback(request):
     if feedback_form.is_valid():
         feedback_dict = feedback_form.cleaned_data
         customer_id = request.user_meta['customer_model'].id
-        #try:
-        if feedback_dict['type'] == '1':  # suggestion
-            feedback_dict['subject'] = "".join([u'[校园便当_买家用户反馈]', feedback_dict['subject']])
-            feedback_dict['message'] = "\n----------\nfrom ID: ".join([feedback_dict['message'], str(customer_id)])
-            email(feedback_dict, ADMIN_EMAIL['MANAGER_EMAIL'])
-        else:  # crash report
-            feedback_dict['subject'] = "".join([u'[校园便当_买家版崩溃报告]', feedback_dict['subject']])
-            feedback_dict['message'] = "\n----------\nfrom ID: ".join([feedback_dict['message'], str(customer_id)])
-            email(feedback_dict, ADMIN_EMAIL['APP_DEVELPOER_EMAIL'])
-        return json_response(OK, CODE_MESSAGE.get(OK))
-        #except SMTPAuthenticationError:
-        #    return json_response(EMAIL_SEND_FAILED, CODE_MESSAGE.get(EMAIL_SEND_FAILED))
+        try:
+            if feedback_dict['type'] == '1':  # suggestion
+                feedback_dict['subject'] = "".join([u'[校园便当_买家用户反馈]', feedback_dict['subject']])
+                feedback_dict['message'] = "\n----------\nfrom ID: ".join([feedback_dict['message'], str(customer_id)])
+                email(feedback_dict, ADMIN_EMAIL['MANAGER_EMAIL'])
+            else:  # crash report
+                feedback_dict['subject'] = "".join([u'[校园便当_买家版崩溃报告]', feedback_dict['subject']])
+                feedback_dict['message'] = "\n----------\nfrom ID: ".join([feedback_dict['message'], str(customer_id)])
+                email(feedback_dict, ADMIN_EMAIL['APP_DEVELPOER_EMAIL'])
+            return json_response(OK, CODE_MESSAGE.get(OK))
+        except SMTPAuthenticationError:
+            return json_response(EMAIL_SEND_FAILED, CODE_MESSAGE.get(EMAIL_SEND_FAILED))
     else:
         return json_response(PARAM_REQUIRED, feedback_form.errors)
 

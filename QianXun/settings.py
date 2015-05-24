@@ -104,24 +104,21 @@ STATICFILES_DIRS = (
 EMAIL_HOST = 'smtp.126.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'xiaoyuanbiandang@126.com'
-EMAIL_HOST_PASSWORD = 'qianxun123456'
+EMAIL_HOST_PASSWORD = 'amvmqidlozssiang'
 EMAIL_SUBJECT_PREFIX = '[QianXun_Server]'
 EMAIL_USE_TLS = True
 
+SERVER_EMAIL = 'xiaoyuanbiandang@126.com'  # server error will send from here
+ADMINS = (
+    ('LiChen', '408559221@qq.com'),     # server error will send to here
+)
 
 ADMIN_EMAIL = {
     'APP_DEVELPOER_EMAIL': ['408559221@qq.com'],  # app crash report will send to here
     'MANAGER_EMAIL': ['408559221@qq.com'],  # users feedback will send to here
 }
 
-ADMINS = (
-    ('LiChen', '408559221@qq.com'),     # server error will send to here
-)
-
 SEND_BROKEN_LINK_EMAILS = True         # set link interrupted warning
-MANAGERS = (
-    ('LiChen', '408559221@qq.com'),     # and send to here
-)
 
 # media config
 MEDIA_ROOT = r'F:\QianXun'
@@ -184,7 +181,7 @@ LOGGING = {
             'propagate': False
         },
         'utils.Decorator': {
-            'handlers': ['default', 'console'],
+            'handlers': ['default', 'console', 'mail_admins'],
             'level': 'INFO',
             'propagate': False
         },
@@ -193,12 +190,10 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False
         },
+        'django.request': {
+            'handlers': ['request_handler', 'console', 'mail_admins'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     }
 }
-"""
-'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False
-        },
-"""

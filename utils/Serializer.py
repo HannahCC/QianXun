@@ -50,7 +50,7 @@ def __get_json(data):
     return json_data
 
 
-def get_json_from_model(data):
+def __get_json_from_model(data):
     """
     如果是查询结果，需要对结果进行一些处理
     将“fields”用“fields”中的“data”字段代替
@@ -66,7 +66,7 @@ def get_json_from_model(data):
     return dict_data
 
 
-def get_json_from_object(data):
+def __get_json_from_object(data):
     json_data = simplejson.dumps(data, cls=ObjectEncoder, ensure_ascii=False)
     return json_data
 
@@ -87,7 +87,7 @@ def json_response_from_model(status, data, model_id='', extra_data_name='', extr
     """
     json = {}
     json.update({"status": status})
-    json_data = get_json_from_model(data)
+    json_data = __get_json_from_model(data)
     if model_id:
         json_data.update({'id': model_id})
     if extra_data_name:
@@ -102,7 +102,7 @@ def json_response_from_object(status, data, object_name=""):
     """
     json = {}
     json.update({"status": status})
-    json_data = simplejson.loads(get_json_from_object(data))
+    json_data = simplejson.loads(__get_json_from_object(data))
     if object_name:
         json_data_dict = {}
         json_data_dict.update({object_name: json_data})
