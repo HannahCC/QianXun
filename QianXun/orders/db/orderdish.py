@@ -54,12 +54,15 @@ def get_comment_bean_list_bydish(dish_id, pagination_dict):
 
 def update_comment(order_model, comment_dict):
     comment_model = order_model.ordersdishes_set.get(id__exact=comment_dict['orders_dishes'])
-    comment_model.grade = comment_dict['grade']
-    comment_model.text = comment_dict['text']
-    comment_model.comment_time = datetime.now()
-    comment_model.save()
-    comment_bean = CommentBean(comment_model)
-    return comment_bean
+    if comment_model.comment_time is None:
+        comment_model.grade = comment_dict['grade']
+        comment_model.text = comment_dict['text']
+        comment_model.comment_time = datetime.now()
+        comment_model.save()
+        comment_bean = CommentBean(comment_model)
+        return comment_bean
+    else:
+        return None
 
 
 def update_reply(order_dish_model, reply_dict):

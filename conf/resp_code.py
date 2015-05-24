@@ -26,7 +26,10 @@ REMOVE_FAILED = 20
 ORDER_STATUS_ERROR = 21
 PROMOTION_REACH_MAX = 22
 DISH_REACH_MAX = 23
-ORDER_DISH_REACH_MAX = 24
+DELIVER_TIME_REACH_MAX = 24
+ORDER_DISH_REACH_MAX = 25
+ORDER_DISH_COMMENTED = 26
+ORDER_DISH_REPLIED = 27
 
 CODE_MESSAGE = {
     OK: {},
@@ -54,6 +57,9 @@ CODE_MESSAGE = {
     ORDER_STATUS_ERROR: {"error_info": u'订单状态错误'},
     PROMOTION_REACH_MAX: {"error_info": u'促销活动数量超过限制值'},
     DISH_REACH_MAX: {"error_info": u'菜品数量超过限制值'},
+    DELIVER_TIME_REACH_MAX: {"error_info": u'配送时间数量超过限制值'},
     ORDER_DISH_REACH_MAX: {"error_info": u'订单中菜品数量超过限制值'},
+    ORDER_DISH_COMMENTED: {"error_info": u'不能重复评论'},
+    ORDER_DISH_REPLIED: {"error_info": u'不能重复回复评论'},
     }
 

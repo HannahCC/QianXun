@@ -20,7 +20,7 @@ def window_notice_display(request):
         pagination_dict = pagination_form.cleaned_data
         window_model = request.user_meta['window_model']
         canteen_notice_bean_list = notice.get_canteen_notice_bean_list_bycanteen(window_model.canteen, pagination_dict)
-        return json_response_from_object(OK, canteen_notice_bean_list, 'notice_list')
+        return json_response_from_object(OK, canteen_notice_bean_list, 'noticeList')
     else:
         return json_response(PARAM_REQUIRED, pagination_form.errors)
 

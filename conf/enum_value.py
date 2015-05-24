@@ -57,3 +57,9 @@ LOGINTYPE = (
     (0, u'学校管理员'),
     (1, u"餐厅管理员"),
 )
+
+ORDER_BY = (
+    (0, u'-sales'),
+    (1, u'price'),
+    (2, u'-grade'),
+)

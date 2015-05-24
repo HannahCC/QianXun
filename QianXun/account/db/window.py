@@ -25,11 +25,32 @@ def get_by_username(window_login_dict):
 
 def get_window_bean_list_bycanteen(canteen_id, pagination_dict):
     paginator = get_paginator(pagination_dict)
-    window_model_list = Window.objects.filter(canteen__exact=canteen_id, is_valid=1).order_by('window_name')[paginator[0]: paginator[1]]
+    window_model_list = Window.objects.filter(canteen__exact=canteen_id, is_valid=1).order_by('-sales')[paginator[0]: paginator[1]]
     window_bean_list = []
     for window_model in window_model_list:
         window_bean = window_model_to_bean(window_model)
         window_bean_list.append(window_bean)
+    return window_bean_list
+
+
+def get_window_bean_list_byname(school_id, window_name, pagination_dict):
+    paginator = get_paginator(pagination_dict)
+    window_model_list = Window.objects.filter(school_id__exact=school_id, window_name__icontains=window_name,
+                                              is_valid=1).order_by('-sales')[paginator[0]: paginator[1]]
+    window_bean_list = []
+    for window_model in window_model_list:
+        window_bean = window_model_to_bean(window_model)
+        window_bean_list.append(window_bean)
+    return window_bean_list
+
+
+def get_window_bean_list_byid(window_id_list):
+    window_bean_list = []
+    for window_id in window_id_list:
+        window_model = Window.objects.filter(id__exact=window_id['window_id'], is_valid=1)
+        if len(window_model) == 1:
+            window_bean = window_model_to_bean(window_model[0])
+            window_bean_list.append(window_bean)
     return window_bean_list
 
 
@@ -51,14 +72,29 @@ def update_promotion_number(window_model, promotion_number_extra):
     return window_model
 
 
+def update_dish_number(window_model, dish_number_extra):
+    window_model.dish_number += dish_number_extra
+    window_model.save()
+    return window_model
+
+
+def update_deliver_time_number(window_model, deliver_time_number_extra):
+    window_model.deliver_time_number += deliver_time_number_extra
+    window_model.save()
+    return window_model
+
+
 def delete(window_id):
     impact = Window.objects.filter(id__exact=window_id, is_valid=1).update(
         is_valid=0, update_time=datetime.now())
     return impact
 
 
-def create(window):
-    window_model = window.save()
+def create(window, is_commit=True):
+    if is_commit:
+        window_model = window.save()
+    else:
+        window_model = window.save(commit=False)
     return window_model
 
 

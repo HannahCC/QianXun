@@ -16,7 +16,7 @@ def validate_phone(value):
 def validate_password(value):
     if len(value) < 6:
         raise ValidationError(u'请输入长度超过6位的密码')
-    if value.isalnum():
+    if not value.isalnum():
         raise ValidationError(u'请输入只含有字母和数字的密码')
     if value.isdigit():
         raise ValidationError(u'请输入含有字母的密码')

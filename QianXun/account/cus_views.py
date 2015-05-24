@@ -154,7 +154,7 @@ def customer_addr_display(request):
         pagination_dict = pagination_form.cleaned_data
         customer_model = request.user_meta['customer_model']
         building_list = customer.get_user_addr(customer_model, pagination_dict)
-        return json_response_from_object(OK, building_list, 'building_list')
+        return json_response_from_object(OK, building_list, 'buildingList')
     else:
         return json_response(PARAM_REQUIRED, pagination_form.errors)
 
@@ -210,7 +210,7 @@ def customer_custom_addr_display(request):
         pagination_dict = pagination_form.cleaned_data
         customer_model = request.user_meta['customer_model']
         address_list = customer.get_user_custome_addr(customer_model, pagination_dict)
-        return json_response_from_object(OK, address_list, 'address_list')
+        return json_response_from_object(OK, address_list, 'addressList')
     else:
         return json_response(PARAM_REQUIRED, pagination_form.errors)
 

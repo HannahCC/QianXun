@@ -19,7 +19,7 @@ def common_school_display(request):
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
         school_bean_list = list.get_school_bean_list(pagination_dict)
-        return json_response_from_object(OK, school_bean_list, 'school_list')
+        return json_response_from_object(OK, school_bean_list, 'schoolList')
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
 
@@ -33,7 +33,7 @@ def common_district_display(request):
         pagination_dict = pagination_form.cleaned_data
         school_id = request.POST['school']
         district_bean_list = list.get_district_bean_list(school_id, pagination_dict)
-        return json_response_from_object(OK, district_bean_list, 'district_list')
+        return json_response_from_object(OK, district_bean_list, 'districtList')
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
 
@@ -47,7 +47,7 @@ def common_building_display(request):
         pagination_dict = pagination_form.cleaned_data
         district_id = request.POST['district']
         building_bean_list = list.get_building_bean_list(district_id, pagination_dict)
-        return json_response_from_object(OK, building_bean_list, 'building_list')
+        return json_response_from_object(OK, building_bean_list, 'buildingList')
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
 
@@ -61,7 +61,7 @@ def common_canteen_display(request):
         pagination_dict = pagination_form.cleaned_data
         school_id = request.POST['school']
         canteen_bean_list = list.get_canteen_bean_list(school_id, pagination_dict)
-        return json_response_from_object(OK, canteen_bean_list, 'canteen_list')
+        return json_response_from_object(OK, canteen_bean_list, 'canteenList')
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
 
@@ -74,7 +74,7 @@ def common_protype_display(request):
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
         pro_type_bean_list = list.get_protype_bean_list(pagination_dict)
-        return json_response_from_object(OK, pro_type_bean_list, 'pro_type_list')
+        return json_response_from_object(OK, pro_type_bean_list, 'proTypeList')
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
 

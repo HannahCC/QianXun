@@ -10,6 +10,7 @@ class Window(models.Model):
     """
     卖家注册
     """
+    school = models.ForeignKey(School, verbose_name=u'学校')
     canteen = models.ForeignKey(Canteen, verbose_name=u'食堂')
     user_name = models.CharField(u'联系方式', max_length=11, unique=True)
     token = models.CharField(u'用户认证口令', max_length=64, blank=True)
@@ -24,6 +25,7 @@ class Window(models.Model):
     grade = models.FloatField(u'评级', default=GRADE)
     comment_number = models.IntegerField(u'评论数量', default=0)
     promotion_number = models.IntegerField(u'活动数量', default=0)
+    deliver_time_number = models.IntegerField(u'配送时间数量', default=0)
     dish_number = models.IntegerField(u'菜品数量', default=0)
     calculate_time = models.DateTimeField(u'上次计算时间', auto_now=True)  # 上次计算窗口销量的时间
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)

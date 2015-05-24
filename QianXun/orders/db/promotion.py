@@ -2,18 +2,15 @@
 __author__ = 'Hannah'
 from QianXun.orders.models import Promotions
 from QianXun.orders.beans import PromotionBean
-from conf.default_value import PROMOTION_MAX
 from utils.Pagination import get_paginator
 
 
-def get_window_bean_list_byprotype(pro_type_id, pagination_dict):
+def get_window_id_list_byprotype(school_id, pro_type_id, pagination_dict):
     paginator = get_paginator(pagination_dict)
-    window_model_list = Promotions.objects.filter(pro_type_id__exact=pro_type_id, window__canteen__school_id__ex  is_valid=1).order_by('window_name')[paginator[0]: paginator[1]]
-    window_bean_list = []
-    for window_model in window_model_list:
-        window_bean = window_model_to_bean(window_model)
-        window_bean_list.append(window_bean)
-    return window_bean_list
+    window_id_list = Promotions.objects.values('window_id').distinct()\
+        .filter(pro_type_id__exact=pro_type_id, window__school_id__exact=school_id,
+                is_valid=1)[paginator[0]: paginator[1]]
+    return window_id_list
 
 
 def get_promotion_list_bywindow(window_id, pagination_dict, order_by='-rules'):
@@ -22,11 +19,14 @@ def get_promotion_list_bywindow(window_id, pagination_dict, order_by='-rules'):
     return promotion_list
 
 
-def get_promotion_list_byprotype(pro_type_id, pagination_dict):
+def get_promotion_bean_list_bywindow(window_id, pagination_dict, order_by='-rules'):
     paginator = get_paginator(pagination_dict)
-    promotion_list = Promotions.objects.filter(is_valid=1, pro_type_id__exact=pro_type_id)\
-        .order_by('-rules')[paginator[0]:paginator[1]]
-    return promotion_list
+    promotion_list = Promotions.objects.filter(window__exact=window_id, is_valid=1).order_by('pro_type_id', order_by)[paginator[0]: paginator[1]]
+    promotion_bean_list = []
+    for promotion_model in promotion_list:
+        promotion_bean = PromotionBean(promotion_model)
+        promotion_bean_list.append(promotion_bean)
+    return promotion_bean_list
 
 
 def create(promotion, is_commit=True):

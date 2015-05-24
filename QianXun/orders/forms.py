@@ -3,7 +3,7 @@ __author__ = 'Hannah'
 
 from django import forms
 
-from conf.enum_value import ORDER_STATUS
+from conf.enum_value import ORDER_STATUS, ORDER_BY
 from QianXun.orders.models import Orders, Promotions, DeliverTime, Dish, OrdersDishes
 from utils.Validator import validate_order_status, validate_customer_order_status, validate_window_order_status, validate_pro_type
 
@@ -136,6 +136,7 @@ class PaginationForm(forms.Form):
     page = forms.IntegerField(initial=1, required=False)
     count = forms.IntegerField(initial=10, max_value=20, required=False)
     order_status = forms.ChoiceField(choices=ORDER_STATUS, required=False)
+    order_by = forms.ChoiceField(choices=ORDER_BY, required=False)
 
 
 class SalesForm(forms.Form):

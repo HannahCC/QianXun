@@ -21,7 +21,10 @@ def index(request):
 def window_register(request):
     window_form = WindowForm(request.POST)
     if window_form.is_valid():
-        window.create(window_form)
+        window_dict = window_form.cleaned_data
+        window_model = window.create(window_form, False)
+        window_model.school = window_dict['canteen'].school
+        window.create(window_model)
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, window_form.errors)

@@ -46,7 +46,7 @@ def customer_order_create(request):
             # add orders_dishes
             for my_dish in dish_list:
                 my_order_dish_bean = orderdish.create(my_order_bean.id, my_dish)
-                my_order_bean.dish_list.append(my_order_dish_bean)
+                my_order_bean.dishList.append(my_order_dish_bean)
             return json_response_from_object(OK, my_order_bean)
         else:
             return json_response(ORDER_DISH_REACH_MAX, CODE_MESSAGE.get(ORDER_DISH_REACH_MAX))
@@ -64,7 +64,7 @@ def customer_order_display(request):
         customer_id = request.user_meta['customer_model'].id
         order_status = pagination_dict['order_status']
         order_bean_list = order.get_order_bean_list_bycus(customer_id, order_status, pagination_dict)
-        return json_response_from_object(OK, order_bean_list, 'order_list')
+        return json_response_from_object(OK, order_bean_list, 'orderList')
     else:
         return json_response(PARAM_REQUIRED, pagination_form.errors)
 
@@ -126,7 +126,7 @@ def customer_order_delete(request):
         order_id_list = json_back(order_id_list_str)
         customer_id = request.user_meta['customer_model'].id
         order_id_list_fail_to_delete = order.delete_bycus(customer_id, order_id_list)
-        return json_response_from_object(OK, order_id_list_fail_to_delete, 'order_id_list')
+        return json_response_from_object(OK, order_id_list_fail_to_delete, 'orderIdList')
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
 
@@ -142,7 +142,10 @@ def customer_comment_create(request):
         my_order = order.get_order_byid_bycus(customer_id, comment_dict)
         if my_order.order_status == ORDER_STATUS[6][0]:  # user can only make comment on order in complete status
             comment_bean = orderdish.update_comment(my_order, comment_dict)
-            return json_response_from_object(OK, comment_bean)
+            if comment_bean is not None:
+                return json_response_from_object(OK, comment_bean)
+            else:
+                return json_response(ORDER_DISH_COMMENTED, CODE_MESSAGE.get(ORDER_DISH_COMMENTED))
         else:
             return json_response(ORDER_STATUS_ERROR, CODE_MESSAGE.get(ORDER_STATUS_ERROR))
     else:
