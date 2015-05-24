@@ -114,8 +114,44 @@ def manager_token_required(func):
             _LOGGER.error('Token Required for Window User.')
             return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
         token = post.get('token')
+        my_manager = None
         try:
-            my_manager = manager.get_by_token(token)
+            my_manager = manager.school_get_by_token(token)
+        except ObjectDoesNotExist:
+            pass
+        return func(request, *args, **kwargs)
+    return _view3
+
+
+def school_manager_token_required(func):
+    def _view3(request, *args, **kwargs):
+        post = request.POST
+        if not post or not post.get('token'):
+            _LOGGER.error('Token Required for Window User.')
+            return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
+        token = post.get('token')
+        try:
+            my_manager = manager.school_get_by_token(token)
+            _LOGGER.info('Token hit in db for Manager User')
+            user_meta = {}
+            user_meta.update({'manager_model': my_manager})
+            request.user_meta = user_meta
+        except ObjectDoesNotExist:
+            _LOGGER.error('Token not in db for Window User.')
+            return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
+        return func(request, *args, **kwargs)
+    return _view3
+
+
+def canteen_manager_token_required(func):
+    def _view3(request, *args, **kwargs):
+        post = request.POST
+        if not post or not post.get('token'):
+            _LOGGER.error('Token Required for Window User.')
+            return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
+        token = post.get('token')
+        try:
+            my_manager = manager.canteen_get_by_token(token)
             _LOGGER.info('Token hit in db for Manager User')
             user_meta = {}
             user_meta.update({'manager_model': my_manager})

@@ -3,9 +3,10 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
 from forms import LoginForm, ManagerPasswordForm
+from QianXun.notice.db import notice
 from db import manager
 from utils.Serializer import json_response, json_response_from_object
-from utils.Decorator import manager_token_required, post_required, exception_handled
+from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required, exception_handled
 from utils.SendEmail import email
 from utils.MakeSerialNumber import get_serial_number
 from QianXun.settings import ADMIN_EMAIL
@@ -46,7 +47,7 @@ def manager_login(request):
 
 
 @exception_handled
-@manager_token_required
+@school_manager_token_required
 @post_required
 def manager_password_reset(request):
     '''
@@ -60,3 +61,48 @@ def manager_password_reset(request):
         return json_response_from_object(OK, manager_bean)
     else:
         return json_response(PARAM_REQUIRED, manager_password_form.errors)
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def view_upper_notice(request):
+    token = request.POST.get("token")
+    canteen_manager = manager.canteen_get_by_token(token)
+    shcool_notice_bean_list = manager.get_upper_notice(canteen_manager)
+    return json_response_from_object(OK, shcool_notice_bean_list, "schoolNoticeList")
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def view_canteen_notice(request):
+    token = request.POST.get("token")
+    canteen_manager = manager.canteen_get_by_token(token)
+    canteen_notice_bean_list = manager.get_canteen_notice(canteen_manager)
+    return json_response_from_object(OK, canteen_notice_bean_list, "canteenNoticeList")
+
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def sm_find_notice_by_keyword(request):
+    token = request.POST.get("token")
+    search_words = request.POST.get("key_words")
+    school = manager.school_get_by_token(token).school
+    school_notice_bean_list = notice.find_school_notice_list_by_word(school, search_words)
+    return json_response_from_object(OK, school_notice_bean_list)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_find_notice_by_keyword(request):
+    token = request.POST.get("token")
+    search_words = request.POST.get("key_words")
+    canteen_mangaer = manager.canteen_get_by_token(token)
+    school_notice_bean_list = notice.find_school_notice_list_by_word(canteen_mangaer.canteen.school, search_words)
+    canteen_notice_bean_list = notice.find_canteen_notice_list_by_word(canteen_mangaer.canteen, search_words)
+    all_bean_list = school_notice_bean_list
+    all_bean_list.extend(canteen_notice_bean_list)
+    return json_response_from_object(OK, all_bean_list)
+
