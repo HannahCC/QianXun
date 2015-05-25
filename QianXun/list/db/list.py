@@ -48,3 +48,8 @@ def get_canteen_bean_list(school_id, pagination_dict):
     for canteen_model in canteen_list:
         canteen_bean_list.append(CanteenBean(canteen_model))
     return canteen_bean_list
+
+
+def get_canteen_by_id(canteen_id):
+    canteen_model = Canteen.objects.get(id__exact=canteen_id)
+    return CanteenBean(canteen_model)

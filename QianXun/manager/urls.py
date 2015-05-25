@@ -16,4 +16,7 @@ urlpatterns = patterns('',
                        url(r'^window$', view_window_info),
                        url(r'^permit$', permit_window),
                        url(r'^notpermit$', not_permit_window),
+                       url(r'^create/canteen/notice$', cm_create_notice),
+                       url(r'^modify/canteen/notice$', cm_modify_own_notice),
+                       url(r'^delete/canteen/notice$', cm_delete_notice),
                        )

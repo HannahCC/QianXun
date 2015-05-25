@@ -5,6 +5,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from forms import LoginForm, ManagerPasswordForm
 from QianXun.notice.db import notice
 from QianXun.account.db import window
+from QianXun.notice.db import notice
+from QianXun.list.db import list
+from QianXun.notice.forms import ChangeNoticeForm, CreateNoticeForm
 from db import manager
 from utils.Serializer import json_response, json_response_from_object
 from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required, exception_handled
@@ -67,8 +70,7 @@ def manager_password_reset(request):
 @canteen_manager_token_required
 @post_required
 def view_upper_notice(request):
-    token = request.POST.get("token")
-    canteen_manager = manager.canteen_get_by_token(token)
+    canteen_manager = request.user_meta.get("manager_model").school
     shcool_notice_bean_list = manager.get_upper_notice(canteen_manager)
     return json_response_from_object(OK, shcool_notice_bean_list, "schoolNoticeList")
 
@@ -77,8 +79,7 @@ def view_upper_notice(request):
 @canteen_manager_token_required
 @post_required
 def view_canteen_notice(request):
-    token = request.POST.get("token")
-    canteen_manager = manager.canteen_get_by_token(token)
+    canteen_manager = request.user_meta.get("manager_model").school
     canteen_notice_bean_list = manager.get_canteen_notice(canteen_manager)
     return json_response_from_object(OK, canteen_notice_bean_list, "canteenNoticeList")
 
@@ -87,9 +88,8 @@ def view_canteen_notice(request):
 @school_manager_token_required
 @post_required
 def sm_find_notice_by_keyword(request):
-    token = request.POST.get("token")
     search_words = request.POST.get("key_words")
-    school = manager.school_get_by_token(token).school
+    school = request.user_meta.get("manager_model").school
     school_notice_bean_list = notice.find_school_notice_list_by_word(school, search_words)
     return json_response_from_object(OK, school_notice_bean_list)
 
@@ -98,11 +98,10 @@ def sm_find_notice_by_keyword(request):
 @canteen_manager_token_required
 @post_required
 def cm_find_notice_by_keyword(request):
-    token = request.POST.get("token")
+    canteen_manager = request.user_meta.get("manager_model")
     search_words = request.POST.get("key_words")
-    canteen_mangaer = manager.canteen_get_by_token(token)
-    school_notice_bean_list = notice.find_school_notice_list_by_word(canteen_mangaer.canteen.school, search_words)
-    canteen_notice_bean_list = notice.find_canteen_notice_list_by_word(canteen_mangaer.canteen, search_words)
+    school_notice_bean_list = notice.find_school_notice_list_by_word(canteen_manager.canteen.school, search_words)
+    canteen_notice_bean_list = notice.find_canteen_notice_list_by_word(canteen_manager.canteen, search_words)
     all_bean_list = school_notice_bean_list
     all_bean_list.extend(canteen_notice_bean_list)
     return json_response_from_object(OK, all_bean_list)
@@ -134,3 +133,50 @@ def not_permit_window(request):
     window_model_bean = window.not_permit(window_id)
     return json_response_from_object(OK, window_model_bean)
 
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_modify_own_notice(request):
+    change_notice_form = ChangeNoticeForm(request.POST)
+    if change_notice_form.is_valid():
+        change_notice_dict= change_notice_form.cleaned_data
+        canteen_manager = request.user_meta.get("manager_model")
+        notice_id = request.POST.get("notice_id")
+        already_notice = notice.get_canteen_notice_by_id(notice_id)
+        # 只能修改自己发布的通知
+        if canteen_manager != already_notice.manager:
+            return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
+
+        notice_bean = notice.cm_modify_notice(already_notice, change_notice_dict)
+        return json_response_from_object(OK, notice_bean)
+    else:
+        return json_response(PARAM_REQUIRED, change_notice_form.errors)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_create_notice(request):
+    canteen_manager = request.user_meta.get("manager_model")
+    create_notice_form = CreateNoticeForm(request.POST)
+    if create_notice_form.is_valid():
+        create_notice_dict= create_notice_form.cleaned_data
+        notice_bean = notice.cm_create_notice(canteen_manager, create_notice_dict)
+        return json_response_from_object(OK, notice_bean)
+    else:
+        return json_response(PARAM_REQUIRED, create_notice_form.errors)
+
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_delete_notice(request):
+    canteen_manager = request.user_meta.get("manager_model")
+    notice_id = request.POST.get("notice_id")
+    notice_model = notice.get_canteen_notice_by_id(notice_id)
+    if canteen_manager != notice_model.manager:
+        return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
+    notice.cm_delte_notice(notice_model)
+    return json_response(OK, CODE_MESSAGE.get(OK))
