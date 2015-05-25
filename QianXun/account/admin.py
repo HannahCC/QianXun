@@ -35,7 +35,7 @@ class WindowAdmin(admin.ModelAdmin):
     inlines = [PromotionsInline, DeliverTimeInline, DishInline]
     fieldsets = (
         (None, {
-            'fields': ('canteen', 'window_name', 'window_status', 'grade', 'sales', 'name', 'user_name', 'is_valid', )
+            'fields': ('school', 'canteen', 'window_name', 'window_status', 'grade', 'sales', 'name', 'user_name', 'is_valid', )
         }),
     )
     list_display = ('window_name', 'name', 'user_name', 'window_status', 'canteen', 'sales', 'is_valid', 'update_time')
@@ -43,7 +43,7 @@ class WindowAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time', 'window_status')
     search_fields = ('window_name', 'user_name',)
     ordering = ('canteen', 'window_name', 'update_time',)
-    # readonly_fields = ('canteen',  'window_name', 'grade', 'sales', 'name', 'user_name', 'is_valid',)
+    # readonly_fields = ('school', 'canteen',  'window_name', 'grade', 'sales', 'name', 'user_name', 'is_valid',)
 
 
 admin.site.register(Customer, CustomerAdmin)

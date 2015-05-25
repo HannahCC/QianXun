@@ -120,6 +120,35 @@
     </form>
 
 
+    <h1>查询窗口信息</h1>
+    <form action="/qianxun/1/manager/window" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="window_id">窗口id:</label> <input id="window_id" maxlength="64" name="window_id" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+
+    <h1>审核通过窗口信息</h1>
+    <form action="/qianxun/1/manager/permit" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="window_id">窗口id:</label> <input id="window_id" maxlength="64" name="window_id" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+
+    <h1>审核不通过窗口信息</h1>
+    <form action="/qianxun/1/manager/notpermit" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="window_id">窗口id:</label> <input id="window_id" maxlength="64" name="window_id" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
 
     <h1>删除用户地址</h1>
     <form action="/qianxun/1/customer/addr/delete" method="post",>
