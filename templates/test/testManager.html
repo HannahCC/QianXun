@@ -150,38 +150,72 @@
     </form>
 
 
-    <h1>删除用户地址</h1>
-    <form action="/qianxun/1/customer/addr/delete" method="post",>
+     <h1>创建餐厅通知</h1>
+    <form action="/qianxun/1/manager/create/canteen/notice" method="post" >
         <table>
             <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_building">Building:</label> <input id="id_building" name="building" type="number" /></li>
-        </table>
-        <input type="submit" value="Submit">
-    </form>
-
-    <h1>删除用户自定义地址</h1>
-    <form action="/qianxun/1/customer/addr/custom/delete" method="post",>
-        <table>
-            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_address">Address:</label> <input id="id_address" name="address" type="number" /></li>
+            <li><label for="title">title:</label> <input id="title" maxlength="64" name="title" type="text" /></li>
+             <li><label for="content">content:</label> <input id="content" maxlength="64" name="content" type="text" /></li>
+             <li><label for="is_valid">status:</label> <input id="is_valid" maxlength="64" name="is_valid" type="text" /></li>
         </table>
         <input type="submit" value="Submit">
     </form>
 
 
-
-
-    <h1>意见反馈</h1>
-    <form action="/qianxun/1/customer/account/feedback" method="post">
-        <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-        <li><label for="id_type">Type:</label> <select id="id_type" name="type">
-            <option value="1">意见反馈</option>
-            <option value="2">奔溃报告</option>
-        </select></li>
-        <li><label for="id_subject">Subject:</label> <input id="id_subject" maxlength="64" name="subject" type="text" /></li>
-        <li><label for="id_message">Message:</label>
-            <textarea cols="40" id="id_message" maxlength="1024" name="message" rows="10"></textarea>
-        </li>
+    <h1>修改餐厅通知</h1>
+    <form action="/qianxun/1/manager/modify/canteen/notice" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="notice_id">notice_id:</label> <input id="notice_id" maxlength="64" name="notice_id" type="text" /></li>
+            <li><label for="title">title:</label> <input id="title" maxlength="64" name="title" type="text" /></li>
+             <li><label for="content">content:</label> <input id="content" maxlength="64" name="content" type="text" /></li>
+             <li><label for="is_valid">status:</label> <input id="is_valid" maxlength="64" name="is_valid" type="text" /></li>
+        </table>
         <input type="submit" value="Submit">
     </form>
+
+    <h1>删除餐厅通知</h1>
+    <form action="/qianxun/1/manager/delete/canteen/notice" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="notice_id">notice_id:</label> <input id="notice_id" maxlength="64" name="notice_id" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+
+    <hr></hr>
+    <h1>创建学校通知</h1>
+    <form action="/qianxun/1/manager/create/school/notice" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="title">title:</label> <input id="title" maxlength="64" name="title" type="text" /></li>
+             <li><label for="content">content:</label> <input id="content" maxlength="64" name="content" type="text" /></li>
+             <li><label for="is_valid">status:</label> <input id="is_valid" maxlength="64" name="is_valid" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+
+    <h1>修改学校通知</h1>
+    <form action="/qianxun/1/manager/modify/school/notice" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="notice_id">notice_id:</label> <input id="notice_id" maxlength="64" name="notice_id" type="text" /></li>
+            <li><label for="title">title:</label> <input id="title" maxlength="64" name="title" type="text" /></li>
+             <li><label for="content">content:</label> <input id="content" maxlength="64" name="content" type="text" /></li>
+             <li><label for="is_valid">status:</label> <input id="is_valid" maxlength="64" name="is_valid" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h1>删除学校通知</h1>
+    <form action="/qianxun/1/manager/delete/school/notice" method="post" >
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="notice_id">notice_id:</label> <input id="notice_id" maxlength="64" name="notice_id" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
 {% endblock %}
