@@ -19,4 +19,7 @@ urlpatterns = patterns('',
                        url(r'^create/canteen/notice$', cm_create_notice),
                        url(r'^modify/canteen/notice$', cm_modify_own_notice),
                        url(r'^delete/canteen/notice$', cm_delete_notice),
+                       url(r'^create/school/notice$', sm_create_notice),
+                       url(r'^modify/school/notice$', sm_modify_own_notice),
+                       url(r'^delete/school/notice$', sm_delete_notice),
                        )

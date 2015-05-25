@@ -7,7 +7,7 @@ from QianXun.notice.db import notice
 from QianXun.account.db import window
 from QianXun.notice.db import notice
 from QianXun.list.db import list
-from QianXun.notice.forms import ChangeNoticeForm, CreateNoticeForm
+from QianXun.notice.forms import ChangeCNoticeForm, CreateCNoticeForm, ChangeSNoticeForm, CreateSNoticeForm
 from db import manager
 from utils.Serializer import json_response, json_response_from_object
 from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required, exception_handled
@@ -138,7 +138,7 @@ def not_permit_window(request):
 @canteen_manager_token_required
 @post_required
 def cm_modify_own_notice(request):
-    change_notice_form = ChangeNoticeForm(request.POST)
+    change_notice_form = ChangeCNoticeForm(request.POST)
     if change_notice_form.is_valid():
         change_notice_dict= change_notice_form.cleaned_data
         canteen_manager = request.user_meta.get("manager_model")
@@ -159,7 +159,7 @@ def cm_modify_own_notice(request):
 @post_required
 def cm_create_notice(request):
     canteen_manager = request.user_meta.get("manager_model")
-    create_notice_form = CreateNoticeForm(request.POST)
+    create_notice_form = CreateCNoticeForm(request.POST)
     if create_notice_form.is_valid():
         create_notice_dict= create_notice_form.cleaned_data
         notice_bean = notice.cm_create_notice(canteen_manager, create_notice_dict)
@@ -178,5 +178,54 @@ def cm_delete_notice(request):
     notice_model = notice.get_canteen_notice_by_id(notice_id)
     if canteen_manager != notice_model.manager:
         return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
-    notice.cm_delte_notice(notice_model)
+    notice.delte_notice(notice_model)
+    return json_response(OK, CODE_MESSAGE.get(OK))
+
+
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def sm_modify_own_notice(request):
+    change_notice_form = ChangeSNoticeForm(request.POST)
+    if change_notice_form.is_valid():
+        change_notice_dict= change_notice_form.cleaned_data
+        school_manager = request.user_meta.get("manager_model")
+        notice_id = request.POST.get("notice_id")
+        already_notice = notice.get_school_notice_by_id(notice_id)
+        # 只能修改自己发布的通知
+        if school_manager != already_notice.manager:
+            return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
+
+        notice_bean = notice.sm_modify_notice(already_notice, change_notice_dict)
+        return json_response_from_object(OK, notice_bean)
+    else:
+        return json_response(PARAM_REQUIRED, change_notice_form.errors)
+
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def sm_create_notice(request):
+    school_manager = request.user_meta.get("manager_model")
+    create_notice_form = CreateSNoticeForm(request.POST)
+    if create_notice_form.is_valid():
+        create_notice_dict= create_notice_form.cleaned_data
+        notice_bean = notice.sm_create_notice(school_manager, create_notice_dict)
+        return json_response_from_object(OK, notice_bean)
+    else:
+        return json_response(PARAM_REQUIRED, create_notice_form.errors)
+
+
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def sm_delete_notice(request):
+    school_manager = request.user_meta.get("manager_model")
+    notice_id = request.POST.get("notice_id")
+    notice_model = notice.get_school_notice_by_id(notice_id)
+    if school_manager != notice_model.manager:
+        return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
+    notice.delte_notice(notice_model)
     return json_response(OK, CODE_MESSAGE.get(OK))

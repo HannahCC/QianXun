@@ -41,6 +41,12 @@ def get_canteen_notice_by_id(canteen_notice_id):
     canteen_notice = CanteenNotice.objects.get(id__exact=canteen_notice_id)
     return canteen_notice
 
+
+def get_school_notice_by_id(canteen_notice_id):
+    canteen_notice = SchoolNotice.objects.get(id__exact=canteen_notice_id)
+    return canteen_notice
+
+
 def cm_modify_notice(already_notice,modify_form_dict):
     # canteen_notice_model = CanteenNotice.objects.get(id__exact=modify_form_dict["id"])
     already_notice.title = modify_form_dict["title"]
@@ -62,6 +68,28 @@ def cm_create_notice(manager, create_form_dict):
     return CanteenNoticeDetailBean(notice_model)
 
 
-def cm_delte_notice(notice_model):
+def delte_notice(notice_model):
     notice_model.delete()
     return True
+
+
+
+def sm_modify_notice(already_notice,modify_form_dict):
+    # canteen_notice_model = CanteenNotice.objects.get(id__exact=modify_form_dict["id"])
+    already_notice.title = modify_form_dict["title"]
+    already_notice.content = modify_form_dict["content"]
+    already_notice.is_valid = modify_form_dict["is_valid"]
+    already_notice.save()
+    canteen_notice_bean = SchoolNoticeDetailBean(already_notice)
+    return canteen_notice_bean
+
+
+def sm_create_notice(manager, create_form_dict):
+    notice_model = SchoolNotice()
+    notice_model.manager = manager
+    notice_model.school = manager.school
+    notice_model.title = create_form_dict["title"]
+    notice_model.content = create_form_dict["content"]
+    notice_model.is_valid = create_form_dict["is_valid"]
+    notice_model.save()
+    return SchoolNoticeDetailBean(notice_model)
