@@ -59,7 +59,7 @@ class Customer(models.Model):
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)
     update_time = models.DateTimeField(u'更新时间', auto_now=True)
     is_valid = models.SmallIntegerField(u'是否有效', choices=IS_VALID, default=IS_VALID[1][0])
-    building = models.ManyToManyField(Building, verbose_name=u'地址')
+    building = models.ManyToManyField(Building, verbose_name=u'地址', blank=True, null=True)
 
     class Meta:
         verbose_name = u'顾客'

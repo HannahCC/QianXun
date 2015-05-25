@@ -257,11 +257,5 @@ def customer_custom_addr_delete(request):
         return json_response(PARAM_REQUIRED, address_form.errors)
 
 
-"""
-    promotion_form = PromotionForm()
-    if request.method == 'GET':
-        return render_to_response('test/testCustomer.html', {'form': promotion_form})
-"""
-
 
 
