@@ -45,7 +45,7 @@ def update_profile(customer_model, customer_profile_dict):
 
 
 def update_password(customer_model, customer_password_dict):
-    customer_model.password = customer_password_dict['password']
+    customer_model.password = customer_password_dict['new_password']
     customer_model.save()
     return customer_model
 

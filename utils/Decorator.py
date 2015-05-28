@@ -25,13 +25,13 @@ def exception_handled(func):
             exc_type, value, tb = sys.exc_info()
             formatted_tb = traceback.format_tb(tb)
             exception_message = 'An ObjectDoesNotExist error occurred %s: %s traceback=%s' % (exc_type, value, formatted_tb)
-            _LOGGER.error(exception_message)
+            _LOGGER.warning(exception_message)
             return json_response(DB_NOTEXIST_ERROR, CODE_MESSAGE.get(DB_NOTEXIST_ERROR))
         except IntegrityError:
             exc_type, value, tb = sys.exc_info()
             formatted_tb = traceback.format_tb(tb)
             exception_message = 'An IntegrityError error occurred %s: %s traceback=%s' % (exc_type, value, formatted_tb)
-            _LOGGER.error(exception_message)
+            _LOGGER.warning(exception_message)
             return json_response(DB_INTEGRITY_ERROR, CODE_MESSAGE.get(DB_INTEGRITY_ERROR))
         except Exception:
             exc_type, value, tb = sys.exc_info()
@@ -45,7 +45,7 @@ def exception_handled(func):
 def post_required(func):
     def _view2(request, *args, **kwargs):
         if request.method != 'POST':
-            _LOGGER.error('Post menthod required')
+            _LOGGER.info('Post menthod required')
             return json_response(METHOD_ERROR, CODE_MESSAGE.get(METHOD_ERROR))
         return func(request, *args, **kwargs)
     return _view2
@@ -55,14 +55,14 @@ def token_required(func):
     def _view(request, *args, **kwargs):
         post = request.POST
         if not post or not post.get('token'):
-            _LOGGER.error('Token Required for User')
+            _LOGGER.info('Token Required for User')
             return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
         token = post.get('token')
         if token == TOKEN:
             _LOGGER.info('Token is equal to Default TOKEN.')
             return func(request, *args, **kwargs)
         else:
-            _LOGGER.error('Token is not equal to Default TOKEN.')
+            _LOGGER.info('Token is not equal to Default TOKEN.')
             return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
     return _view
 
@@ -71,7 +71,7 @@ def customer_token_required(func):
     def _view(request, *args, **kwargs):
         post = request.POST
         if not post or not post.get('token'):
-            _LOGGER.error('Token Required for Customer User')
+            _LOGGER.info('Token Required for Customer User')
             return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
         token = post.get('token')
         try:
@@ -81,7 +81,7 @@ def customer_token_required(func):
             user_meta.update({'customer_model': my_customer})
             request.user_meta = user_meta
         except ObjectDoesNotExist:
-            _LOGGER.error('Token not in db for Customer User.')
+            _LOGGER.info('Token not in db for Customer User.')
             return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
         return func(request, *args, **kwargs)
     return _view
@@ -91,7 +91,7 @@ def window_token_required(func):
     def _view3(request, *args, **kwargs):
         post = request.POST
         if not post or not post.get('token'):
-            _LOGGER.error('Token Required for Window User.')
+            _LOGGER.info('Token Required for Window User.')
             return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
         token = post.get('token')
         try:
@@ -101,7 +101,7 @@ def window_token_required(func):
             user_meta.update({'window_model': my_window})
             request.user_meta = user_meta
         except ObjectDoesNotExist:
-            _LOGGER.error('Token not in db for Window User.')
+            _LOGGER.info('Token not in db for Window User.')
             return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
         return func(request, *args, **kwargs)
     return _view3
@@ -111,7 +111,7 @@ def school_manager_token_required(func):
     def _view3(request, *args, **kwargs):
         post = request.POST
         if not post or not post.get('token'):
-            _LOGGER.error('Token Required for School Manager.')
+            _LOGGER.info('Token Required for School Manager.')
             return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
         token = post.get('token')
         try:
@@ -121,7 +121,7 @@ def school_manager_token_required(func):
             user_meta.update({'manager_model': my_manager})
             request.user_meta = user_meta
         except ObjectDoesNotExist:
-            _LOGGER.error('Token not in db for School Manager.')
+            _LOGGER.info('Token not in db for School Manager.')
             return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
         return func(request, *args, **kwargs)
     return _view3
@@ -131,7 +131,7 @@ def canteen_manager_token_required(func):
     def _view3(request, *args, **kwargs):
         post = request.POST
         if not post or not post.get('token'):
-            _LOGGER.error('Token Required for Canteen Manager.')
+            _LOGGER.info('Token Required for Canteen Manager.')
             return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
         token = post.get('token')
         try:
@@ -141,7 +141,7 @@ def canteen_manager_token_required(func):
             user_meta.update({'manager_model': my_manager})
             request.user_meta = user_meta
         except ObjectDoesNotExist:
-            _LOGGER.error('Token not in db for Canteen Manager.')
+            _LOGGER.info('Token not in db for Canteen Manager.')
             return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
         return func(request, *args, **kwargs)
     return _view3

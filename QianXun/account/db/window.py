@@ -60,18 +60,6 @@ def get_window_bean_list_byid(window_id_list):
     return window_bean_list
 
 
-def update_username(window_id, user_name):
-    impact = Window.objects.filter(id__exact=window_id, is_valid=1).update(
-        user_name=user_name, update_time=datetime.now())
-    return impact
-
-
-def update_password(window_id, password):
-    impact = Window.objects.filter(id__exact=window_id, is_valid=1).update(
-        password=password, update_time=datetime.now())
-    return impact
-
-
 def update_promotion_number(window_model, promotion_number_extra):
     window_model.promotion_number += promotion_number_extra
     window_model.save()
@@ -123,7 +111,7 @@ def update_token(window_model, window_login_dict):
 
 
 def update_password(window_model, window_password_dict):
-    window_model.password = window_password_dict['password']
+    window_model.password = window_password_dict['new_password']
     window_model.save()
     return window_model
 

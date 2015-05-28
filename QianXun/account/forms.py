@@ -100,13 +100,13 @@ class PasswordUpdateForm(forms.Form):
 class PasswordResetForm(forms.Form):
     token = forms.CharField(max_length=64)
     verify_code = forms.CharField(min_length=6, max_length=6)
-    password = forms.CharField(min_length=6, max_length=64)
-    password2 = forms.CharField(max_length=64)
+    new_password = forms.CharField(min_length=6, max_length=64)
+    new_password2 = forms.CharField(max_length=64)
 
-    def clean_password2(self):
+    def clean_new_password2(self):
         cleaned_data = super(PasswordResetForm, self).clean()
-        password = cleaned_data.get('password', '')
-        password2 = cleaned_data.get('password2', '')
+        password = cleaned_data.get('new_password', '')
+        password2 = cleaned_data.get('new_password2', '')
         if password != password2:
             raise forms.ValidationError(u'两次密码输入不一致')
         return password2
