@@ -89,7 +89,7 @@ class PasswordUpdateForm(forms.Form):
     new_password2 = forms.CharField(min_length=6, max_length=64)
 
     def clean_new_password2(self):
-        cleaned_data = super(CustomerForm, self).clean()
+        cleaned_data = super(PasswordUpdateForm, self).clean()
         password = cleaned_data.get('new_password', '')
         password2 = cleaned_data.get('new_password2', '')
         if password != password2:
@@ -104,7 +104,7 @@ class PasswordResetForm(forms.Form):
     password2 = forms.CharField(max_length=64)
 
     def clean_password2(self):
-        cleaned_data = super(CustomerForm, self).clean()
+        cleaned_data = super(PasswordResetForm, self).clean()
         password = cleaned_data.get('password', '')
         password2 = cleaned_data.get('password2', '')
         if password != password2:
