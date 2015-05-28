@@ -15,6 +15,7 @@ class CanteenNoticeDetailBean(NoticeBean):
     def __init__(self, canteen_notice_model):
         NoticeBean.__init__(self, canteen_notice_model)
         self.manager = canteen_notice_model.manager.name
+        self.title = canteen_notice_model.title
         self.canteen = canteen_notice_model.canteen.canteen_name
         self.content = canteen_notice_model.content
         self.readTimes = canteen_notice_model.read_times
@@ -22,6 +23,7 @@ class CanteenNoticeDetailBean(NoticeBean):
 
 class SchoolNoticeDetailBean(NoticeBean):
     def __init__(self, school_notice_model):
+        self.title = school_notice_model.title
         self.manager = school_notice_model.manager.name
         self.school = school_notice_model.school.school_name
         self.content = school_notice_model.content
