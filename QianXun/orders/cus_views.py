@@ -4,12 +4,13 @@ from utils.Decorator import customer_token_required, post_required, exception_ha
 from utils.Serializer import json_response_from_object, json_response, json_back
 from utils.MakeSerialNumber import get_serial_number
 from utils.CostCalculator import get_vip_discount, get_promotions_discount, get_deliver_cost
+from utils.Push import JPush
 from conf.resp_code import *
 from conf.enum_value import ORDER_STATUS
-from conf.default_value import ORDER_DISH_MAX, PROMOTION_MAX
+from conf.default_value import ORDER_DISH_MAX, PROMOTION_MAX, NEW_ORDER_MSG
 from forms import OrderForm, OrderConfirmForm, OrderDetailDisplayForm, PaginationForm, CustomerOrderUpdateForm, CommentForm
 from db import dish, promotion, order, orderdish
-from QianXun.account.db import customer
+from QianXun.account.db import customer, window
 
 
 def index(request):
@@ -110,6 +111,11 @@ def customer_order_update(request):
         customer_id = request.user_meta['customer_model'].id
         impact = order.update_status_bycus(customer_id, order_update_dict)
         if impact == 1:
+            if order_update_dict['new_order_status'] == ORDER_STATUS[1][0]:
+                jpush = JPush()
+                order_model = order.get_order_byid_bycus(customer_id, order_update_dict)
+                registration_id = order_model.window.registration_id
+                jpush.push_by_id(NEW_ORDER_MSG, registration_id)
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:
             return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))

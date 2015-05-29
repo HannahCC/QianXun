@@ -23,7 +23,9 @@ class CustomerBean:
         self.userType = customer_model.user_type
         self.userName = customer_model.user_name
         self.nickName = customer_model.nick_name
-        self.schoolId = customer_model.school_id
+        school_model = customer_model.school
+        self.schoolId = school_model.id
+        self.schoolName = school_model.school_name
 
 
 class WindowBean:

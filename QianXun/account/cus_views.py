@@ -5,7 +5,7 @@ from smtplib import SMTPAuthenticationError
 from QianXun.settings import ADMIN_EMAIL
 from conf.resp_code import *
 from utils.Serializer import json_response, json_response_from_object
-from utils.Decorator import customer_token_required, exception_handled, post_required
+from utils.Decorator import customer_token_required, exception_handled, post_required, verify_code_required
 from utils.SendEmail import email
 from forms import CustomerForm, CustomerProfileForm, LoginForm, PasswordResetForm, PasswordUpdateForm, UsernameForm, \
     FeedbackForm, PaginationForm, BuildingForm, BuildingUpdateForm, AddressForm, AddressUpdateForm, AddressDeleteForm
@@ -18,11 +18,14 @@ def index(request):
 
 
 @exception_handled
+@verify_code_required
 @post_required
 def customer_register(request):
     customer_form = CustomerForm(request.POST)
     if customer_form.is_valid():
         customer.create(customer_form)
+        verify_code_model = request.verify_code_meta['verify_code_model']
+        verify_code_model.delete()
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, customer_form.errors)
@@ -95,6 +98,7 @@ def customer_password_update(request):
 
 @exception_handled
 @customer_token_required
+@verify_code_required
 @post_required
 def customer_password_reset(request):
     customer_password_form = PasswordResetForm(request.POST)
@@ -102,6 +106,8 @@ def customer_password_reset(request):
         customer_password_dict = customer_password_form.cleaned_data
         customer_model = request.user_meta['customer_model']
         customer.update_password(customer_model, customer_password_dict)
+        verify_code_model = request.verify_code_meta['verify_code_model']
+        verify_code_model.delete()
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, customer_password_form.errors)
@@ -109,6 +115,7 @@ def customer_password_reset(request):
 
 @exception_handled
 @customer_token_required
+@verify_code_required
 @post_required
 def customer_username_reset(request):
     customer_username_form = UsernameForm(request.POST)
@@ -116,6 +123,8 @@ def customer_username_reset(request):
         customer_username_dict = customer_username_form.cleaned_data
         customer_model = request.user_meta['customer_model']
         customer.update_username(customer_model, customer_username_dict)
+        verify_code_model = request.verify_code_meta['verify_code_model']
+        verify_code_model.delete()
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, customer_username_form.errors)

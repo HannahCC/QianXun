@@ -2,16 +2,13 @@ __author__ = 'Hannah'
 from QianXun.account.models import VerifyCode
 
 
-def get_by_username(user_name):
-    assert user_name
-    verify_code = VerifyCode.objects.filter(user_name=user_name)
-    return verify_code
+def get_by_username_and_code(user_name, verify_code):
+    verify_code_model = VerifyCode.objects.get(user_name__exact=user_name, verify_code__exact=verify_code)
+    return verify_code_model
 
 
 def create(verify_code):
-    assert verify_code
     verify_code.save()
-    print(verify_code.code)
     return verify_code
 
 

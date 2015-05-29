@@ -15,6 +15,7 @@ class Window(models.Model):
     user_name = models.CharField(u'联系方式', max_length=11, unique=True)
     token = models.CharField(u'用户认证口令', max_length=64, blank=True)
     client_id = models.CharField(u'用户设备', max_length=64)
+    registration_id = models.CharField(u'PushID', max_length=64)
     name = models.CharField(u'法人代表', max_length=64)
     password = models.CharField(u'用户密码', max_length=64, default=WINDOW_PASSWORD)
     version = models.CharField(u'应用版本', max_length=64)
@@ -49,6 +50,7 @@ class Customer(models.Model):
     user_name = models.CharField(u'联系方式', max_length=11, unique=True)
     token = models.CharField(u'用户认证口令', max_length=64, blank=True)
     client_id = models.CharField(u'用户设备', max_length=64)
+    registration_id = models.CharField(u'PushID', max_length=64)
     password = models.CharField(u'用户密码', max_length=64, default=CUSTOMER_PASSWORD)
     user_type = models.SmallIntegerField(u'用户类别', choices=USER_TYPE)
     nick_name = models.CharField(u'用户昵称', max_length=64, blank=True, unique=True)
@@ -90,5 +92,5 @@ class VerifyCode(models.Model):
     验证码
     """
     user_name = models.CharField(u'手机号', max_length=11, unique=True)
-    code = models.CharField(u'验证码', max_length=6, unique=True)
+    verify_code = models.CharField(u'验证码', max_length=6, unique=True)
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)

@@ -103,6 +103,7 @@ def update_profile(window_model, window_profile_dict):
 
 
 def update_token(window_model, window_login_dict):
+    window_model.registration_id = window_login_dict['registration_id']
     window_model.client_id = window_login_dict['client_id']
     window_model.version = window_login_dict['version']
     window_model.token = get_serial_number(window_model.id)

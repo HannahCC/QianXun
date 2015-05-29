@@ -19,7 +19,7 @@ class CustomerAdmin(admin.ModelAdmin):
     inlines = [AddressInline, OrdersInline]
     fieldsets = (
         (None, {
-            'fields': ('user_name', 'nick_name', 'user_type', 'school', 'building',
+            'fields': ('user_name', 'nick_name','user_type', 'school', 'building',
                        'is_VIP', 'VIP_balance', 'VIP_deadline', 'is_valid', )
         }),
     )

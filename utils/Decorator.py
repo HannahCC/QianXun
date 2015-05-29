@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from utils.Serializer import json_response
 from conf.resp_code import *
 from conf.default_value import TOKEN
-from QianXun.account.db import window, customer
+from QianXun.account.db import window, customer, verifycode
 from QianXun.manager.db import manager
 
 
@@ -45,10 +45,30 @@ def exception_handled(func):
 def post_required(func):
     def _view2(request, *args, **kwargs):
         if request.method != 'POST':
-            _LOGGER.info('Post menthod required')
+            _LOGGER.warning('Post menthod required')
             return json_response(METHOD_ERROR, CODE_MESSAGE.get(METHOD_ERROR))
         return func(request, *args, **kwargs)
     return _view2
+
+
+def verify_code_required(func):
+    def _view(request, *args, **kwargs):
+        post = request.POST
+        if not post or not post.get('verify_code') or not post.get('user_name'):
+            _LOGGER.info('Verify_code and User_name Required for User')
+            return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
+        user_name = post.get('user_name')
+        verify_code = post.get('verify_code')
+        try:
+            verify_code_model = verifycode.get_by_username_and_code(user_name, verify_code)
+            _LOGGER.info('Verify_code hit in db for %s ' % user_name)
+            verify_code_meta = {'verify_code_model': verify_code_model}
+            request.verify_code_meta = verify_code_meta
+        except ObjectDoesNotExist:
+            _LOGGER.info('Verify_code not in db for %s ' % user_name)
+            return json_response(CODE_INVALID, CODE_MESSAGE.get(CODE_INVALID))
+        return func(request, *args, **kwargs)
+    return _view
 
 
 def token_required(func):

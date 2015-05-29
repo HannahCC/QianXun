@@ -2,6 +2,15 @@
 {% block title %}Send Email{% endblock %}
 
 {% block content %}
+    <h1>验证码确认</h1>
+    <form action="/qianxun/1/common/verifycode/validation" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_user_name">联系方式:</label> <input id="id_user_name" maxlength="11" name="user_name" type="text" /></li>
+            <li><label for="id_verify_code">Verify code:</label> <input id="id_verify_code" maxlength="6" name="verify_code" type="text" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
     <h1>显示学校列表</h1>
     <form action="/qianxun/1/common/list/school/display" method="post">
         <table>

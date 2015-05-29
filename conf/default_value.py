@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 __author__ = 'Hannah'
 # pwd
 WINDOW_PASSWORD = '000000'
@@ -19,3 +20,14 @@ COUNT = 10
 # default
 GRADE = 0.0
 TOKEN = 'default'
+
+# jpush
+JPUSH_APP_KEY = u'7650fcb4ca095999e0c42089'
+MASTER_SECRET = u'f87a37b858722a7095808096'
+NEW_ORDER_MSG = u'主人，您有新订单啦~'
+
+# mob_msg
+MOB_URL = 'https://api.sms.mob.com/sms/verify'
+MOB_APP_KEY = u'7ad9715ba43a'
+ZONE = '86'
+

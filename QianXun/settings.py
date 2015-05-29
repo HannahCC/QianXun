@@ -166,6 +166,14 @@ LOGGING = {
             'backupCount': 5,
             'formatter': 'standard',
         },
+        'warning_handler': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'warning.log'),
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
         'scripts_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -174,20 +182,38 @@ LOGGING = {
             'backupCount': 5,
             'formatter': 'standard',
         },
+        'third_party_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'third_party.log'),
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
     },
     'loggers': {
         'scripts': {
-            'handlers': ['scripts_handler', 'console'],
+            'handlers': ['scripts_handler', 'console', 'mail_admins'],
             'level': 'INFO',
             'propagate': False
         },
         'utils.Decorator': {
-            'handlers': ['default', 'console', 'mail_admins'],
+            'handlers': ['default', 'warning_handler', 'console', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'utils.Push': {
+            'handlers': ['third_party_handler', 'console', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'utils.SendMsg': {
+            'handlers': ['third_party_handler', 'console', 'mail_admins'],
             'level': 'INFO',
             'propagate': False
         },
         'django': {
-            'handlers': ['default'],
+            'handlers': ['default', 'mail_admins'],
             'level': 'DEBUG',
             'propagate': False
         },

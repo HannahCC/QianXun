@@ -43,7 +43,7 @@ CODE_MESSAGE = {
     DB_INTEGRITY_ERROR: {"error_info": u'插入重复值或外键不存在'},
     DB_NOTEXIST_ERROR: {"error_info": u'数据库中不存在的该值'},
     METHOD_ERROR: {"error_info": u'请求方法错误'},
-    CODE_INVALID: {"error_info": u'验证码失效'},  # ugettext("Verify code invalid."),
+    CODE_INVALID: {"error_info": u'验证码错误或已失效'},  # ugettext("Verify code invalid."),
 
     USER_PWD_ERROR: {"error_info": u'用户密码错误'},
     USER_CANCEL_CONNECT: {"error_info": u'用户断开了连接'},  # ugettext("User cancel the connection."),

@@ -30,6 +30,7 @@ def get_by_username(customer_login_dict):
 # login
 def update_token(customer_model, customer_login_dict):
     customer_model.client_id = customer_login_dict['client_id']
+    customer_model.registration_id = customer_login_dict['registration_id']
     customer_model.version = customer_login_dict['version']
     customer_model.token = get_serial_number(customer_model.id)
     customer_model.save()

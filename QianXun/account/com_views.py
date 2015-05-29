@@ -2,9 +2,11 @@ from django.shortcuts import render_to_response
 
 from utils.Decorator import token_required, post_required, exception_handled
 from utils.Serializer import json_response_from_object, json_response
+from utils.SendMsg import MobSMS
 from conf.resp_code import *
-from forms import PaginationForm
-from QianXun.account.db import window
+from conf.default_value import ZONE
+from forms import PaginationForm, VerifycodeValidationForm
+from QianXun.account.db import window, verifycode
 from QianXun.orders.db import promotion
 
 
@@ -58,9 +60,23 @@ def common_window_display_byprotype(request):
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
 
-"""
-    order_form = PromotionForm()
-    if request.method == 'GET':
-        return render_to_response('test/testOrder.html', {'form': order_form})
-"""
 
+@exception_handled
+@token_required
+@post_required
+def common_verifycode_validation(request):
+    verifycode_validation_form = VerifycodeValidationForm(request.POST)
+    if verifycode_validation_form.is_valid():
+        sms = MobSMS()
+        verifycode_validation_dict = verifycode_validation_form.cleaned_data
+        zone = ZONE
+        phone = verifycode_validation_dict['user_name']
+        code = verifycode_validation_dict['verify_code']
+        result = sms.verify_sms_code(zone, phone, code)
+        if result.get('status', 500) == 200:
+            verifycode.create(verifycode_validation_form)
+            return json_response(OK, CODE_MESSAGE.get(OK))
+        else:
+            return json_response(CODE_INVALID, result)
+    else:
+        return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
