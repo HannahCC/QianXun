@@ -128,7 +128,7 @@ class DishAdmin(admin.ModelAdmin):
     inlines = [CommentInline, ]
     fieldsets = (
         (None, {
-            'fields': ('window', 'dish_name', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
+            'fields': ('window', 'dish_name', 'img_addr', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
         }),
     )
     list_display = ('dish_name', 'window',  'sales', 'is_valid', 'update_time')
@@ -136,7 +136,7 @@ class DishAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time',)
     search_fields = ('dish_name',)
     ordering = ('window', 'sales', 'update_time')
-    # readonly_fields = ('window', 'dish_name', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
+    # readonly_fields = ('window', 'dish_name','img_addr', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
 
 
 class OrdersAdmin(admin.ModelAdmin):

@@ -22,6 +22,16 @@ class PromotionType(models.Model):
     def __unicode__(self):
         return self.pro_type_name
 
+    def save(self, *args, **kwargs):
+        # delete old file when replacing by updating the file
+        try:
+            this = PromotionType.objects.get(id=self.id)
+            if this.img_addr != self.img_addr:
+                this.img_addr.delete(save=False)
+        except:
+            pass  # when new photo then we do nothing, normal case
+        super(PromotionType, self).save(*args, **kwargs)
+
 
 class School(models.Model):
     """
@@ -88,7 +98,6 @@ class Canteen(models.Model):
     """
     school = models.ForeignKey(School, verbose_name=u'学校')
     canteen_name = models.CharField(u'食堂', max_length=64)
-    img_addr = models.ImageField(u'食堂商标', blank=True, null=True, upload_to=r'canteens\%Y\%m\%d', max_length=100)
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)
     update_time = models.DateTimeField(u'更新时间', auto_now=True)
     is_valid = models.SmallIntegerField(u'是否有效', choices=IS_VALID, default=1)

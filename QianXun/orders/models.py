@@ -85,6 +85,16 @@ class Dish(models.Model):
     def __unicode__(self):
         return self.dish_name
 
+    def save(self, *args, **kwargs):
+        # delete old file when replacing by updating the file
+        try:
+            this = Dish.objects.get(id=self.id)
+            if this.img_addr != self.img_addr:
+                this.img_addr.delete(save=False)
+        except:
+            pass  # when new photo then we do nothing, normal case
+        super(Dish, self).save(*args, **kwargs)
+
 
 class Orders(models.Model):
     """

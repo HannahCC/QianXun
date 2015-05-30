@@ -1,6 +1,7 @@
 # -*- encoding:utf-8 -*-
 __author__ = 'Hannah'
 import re
+from PIL import Image
 from conf.enum_value import WINDOW_STATUS, ORDER_STATUS
 
 from django.core.exceptions import ValidationError
@@ -44,6 +45,15 @@ def validate_window_order_status(value):
         raise ValidationError(u'请输入合法的订单状态<权限错误>')
 
 
+def validate_image(image):
+    if image:
+        if image.size > 500*1024:
+            raise ValidationError(u"请上传小于500k的图片")
+        return image
+    else:
+        raise ValidationError(u'读取图片失败')
+
+
 def validate_order_status(old_order_status, new_order_status):
     if old_order_status % 10 != 0:  # 不能改变处于完成态的状态（末尾数为0表示处于完成态）
         # 获取两个状态的首位数字，因为状态只能依次从   x(y1)状态  -->  (x+1)(y2)状态
@@ -70,7 +80,5 @@ def validate_pro_type(pro_type, rules):
         else:
             return False
     return True
-
-
 
 

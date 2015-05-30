@@ -41,6 +41,16 @@ class Window(models.Model):
     def __unicode__(self):
         return "-".join([self.canteen.school.school_name, self.canteen.canteen_name, self.window_name])
 
+    def save(self, *args, **kwargs):
+        # delete old file when replacing by updating the file
+        try:
+            this = Window.objects.get(id=self.id)
+            if this.img_addr != self.img_addr:
+                this.img_addr.delete(save=False)
+        except:
+            pass  # when new photo then we do nothing, normal case
+        super(Window, self).save(*args, **kwargs)
+
 
 class Customer(models.Model):
     """

@@ -48,7 +48,7 @@ class DistrictAdmin(admin.ModelAdmin):
 class CanteenAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('canteen_name', 'school', 'is_valid', 'img_addr',)
+            'fields': ('canteen_name', 'school', 'is_valid', )
         }),
     )
     list_display = ('canteen_name', 'is_valid', 'update_time')

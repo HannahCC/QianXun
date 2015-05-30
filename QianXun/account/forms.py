@@ -3,7 +3,7 @@ __author__ = 'Hannah'
 
 from django import forms
 from QianXun.account.models import Window, Customer
-from utils.Validator import validate_phone, validate_password, validate_window_status
+from utils.Validator import validate_phone, validate_password, validate_window_status, validate_image
 from conf.enum_value import FEEDBACK_TYPE
 
 
@@ -36,6 +36,7 @@ class WindowProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(WindowProfileForm, self).__init__(*args, **kwargs)
         self.fields['window_status'].validators.append(validate_window_status)
+        self.fields['img_addr'].validators.append(validate_image)
 
     class Meta:
         model = Window

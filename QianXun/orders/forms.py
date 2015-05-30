@@ -2,10 +2,10 @@
 __author__ = 'Hannah'
 
 from django import forms
-
 from conf.enum_value import ORDER_STATUS, ORDER_BY
-from QianXun.orders.models import Orders, Promotions, DeliverTime, Dish, OrdersDishes
-from utils.Validator import validate_order_status, validate_customer_order_status, validate_window_order_status, validate_pro_type
+from QianXun.orders.models import Orders, Promotions, DeliverTime, Dish
+from utils.Validator import validate_order_status, validate_customer_order_status, validate_window_order_status, \
+    validate_pro_type, validate_image
 
 
 class OrderForm(forms.ModelForm):
@@ -121,6 +121,7 @@ class DishForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(DishForm, self).__init__(*args, **kwargs)
+        self.fields['img_addr'].validators.append(validate_image)
 
     class Meta:
         model = Dish
