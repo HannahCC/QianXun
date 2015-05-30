@@ -1,4 +1,7 @@
+import os
+from QianXun import settings
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 from django.contrib import admin
 urlpatterns = patterns('',
                        url(r'^qianxun/admin/', include(admin.site.urls)),
@@ -17,3 +20,5 @@ urlpatterns = patterns('',
 
                        url(r'^qianxun/1/manager/', include('QianXun.manager.urls')),
                        )
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

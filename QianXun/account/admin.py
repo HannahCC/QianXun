@@ -35,7 +35,7 @@ class WindowAdmin(admin.ModelAdmin):
     inlines = [PromotionsInline, DeliverTimeInline, DishInline]
     fieldsets = (
         (None, {
-            'fields': ('school', 'canteen', 'window_name', 'window_status', 'grade', 'sales', 'name', 'user_name', 'is_valid', )
+            'fields': ('school', 'canteen', 'img_addr', 'window_name', 'window_status', 'grade', 'sales', 'name', 'user_name', 'is_valid', )
         }),
     )
     list_display = ('window_name', 'name', 'user_name', 'window_status', 'canteen', 'sales', 'is_valid', 'update_time')

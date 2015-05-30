@@ -128,7 +128,7 @@ MEDIA_URL = r'/qianxun/img/'
 # version
 SERVICE_VERSION = 1
 # LOG
-LOGGING_STATIC = os.path.join(BASE_DIR,  'static/')
+LOGGING_STATIC = os.path.join(BASE_DIR,  'logs/')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -148,7 +148,7 @@ LOGGING = {
         'default': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'all.log'),
+            'filename': os.path.join(LOGGING_STATIC+'/', 'all.log'),
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -161,7 +161,7 @@ LOGGING = {
         'request_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'request.log'),
+            'filename': os.path.join(LOGGING_STATIC+'/', 'request.log'),
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -169,7 +169,7 @@ LOGGING = {
         'warning_handler': {
             'level': 'WARNING',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'warning.log'),
+            'filename': os.path.join(LOGGING_STATIC+'/', 'warning.log'),
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -177,7 +177,7 @@ LOGGING = {
         'scripts_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'script.log'),
+            'filename': os.path.join(LOGGING_STATIC+'/', 'script.log'),
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -185,7 +185,7 @@ LOGGING = {
         'third_party_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'third_party.log'),
+            'filename': os.path.join(LOGGING_STATIC+'/', 'third_party.log'),
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
