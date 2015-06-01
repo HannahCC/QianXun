@@ -13,6 +13,8 @@ def create_bycus(order_dict):
     order.customer = order_dict['customer']
     order.window = order_dict['window']
     order.order_id = order_dict['order_id']
+    order.promotion_list = order_dict['promotion_list']
+    order.discount = order_dict['discount']
     order.food_cost = order_dict['food_cost']
     order.deliver_cost = order_dict['deliver_cost']
     order.save()

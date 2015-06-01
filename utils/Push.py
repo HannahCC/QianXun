@@ -5,6 +5,7 @@ import logging
 import traceback
 from conf.default_value import JPUSH_APP_KEY, MASTER_SECRET
 from jpush.common import JPushFailure, Unauthorized
+from QianXun.settings import DEBUG
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -31,7 +32,10 @@ class JPush():
 
     def __push(self):
         try:
-            self.push.send()
+            if DEBUG:
+                self.push.send()
+            else:
+                _LOGGER.info("In Debug mode. It will not send msg for real.")
         except JPushFailure:
             exc_type, value, tb = sys.exc_info()
             formatted_tb = traceback.format_tb(tb)

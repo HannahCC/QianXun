@@ -72,6 +72,8 @@ def common_verifycode_validation(request):
         zone = ZONE
         phone = verifycode_validation_dict['user_name']
         code = verifycode_validation_dict['verify_code']
+        result = {}
+        result.update({'status': 500})
         result = sms.verify_sms_code(zone, phone, code)
         if result.get('status', 500) == 200:
             verifycode.create(verifycode_validation_form)

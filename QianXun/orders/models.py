@@ -111,6 +111,8 @@ class Orders(models.Model):
     deliver_time = models.ForeignKey(DeliverTime, verbose_name=u'送达时间', blank=True, null=True)
 
     notes = models.CharField(u'备注', max_length=64, default='', blank=True)
+    promotion_list = models.CharField(u'优惠活动', max_length=1024, blank=True)
+    discount = models.FloatField(u'折扣', default=0)
     food_cost = models.FloatField(u'金额')
     deliver_cost = models.FloatField(u'配送费', default=DELIVERY_COST)
     order_status = models.SmallIntegerField(u'订单状态', choices=ORDER_STATUS, default=ORDER_STATUS[0][0])

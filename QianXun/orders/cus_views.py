@@ -1,9 +1,9 @@
+# -*- coding: UTF-8 -*-
 from django.shortcuts import render_to_response
-
 from utils.Decorator import customer_token_required, post_required, exception_handled
 from utils.Serializer import json_response_from_object, json_response, json_back
 from utils.MakeSerialNumber import get_serial_number
-from utils.CostCalculator import get_vip_discount, get_promotions_discount, get_deliver_cost
+from utils.CostCalculator import get_vip_discount, get_promotions_dict, get_promotions_discount, get_promotion_str, get_deliver_cost
 from utils.Push import JPush
 from conf.resp_code import *
 from conf.enum_value import ORDER_STATUS
@@ -29,17 +29,29 @@ def customer_order_create(request):
         # calculate the food cost
         if len(dish_list) <= ORDER_DISH_MAX:
             cost = dish.get_dish_list_cost(dish_list)
+            discount = 0
+            promotion_str = ""
             customer_model = request.user_meta['customer_model']
             window_id = order_dict['window'].id
             if customer.has_vip_balance(customer_model):    # customer is a valid VIP, and has VIP balance
-                cost = get_vip_discount(cost)
+                new_cost = get_vip_discount(cost)
+                discount = cost - new_cost
+                cost = new_cost
+                promotion_str = u"会员折扣"
             else:                                           # window has promotion_list
                 promotion_list = promotion.get_promotion_list_bywindow(window_id, {'page': 1, 'count': PROMOTION_MAX})
-                cost = get_promotions_discount(cost, promotion_list)
+                if len(promotion_list) > 0:
+                    promotions_dict = get_promotions_dict(cost, promotion_list)
+                    promotion_str = get_promotion_str(promotions_dict)
+                    new_cost = get_promotions_discount(cost, promotions_dict)
+                    discount = cost - new_cost
+                    cost = new_cost
 
             # initial the order_dict
             order_dict.update({'customer': customer_model})
             order_dict.update({'order_id': get_serial_number(window_id)})
+            order_dict.update({'discount': discount})
+            order_dict.update({'promotion_list': promotion_str})
             order_dict.update({'food_cost': cost})
             order_dict.update({'deliver_cost': get_deliver_cost()})
             my_order_bean = order.create_bycus(order_dict)  # create a record in orders table,return a model with an id

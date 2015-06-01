@@ -57,6 +57,8 @@ class OrderBean:
         if self.address:
             self.address = order_model.address.addr
         self.notes = order_model.notes
+        self.promotionList = order_model.promotion_list
+        self.discount = order_model.discount
         self.foodCost = order_model.food_cost
         self.deliverCost = order_model.deliver_cost
         self.orderStatus = order_model.order_status

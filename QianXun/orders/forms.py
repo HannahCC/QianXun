@@ -33,7 +33,17 @@ class OrderConfirmForm(forms.ModelForm):
 
     class Meta:
         model = Orders
-        fields = ['building', 'notes', 'deliver_time']
+        fields = ['building', 'address', 'notes', 'deliver_time']
+
+    def clean_address(self):
+        cleaned_data = super(OrderConfirmForm, self).clean()
+        building = cleaned_data.get('building', '')
+        address = cleaned_data.get('address', '')
+        if not building and not address:
+            raise forms.ValidationError(u'请输入楼栋ID或自定义地址ID')
+        elif building and address:
+            raise forms.ValidationError(u'请输入楼栋ID或自定义地址ID其中之一')
+        return address
 
 
 class OrderUpdateForm(forms.Form):
