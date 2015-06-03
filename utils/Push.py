@@ -33,9 +33,9 @@ class JPush():
     def __push(self):
         try:
             if DEBUG:
-                self.push.send()
-            else:
                 _LOGGER.info("In Debug mode. It will not send msg for real.")
+            else:
+                self.push.send()
         except JPushFailure:
             exc_type, value, tb = sys.exc_info()
             formatted_tb = traceback.format_tb(tb)
