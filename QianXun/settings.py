@@ -68,7 +68,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'qianxun',
         'USER': 'root',
-        'PASSWORD': '123456',
+        'PASSWORD': 'qianxun123456',
     }
 }
 
@@ -122,7 +122,7 @@ ADMIN_EMAIL = {
 SEND_BROKEN_LINK_EMAILS = True         # set link interrupted warning
 
 # media config
-MEDIA_ROOT = r'F:\QianXun'
+MEDIA_ROOT = r'D:\QianXun\Data\Img'
 MEDIA_URL = r'/qianxun/img/'
 
 # version
