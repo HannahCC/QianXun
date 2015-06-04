@@ -13,16 +13,3 @@ def create(verifycode_validation_dict):
     new_verify_code.verify_code = verifycode_validation_dict['verify_code']
     new_verify_code.save()
     return new_verify_code
-
-
-def delete(verify_code):
-    assert verify_code
-    if verify_code.id:
-        VerifyCode.objects.filter(id=verify_code.id).delete()
-    return verify_code
-
-
-def delete_by_username(user_name):
-    assert user_name
-    VerifyCode.objects.filter(user_name=user_name).delete()
-    return user_name

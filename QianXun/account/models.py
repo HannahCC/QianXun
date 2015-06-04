@@ -101,6 +101,9 @@ class VerifyCode(models.Model):
     """
     验证码
     """
-    user_name = models.CharField(u'手机号', max_length=11, unique=True)
-    verify_code = models.CharField(u'验证码', max_length=6, unique=True)
+    user_name = models.CharField(u'手机号', max_length=11)
+    verify_code = models.CharField(u'验证码', max_length=6)
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user_name', 'verify_code')
