@@ -3,13 +3,14 @@ __author__ = 'Hannah'
 import sys
 import logging
 import traceback
+import datetime
 
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.utils import timezone
 from utils.Serializer import json_response
 from conf.resp_code import *
-from conf.default_value import TOKEN
+from conf.default_value import TOKEN, VERIFY_CODE_INVALID
 from QianXun.account.db import window, customer, verifycode
 from QianXun.manager.db import manager
 
@@ -61,9 +62,15 @@ def verify_code_required(func):
         verify_code = post.get('verify_code')
         try:
             verify_code_model = verifycode.get_by_username_and_code(user_name, verify_code)
-            _LOGGER.info('Verify_code hit in db for %s ' % user_name)
-            verify_code_meta = {'verify_code_model': verify_code_model}
-            request.verify_code_meta = verify_code_meta
+            timedelta = timezone.now() - verify_code_model.create_time
+            if timedelta <= datetime.timedelta(minutes=VERIFY_CODE_INVALID):
+                _LOGGER.info('Verify_code hit in db for %s ' % user_name)
+                verify_code_meta = {'verify_code_model': verify_code_model}
+                request.verify_code_meta = verify_code_meta
+            else:
+                verify_code_model.delete()
+                _LOGGER.info('Verify_code not in db for %s ' % user_name)
+                return json_response(CODE_INVALID, CODE_MESSAGE.get(CODE_INVALID))
         except ObjectDoesNotExist:
             _LOGGER.info('Verify_code not in db for %s ' % user_name)
             return json_response(CODE_INVALID, CODE_MESSAGE.get(CODE_INVALID))

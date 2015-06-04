@@ -4,6 +4,7 @@ __author__ = 'Hannah'
 WINDOW_PASSWORD = '000000'
 CUSTOMER_PASSWORD = '111111'
 MANAGER_PASSWORD = '123456'
+
 # dynamic
 DELIVERY_COST = 1
 VIP_DISCOUNT = 0.8
@@ -20,6 +21,7 @@ COUNT = 10
 # default
 GRADE = 0.0
 TOKEN = 'default'
+VERIFY_CODE_INVALID = 30 # mins
 
 # jpush
 JPUSH_APP_KEY = u'7650fcb4ca095999e0c42089'
