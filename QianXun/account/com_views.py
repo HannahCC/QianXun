@@ -76,7 +76,7 @@ def common_verifycode_validation(request):
         result.update({'status': 500})
         result = sms.verify_sms_code(zone, phone, code)
         if result.get('status', 500) == 200:
-            verifycode.create(verifycode_validation_form)
+            verifycode.create(verifycode_validation_dict)
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:
             return json_response(CODE_INVALID, result)
