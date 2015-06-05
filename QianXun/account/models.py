@@ -25,9 +25,10 @@ class Window(models.Model):
     sales = models.IntegerField(u'销量', default=0)
     grade = models.FloatField(u'评级', default=GRADE)
     comment_number = models.IntegerField(u'评论数量', default=0)
-    promotion_number = models.IntegerField(u'活动数量', default=0)
     deliver_time_number = models.IntegerField(u'配送时间数量', default=0)
     dish_number = models.IntegerField(u'菜品数量', default=0)
+    promotion_number = models.IntegerField(u'活动数量', default=0)
+    promotion_list = models.CharField(u'促销活动', max_length=1024, blank=True)
     calculate_time = models.DateTimeField(u'上次计算时间', auto_now=True)  # 上次计算窗口销量的时间
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)
     update_time = models.DateTimeField(u'更新时间', auto_now=True)

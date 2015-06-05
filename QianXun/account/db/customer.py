@@ -20,10 +20,9 @@ def get_by_token(token):
     return customer_model
 
 
-# login
+# login,pwd reset
 def get_by_username(customer_login_dict):
-    customer_model = Customer.objects.get(user_name__exact=customer_login_dict['user_name'],
-                                          password__exact=customer_login_dict['password'], is_valid=IS_VALID[1][0])
+    customer_model = Customer.objects.get(user_name__exact=customer_login_dict['user_name'], is_valid=IS_VALID[1][0])
     return customer_model
 
 

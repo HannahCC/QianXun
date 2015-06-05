@@ -80,11 +80,19 @@ def __process_is_order_meet(cost, old_standard, rules):
     return -1
 
 
-def get_promotion_str(promotions_dict):
+def get_promotion_str_from_dict(promotions_dict):
     promotion_str = ""
     for (protype, rules) in promotions_dict.items():
         for rule in rules:
             promotion_str = ",".join([promotion_str, rule])
+    promotion_str = promotion_str[1:len(promotion_str)]
+    return promotion_str
+
+
+def get_promotion_str_from_list(promotion_model_list):
+    promotion_str = ""
+    for promotion_model in promotion_model_list:
+        promotion_str = ",".join([promotion_str, promotion_model.rules])
     promotion_str = promotion_str[1:len(promotion_str)]
     return promotion_str
 

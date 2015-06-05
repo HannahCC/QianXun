@@ -5,6 +5,7 @@ from datetime import datetime
 from utils.Pagination import get_paginator
 from utils.MakeSerialNumber import get_serial_number
 from utils.SalesCalculator import window_sales_calculate
+from utils.CostCalculator import get_promotion_str_from_list
 from conf.enum_value import WINDOW_STATUS
 
 
@@ -22,10 +23,11 @@ def get_by_token(token):
 def get_by_id(window_id):
     window_model = Window.objects.get(id__exact=window_id)
     window_bean = WindowBean(window_model)
-    return  window_bean
+    return window_bean
+
 
 def get_by_username(window_login_dict):
-    window_model = Window.objects.get(user_name__exact=window_login_dict['user_name'], password__exact=window_login_dict['password'], is_valid=1)
+    window_model = Window.objects.get(user_name__exact=window_login_dict['user_name'], is_valid=1)
     return window_model
 
 
@@ -58,6 +60,14 @@ def get_window_bean_list_byid(window_id_list):
             window_bean = window_model_to_bean(window_model[0])
             window_bean_list.append(window_bean)
     return window_bean_list
+
+
+def update_promotion_list(window_model):
+    promotion_model_list = window_model.promotions_set.filter(is_valid__exact=1).order_by("pro_type", "-rules")
+    promotion_str = get_promotion_str_from_list(promotion_model_list)
+    window_model.promotion_list = promotion_str
+    window_model.save()
+    return window_model
 
 
 def update_promotion_number(window_model, promotion_number_extra):

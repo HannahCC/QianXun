@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from utils.Decorator import customer_token_required, post_required, exception_handled
 from utils.Serializer import json_response_from_object, json_response, json_back
 from utils.MakeSerialNumber import get_serial_number
-from utils.CostCalculator import get_vip_discount, get_promotions_dict, get_promotions_discount, get_promotion_str, get_deliver_cost
+from utils.CostCalculator import get_vip_discount, get_promotions_dict, get_promotions_discount, get_promotion_str_from_dict, get_deliver_cost
 from utils.Push import JPush
 from conf.resp_code import *
 from conf.enum_value import ORDER_STATUS
@@ -42,7 +42,7 @@ def customer_order_create(request):
                 promotion_list = promotion.get_promotion_list_bywindow(window_id, {'page': 1, 'count': PROMOTION_MAX})
                 if len(promotion_list) > 0:
                     promotions_dict = get_promotions_dict(cost, promotion_list)
-                    promotion_str = get_promotion_str(promotions_dict)
+                    promotion_str = get_promotion_str_from_dict(promotions_dict)
                     new_cost = get_promotions_discount(cost, promotions_dict)
                     discount = cost - new_cost
                     cost = new_cost

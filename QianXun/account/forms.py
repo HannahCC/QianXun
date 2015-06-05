@@ -101,7 +101,6 @@ class PasswordUpdateForm(forms.Form):
 
 
 class PasswordResetForm(forms.Form):
-    token = forms.CharField(max_length=64)
     verify_code = forms.CharField(max_length=6)
     new_password = forms.CharField(min_length=6, max_length=64)
     new_password2 = forms.CharField(max_length=64)

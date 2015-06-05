@@ -38,13 +38,37 @@ def customer_login(request):
     if customer_login_form.is_valid():
         customer_login_dict = customer_login_form.cleaned_data
         try:
-            customer_model = customer.get_by_username(customer_login_dict)  # verify user's authority
-            customer_bean = customer.update_token(customer_model, customer_login_dict)  # assign a token for user
-            return json_response_from_object(OK, customer_bean)
+            customer_model = customer.get_by_username(customer_login_dict)
+            if customer_model.password == customer_login_dict['password']:  # verify user's authority
+                customer_bean = customer.update_token(customer_model, customer_login_dict)  # assign a token for user
+                return json_response_from_object(OK, customer_bean)
+            else:
+                return json_response(USER_LOGIN_FAILED, CODE_MESSAGE.get(USER_LOGIN_FAILED))
         except ObjectDoesNotExist:
-            return json_response(USER_LOGIN_FAILED, CODE_MESSAGE.get(USER_LOGIN_FAILED))
+            return json_response(USER_NOT_EXIST, CODE_MESSAGE.get(USER_NOT_EXIST))
     else:
         return json_response(PARAM_REQUIRED, customer_login_form.errors)
+
+
+@exception_handled
+@verify_code_required
+@post_required
+def customer_password_reset(request):
+    customer_password_form = PasswordResetForm(request.POST)
+    if customer_password_form.is_valid():
+        customer_password_dict = customer_password_form.cleaned_data
+        try:
+            customer_model = customer.get_by_username(customer_password_dict)  # verify user's authority
+            customer.update_password(customer_model, customer_password_dict)
+            verify_code_model = request.verify_code_meta['verify_code_model']
+            verify_code_model.delete()
+            return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+        except ObjectDoesNotExist:
+            verify_code_model = request.verify_code_meta['verify_code_model']
+            verify_code_model.delete()
+            return json_response(USER_NOT_EXIST, CODE_MESSAGE.get(USER_NOT_EXIST))
+    else:
+        return json_response(PARAM_REQUIRED, customer_password_form.errors)
 
 
 @exception_handled
@@ -92,23 +116,6 @@ def customer_password_update(request):
             return json_response_from_object(OK, CODE_MESSAGE.get(OK))
         else:
             return json_response(USER_PWD_ERROR, CODE_MESSAGE.get(USER_PWD_ERROR))
-    else:
-        return json_response(PARAM_REQUIRED, customer_password_form.errors)
-
-
-@exception_handled
-@customer_token_required
-@verify_code_required
-@post_required
-def customer_password_reset(request):
-    customer_password_form = PasswordResetForm(request.POST)
-    if customer_password_form.is_valid():
-        customer_password_dict = customer_password_form.cleaned_data
-        customer_model = request.user_meta['customer_model']
-        customer.update_password(customer_model, customer_password_dict)
-        verify_code_model = request.verify_code_meta['verify_code_model']
-        verify_code_model.delete()
-        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, customer_password_form.errors)
 

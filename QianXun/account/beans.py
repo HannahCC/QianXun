@@ -30,6 +30,7 @@ class CustomerBean:
 
 class WindowBean:
     def __init__(self, window_model):
+        self.id = window_model.id
         self.token = window_model.token
         self.userName = window_model.user_name
         self.name = window_model.name
@@ -39,10 +40,13 @@ class WindowBean:
         self.sales = window_model.sales
         self.grade = window_model.grade
         self.commentNumber = window_model.comment_number
-        self.promotionNumber = window_model.promotion_number
         self.deliverTimeNumber = window_model.deliver_time_number
         self.dishNumber = window_model.dish_number
-        self.canteenId = window_model.canteen_id
+        self.promotionNumber = window_model.promotion_number
+        self.promotionList = window_model.promotion_list
+        canteen_model = window_model.canteen
+        self.canteenId = canteen_model.id
+        self.canteenName = canteen_model.canteen_name
 
         if self.imgAddr:
             self.imgAddr = str(self.imgAddr)

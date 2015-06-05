@@ -28,6 +28,7 @@ def window_promotion_create(request):
             new_promotion.window = window_model
             promotion_bean = promotion.create(new_promotion)
             window.update_promotion_number(window_model, 1)  # update promotion_number of window
+            window.update_promotion_list(window_model)
             return json_response_from_object(OK, promotion_bean)
         else:
             return json_response(PROMOTION_REACH_MAX, CODE_MESSAGE.get(PROMOTION_REACH_MAX))
@@ -41,10 +42,11 @@ def window_promotion_create(request):
 def window_promotion_update(request):
     promotion_update_form = PromotionUpdateForm(request.POST)
     if promotion_update_form.is_valid():
+        window_model = request.user_meta['window_model']
         promotion_update_dict = promotion_update_form.cleaned_data
-        window_id = request.user_meta['window_model'].id
-        impact = promotion.update(window_id, promotion_update_dict)
+        impact = promotion.update(window_model.id, promotion_update_dict)
         if impact == 1:
+            window.update_promotion_list(window_model)
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:
             return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))
@@ -57,10 +59,11 @@ def window_promotion_update(request):
 @post_required
 def window_promotion_delete(request):
     if request.POST['data']:
+        window_model = request.user_meta['window_model']
         promotion_id_list_str = request.POST['data']  # not the serial number,but the id
         promotion_id_list = json_back(promotion_id_list_str)
-        window_id = request.user_meta['window_model'].id
-        promotion.delete(window_id, promotion_id_list)
+        promotion.delete(window_model.id, promotion_id_list)
+        window.update_promotion_list(window_model)
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
