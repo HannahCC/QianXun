@@ -3,7 +3,7 @@
 *.so
 *.egg
 *.egg-info
-*.log
+*.log*
 dist
 build
 /Qianxun/*/migrations/*
