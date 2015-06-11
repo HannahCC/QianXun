@@ -34,10 +34,10 @@ def get_order_byid_bywin(window_id, order_dict):
 
 def get_order_bean_list_bycus(customer_id, order_status, pagination_dict):
     paginator = get_paginator(pagination_dict)
-    if order_status:
-        order_list = Orders.objects.filter(customer_id__exact=customer_id, order_status=order_status, is_valid2customer=1).order_by('-update_time')[paginator[0]:paginator[1]]
-    else:
+    if order_status == 0:
         order_list = Orders.objects.filter(customer_id__exact=customer_id, is_valid2customer=1).order_by('-update_time')[paginator[0]:paginator[1]]
+    else:
+        order_list = Orders.objects.filter(customer_id__exact=customer_id, order_status=order_status, is_valid2customer=1).order_by('-update_time')[paginator[0]:paginator[1]]
     order_bean_list = []
     for my_order in order_list:
         order_dish_bean_list = orderdish.get_dish_bean_list_byorder(my_order)

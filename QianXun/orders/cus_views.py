@@ -75,7 +75,7 @@ def customer_order_display(request):
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
         customer_id = request.user_meta['customer_model'].id
-        order_status = pagination_dict['order_status']
+        order_status = pagination_dict.get('order_status', 0)
         order_bean_list = order.get_order_bean_list_bycus(customer_id, order_status, pagination_dict)
         return json_response_from_object(OK, order_bean_list, 'orderList')
     else:

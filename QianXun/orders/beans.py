@@ -66,9 +66,10 @@ class OrderBean:
         self.createTime = order_model.create_time
         self.updateTime = order_model.update_time
         self.dealTime = order_model.deal_time
-        self.deliverTime = order_model.deliver_time
-        if self.deliverTime:
-            self.deliverTime = self.deliverTime.__unicode__()
+        self.deliverTimeId = order_model.deliver_time
+        if self.deliverTimeId:
+            self.deliverTimeId = order_model.deliver_time.id
+            self.deliverTime = order_model.deliver_time.show_datetime()
         if self.createTime:
             self.createTime = datetime_format(convert_to_localtime(self.createTime))
         if self.updateTime:
