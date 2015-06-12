@@ -58,9 +58,9 @@ def window_promotion_update(request):
 @window_token_required
 @post_required
 def window_promotion_delete(request):
-    if request.POST['data']:
+    promotion_id_list_str = request.POST.get('data', "")
+    if promotion_id_list_str.startswith("[{") and promotion_id_list_str.endswith("}]"):
         window_model = request.user_meta['window_model']
-        promotion_id_list_str = request.POST['data']  # not the serial number,but the id
         promotion_id_list = json_back(promotion_id_list_str)
         promotion.delete(window_model.id, promotion_id_list)
         window.update_promotion_list(window_model)
@@ -109,8 +109,8 @@ def window_deliver_time_update(request):
 @window_token_required
 @post_required
 def window_deliver_time_delete(request):
-    if request.POST['data']:
-        deliver_time_id_list_str = request.POST['data']  # not the serial number,but the id
+    deliver_time_id_list_str = request.POST.get('data', "")
+    if deliver_time_id_list_str.startswith("[{") and deliver_time_id_list_str.endswith("}]"):
         deliver_time_id_list = json_back(deliver_time_id_list_str)
         window_id = request.user_meta['window_model'].id
         deliver_time.delete(window_id, deliver_time_id_list)
@@ -159,8 +159,8 @@ def window_dish_update(request):
 @window_token_required
 @post_required
 def window_dish_delete(request):
-    if request.POST['data']:
-        dish_id_list_str = request.POST['data']  # not the serial number,but the id
+    dish_id_list_str = request.POST.get('data', "")
+    if dish_id_list_str.startswith("[{") and dish_id_list_str.endswith("}]"):
         dish_id_list = json_back(dish_id_list_str)
         window_id = request.user_meta['window_model'].id
         dish.delete(window_id, dish_id_list)
@@ -222,8 +222,8 @@ def window_order_update(request):
 @window_token_required
 @post_required
 def window_order_delete(request):
-    if request.POST['data']:
-        order_id_list_str = request.POST['data']  # not the serial number,but the id
+    order_id_list_str = request.POST.get('data', "")
+    if order_id_list_str.startswith("[{") and order_id_list_str.endswith("}]"):
         order_id_list = json_back(order_id_list_str)
         window_id = request.user_meta['window_model'].id
         order_id_list_fail_to_delete = order.delete_bywin(window_id, order_id_list)

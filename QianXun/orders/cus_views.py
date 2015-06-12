@@ -22,8 +22,8 @@ def index(request):
 @post_required
 def customer_order_create(request):
     order_form = OrderForm(request.POST)
-    dish_list_str = request.POST.get("dish_list")
-    if order_form.is_valid() and dish_list_str and dish_list_str.startswith("[{") and dish_list_str.endswith("}]"):
+    dish_list_str = request.POST.get("dish_list", "")
+    if order_form.is_valid() and dish_list_str.startswith("[{") and dish_list_str.endswith("}]"):
         order_dict = order_form.cleaned_data
         dish_list = json_back(dish_list_str)
         # calculate the food cost
@@ -139,8 +139,8 @@ def customer_order_update(request):
 @customer_token_required
 @post_required
 def customer_order_delete(request):
-    if request.POST['data']:
-        order_id_list_str = request.POST['data']  # not the serial number,but the id
+    order_id_list_str = request.POST.get('data', "")  # not the id,but the order_id
+    if order_id_list_str.startswith("[{") and order_id_list_str.endswith("}]"):
         order_id_list = json_back(order_id_list_str)
         customer_id = request.user_meta['customer_model'].id
         order_id_list_fail_to_delete = order.delete_bycus(customer_id, order_id_list)

@@ -19,7 +19,7 @@ def index(request):
 @post_required
 def common_window_display_bycanteen(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['canteen'] and request.POST['canteen'].isdigit():
+    if pagination_form.is_valid() and 'canteen' in request.POST and request.POST['canteen'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         canteen_id = request.POST['canteen']
         window_bean_list = window.get_window_bean_list_bycanteen(canteen_id, pagination_dict)
@@ -33,8 +33,8 @@ def common_window_display_bycanteen(request):
 @post_required
 def common_window_display_byname(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['window_name'] and len(request.POST['window_name']) <= 64\
-            and request.POST['school'] and request.POST['school'].isdigit():
+    if pagination_form.is_valid() and 'window_name' in request.POST and len(request.POST['window_name']) <= 64\
+            and 'school' in request.POST and request.POST['school'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         window_name = request.POST['window_name']
         school_id = request.POST['school']
@@ -49,8 +49,8 @@ def common_window_display_byname(request):
 @post_required
 def common_window_display_byprotype(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['pro_type'] and request.POST['pro_type'].isdigit() \
-            and request.POST['school'] and request.POST['school'].isdigit():
+    if pagination_form.is_valid() and 'pro_type' in request.POST and request.POST['pro_type'].isdigit() \
+            and 'school' in request.POST and request.POST['school'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         pro_type_id = request.POST['pro_type']
         school_id = request.POST['school']
