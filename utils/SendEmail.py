@@ -6,5 +6,4 @@ from QianXun.settings import EMAIL_HOST_USER
 
 
 def email(email_dict, send_to):
-    print email_dict['subject'], email_dict['message'], EMAIL_HOST_USER, send_to
     send_mail(email_dict['subject'], email_dict['message'], EMAIL_HOST_USER, send_to, fail_silently=False)
