@@ -67,9 +67,9 @@ class CustomerOrderUpdateForm(OrderUpdateForm):
         self.fields['new_order_status'].validators.append(validate_customer_order_status)
 
 
-class WindowOrderUpdateForm(forms.Form):
+class WindowOrderUpdateForm(OrderUpdateForm):
     def __init__(self, *args, **kwargs):
-        super(CustomerOrderUpdateForm, self).__init__(*args, **kwargs)
+        super(WindowOrderUpdateForm, self).__init__(*args, **kwargs)
         self.fields['new_order_status'].validators.append(validate_window_order_status)
 
 
