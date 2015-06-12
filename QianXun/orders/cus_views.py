@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from utils.Decorator import customer_token_required, post_required, exception_handled
 from utils.Serializer import json_response_from_object, json_response, json_back
-from utils.MakeSerialNumber import get_serial_number
+from utils.MakeSerialNumber import new_order_id
 from utils.CostCalculator import get_vip_discount, get_promotions_dict, get_promotions_discount, get_promotion_str_from_dict, get_deliver_cost
 from utils.Push import JPush
 from conf.resp_code import *
@@ -10,7 +10,7 @@ from conf.enum_value import ORDER_STATUS
 from conf.default_value import ORDER_DISH_MAX, PROMOTION_MAX, NEW_ORDER_MSG
 from forms import OrderForm, OrderConfirmForm, OrderDetailDisplayForm, PaginationForm, CustomerOrderUpdateForm, CommentForm
 from db import dish, promotion, order, orderdish
-from QianXun.account.db import customer, window
+from QianXun.account.db import customer
 
 
 def index(request):
@@ -49,7 +49,7 @@ def customer_order_create(request):
 
             # initial the order_dict
             order_dict.update({'customer': customer_model})
-            order_dict.update({'order_id': get_serial_number(window_id)})
+            order_dict.update({'order_id': new_order_id(window_id)})
             order_dict.update({'discount': discount})
             order_dict.update({'promotion_list': promotion_str})
             order_dict.update({'food_cost': cost})

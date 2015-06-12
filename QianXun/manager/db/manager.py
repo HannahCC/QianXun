@@ -4,9 +4,7 @@ from QianXun.manager.models import SchoolManager, CanteenManager
 from QianXun.notice.models import SchoolNotice, CanteenNotice
 from QianXun.manager.beans import ManagerBean
 from QianXun.notice.beans import SchoolNoticeDetailBean, CanteenNoticeDetailBean
-from utils.Pagination import get_paginator
-from utils.MakeSerialNumber import get_serial_number
-from datetime import datetime, date
+from utils.MakeSerialNumber import new_token
 from conf.enum_value import IS_VALID
 
 
@@ -18,18 +16,19 @@ def school_get_by_username(login_dict):
 
 def canteen_get_by_username(login_dict):
     manager = CanteenManager.objects.get(user_name__exact=login_dict["user_name"],
-                                        password__exact=login_dict["password"], is_valid=IS_VALID[1][0])
+                                         password__exact=login_dict["password"], is_valid=IS_VALID[1][0])
     return manager
 
 
 def school_update_token(manager):
-    manager.token = get_serial_number(manager.id)
+    manager.token = new_token()
     manager.save()
     manager_bean = ManagerBean(manager)
     return manager_bean
 
+
 def canteen_update_token(manager):
-    manager.token = get_serial_number(manager.id)
+    manager.token = new_token()
     manager.save()
     manager_bean = ManagerBean(manager)
     return manager_bean

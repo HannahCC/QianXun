@@ -12,7 +12,7 @@ from db import manager
 from utils.Serializer import json_response, json_response_from_object
 from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required, exception_handled
 from utils.SendEmail import email
-from utils.MakeSerialNumber import get_serial_number
+from utils.MakeSerialNumber import new_order_id
 from QianXun.settings import ADMIN_EMAIL
 from conf.resp_code import *
 from conf.enum_value import LOGINTYPE
