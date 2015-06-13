@@ -32,24 +32,24 @@ def get_promotions_dict(cost, promotion_queryset):
     promotion_list_3 = []
 
     for my_promotion in promotion_list:
-        if my_promotion.pro_type.id == 1:
+        if my_promotion.pro_type.pro_type_name == u'满减':
             new_standard_1 = __process_is_order_meet(cost, old_standard_1, my_promotion.rules)
             if new_standard_1 != -1:
                 old_standard_1 = new_standard_1
                 promotion_list_1.append(my_promotion.rules)
-        if my_promotion.pro_type.id == 2:
+        if my_promotion.pro_type.pro_type_name == u'满赠':
             new_standard_2 = __process_is_order_meet(cost, old_standard_2, my_promotion.rules)
             if new_standard_2 != -1:
                 old_standard_2 = new_standard_2
                 promotion_list_2.append(my_promotion.rules)
-        if my_promotion.pro_type.id == 3:
+        if my_promotion.pro_type.pro_type_name == u'赠饮':
             promotion_list_3.append(my_promotion.rules)
-        # if my_promotion.pro_type.id == 4:   # 可在此添加新的活动标准处理函数
+        # if my_promotion.pro_type.pro_type_name == u'xx':   # 可在此添加新的活动标准处理函数
 
     promotions_dict = {}
-    promotions_dict.update({1: promotion_list_1})
-    promotions_dict.update({2: promotion_list_2})
-    promotions_dict.update({3: promotion_list_3})
+    promotions_dict.update({u'满减': promotion_list_1})
+    promotions_dict.update({u'满赠': promotion_list_2})
+    promotions_dict.update({u'赠饮': promotion_list_3})
     return promotions_dict
 
 
@@ -80,15 +80,17 @@ def __process_is_order_meet(cost, old_standard, rules):
     return -1
 
 
+# for order create
 def get_promotion_str_from_dict(promotions_dict):
     promotion_str = ""
-    for (protype, rules) in promotions_dict.items():
+    for (pro_type_name, rules) in promotions_dict.items():
         for rule in rules:
             promotion_str = ",".join([promotion_str, rule])
     promotion_str = promotion_str[1:len(promotion_str)]
     return promotion_str
 
 
+# for updating window's attribute after creating promotion
 def get_promotion_str_from_list(promotion_model_list):
     promotion_str = ""
     for promotion_model in promotion_model_list:
@@ -100,13 +102,13 @@ def get_promotion_str_from_list(promotion_model_list):
 def get_promotions_discount(cost, promotions_dict):
     """
     遍历该窗口参加的所有活动
-    当前只有满减活动(活动ID为1)需要系统重新计算价格，由__process_manjian_discount()方法进行处理
+    当前只有满减活动需要系统重新计算价格，由__process_manjian_discount()方法进行处理
     """
-    for (protype, rules) in promotions_dict.items():
-        if protype == 1:
+    for (pro_type_name, rules) in promotions_dict.items():
+        if pro_type_name == u'满减':
             for rule in rules:
                 cost = __process_manjian_discount(cost, rule)
-        # if protype == 2:  # 可在此添加新的活动处理函数
+        # if pro_type_name == u'xx':  # 可在此添加新的活动处理函数
     return cost
 
 
