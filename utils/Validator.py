@@ -67,13 +67,13 @@ def validate_order_status(old_order_status, new_order_status):
 
 
 def validate_pro_type(pro_type, rules):
-    if pro_type.id == 1:  # 满x减y, x、y为整数
+    if pro_type.pro_type_name == u'满减':  # 满x减y, x、y为整数
         match = re.search(ur"([\u4e00-\u9fa5]+)\d+([\u4e00-\u9fa5]+)\d+", rules)
         if match and match.group(1) == u'满' and match.group(2) == u'减':
             return True
         else:
             return False
-    elif pro_type.id == 2:   # 满x赠y， x为整数
+    elif pro_type.pro_type_name == u'满赠':   # 满x赠y， x为整数
         match = re.search(ur"([\u4e00-\u9fa5]+)\d+([\u4e00-\u9fa5]+)\d*", rules)
         if match and match.group(1) == u'满'and match.group(2).startswith(u'赠') and not rules.endswith(u'赠') :
             return True
