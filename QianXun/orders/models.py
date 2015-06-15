@@ -23,13 +23,20 @@ class DeliverTime(models.Model):
         verbose_name_plural = u'配送时间'
         unique_together = ('window', 'date', 'time')
 
+    def __unicode__(self):
+        if self.time:
+            time_str = " ".join([DELIVERY_DATE[self.date-1][1], str(self.time)])
+        else:
+            time_str = " ".join([DELIVERY_DATE[self.date-1][1], u'尽快配送'])
+        return time_str
+    '''
     def show_datetime(self):
         if self.time:
             time_str = " ".join([DELIVERY_DATE[self.date-1][1], str(self.time)])
         else:
             time_str = " ".join([DELIVERY_DATE[self.date-1][1], u'尽快配送'])
         return time_str
-
+    '''
     def show_time(self):
         if not self.time:
             return u'尽快配送'
