@@ -49,14 +49,14 @@ class OrderConfirmForm(forms.ModelForm):
 class OrderUpdateForm(forms.Form):
     token = forms.CharField(max_length=64)
     order = forms.IntegerField()
-    old_order_status = forms.ChoiceField(choices=ORDER_STATUS)
     new_order_status = forms.ChoiceField(choices=ORDER_STATUS)
+    old_order_status = forms.ChoiceField(choices=ORDER_STATUS)
 
     def clean_old_order_status(self):
         cleaned_data = super(OrderUpdateForm, self).clean()
-        old_order_status = cleaned_data.get('old_order_status', '')
         new_order_status = cleaned_data.get('new_order_status', '')
-        if validate_order_status(old_order_status, new_order_status):
+        old_order_status = cleaned_data.get('old_order_status', '')
+        if not validate_order_status(old_order_status, new_order_status):
             raise forms.ValidationError(u'请输入合法的订单状态<逻辑错误>')
         return old_order_status
 
