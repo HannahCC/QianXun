@@ -18,7 +18,7 @@ def create_bycus(order_dict):
     order.food_cost = order_dict['food_cost']
     order.deliver_cost = order_dict['deliver_cost']
     order.save()
-    order_bean = OrderBean(order)
+    order_bean = OrderBean(order, None)
     return order_bean
 
 

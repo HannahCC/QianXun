@@ -46,6 +46,8 @@ class DishBean:
 
 class OrderBean:
     def __init__(self, order_model, order_dish_bean_list=[]):
+        if not order_dish_bean_list:
+            order_dish_bean_list = []
         self.id = order_model.id
         self.orderId = order_model.order_id
         self.orderStatus = order_model.order_status

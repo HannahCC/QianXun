@@ -25,14 +25,15 @@ def customer_order_create(request):
     dish_list_str = request.POST.get("dish_list", "")
     if order_form.is_valid() and dish_list_str.startswith("[{") and dish_list_str.endswith("}]"):
         order_dict = order_form.cleaned_data
+        window_id = order_dict['window'].id
         dish_list = json_back(dish_list_str)
         # calculate the food cost
         if len(dish_list) <= ORDER_DISH_MAX:
-            cost = dish.get_dish_list_cost(dish_list)
+            particular_dish_model_list = dish.get_dish_list_byid_bywin(window_id, dish_list)
+            cost = dish.get_dish_list_cost(particular_dish_model_list)
             discount = 0
             promotion_str = ""
             customer_model = request.user_meta['customer_model']
-            window_id = order_dict['window'].id
             if customer.has_vip_balance(customer_model):    # customer is a valid VIP, and has VIP balance
                 new_cost = get_vip_discount(cost)
                 discount = cost - new_cost
@@ -57,8 +58,8 @@ def customer_order_create(request):
             my_order_bean = order.create_bycus(order_dict)  # create a record in orders table,return a model with an id
 
             # add orders_dishes
-            for my_dish in dish_list:
-                my_order_dish_bean = orderdish.create(my_order_bean.id, my_dish)
+            for particular_dish_model in particular_dish_model_list:
+                my_order_dish_bean = orderdish.create(my_order_bean.id, particular_dish_model)
                 my_order_bean.dishList.append(my_order_dish_bean)
             return json_response_from_object(OK, my_order_bean)
         else:

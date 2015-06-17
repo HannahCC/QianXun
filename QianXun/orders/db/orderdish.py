@@ -6,11 +6,11 @@ from utils.Pagination import get_paginator
 from datetime import datetime
 
 
-def create(orders_id, my_dish):
+def create(orders_id, particular_dish_model):
     order_dish = OrdersDishes()
     order_dish.orders_id = orders_id
-    order_dish.dish_id = my_dish['dish_id']
-    order_dish.number = my_dish['number']
+    order_dish.dish_id = particular_dish_model.id
+    order_dish.number = particular_dish_model.number
     order_dish.save()
     order_dish_bean = OrderDishBean(order_dish)
     return order_dish_bean

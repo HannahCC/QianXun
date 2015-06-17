@@ -158,6 +158,14 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
+        'debug': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_STATIC+'/', 'debug.log'),
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
         'request_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -210,6 +218,11 @@ LOGGING = {
         'utils.SendMsg': {
             'handlers': ['third_party_handler', 'console', 'mail_admins'],
             'level': 'INFO',
+            'propagate': False
+        },
+        'utils.DebugLogger': {
+            'handlers': ['debug', 'console'],
+            'level': 'DEBUG',
             'propagate': False
         },
         'django': {
