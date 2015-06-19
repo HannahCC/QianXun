@@ -78,7 +78,7 @@ def get_order_detail_byid_bywin(window_id, order_detail_display_dict):
 
 def update_bycus(customer_id, order_confirm_dict):
     impact = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_confirm_dict['order'], is_valid2customer=1).update(
-        building_id=order_confirm_dict['building'], notes=order_confirm_dict['notes'],
+        building_id=order_confirm_dict['building'], address_id=order_confirm_dict['address'], notes=order_confirm_dict['notes'],
         deliver_time_id=order_confirm_dict['deliver_time'], update_time=datetime.now()
     )
     return impact
