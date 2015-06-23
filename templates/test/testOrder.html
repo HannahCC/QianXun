@@ -8,7 +8,8 @@
         <li><label for="id_pro_type">活动类别:</label> <select id="id_pro_type" name="pro_type">
             <option value="" selected="selected">---------</option>
             <option value="1">满减</option>
-            <option value="2">满赠</option>
+            <option value="3">赠饮</option>
+            <option value="4">满赠</option>
         </select></li>
         <li><label for="id_rules">活动规则:</label> <input id="id_rules" maxlength="64" name="rules" type="text" /></li>
         <li><label for="id_token">Token:</label> <input id="id_token1" maxlength="64" name="token" type="text" /></li>
@@ -19,7 +20,8 @@
         <li><label for="id_pro_type">活动类别:</label> <select id="id_pro_type" name="pro_type">
             <option value="" selected="selected">---------</option>
             <option value="1">满减</option>
-            <option value="2">满赠</option>
+            <option value="3">赠饮</option>
+            <option value="4">满赠</option>
         </select></li>
         <li><label for="id_rules">活动规则:</label> <input id="id_rules" maxlength="64" name="rules" type="text" /></li>
         <li><label for="id_token">Token:</label> <input id="id_token2" maxlength="64" name="token" type="text" /></li>
@@ -109,8 +111,7 @@
         <table>
             <li><label for="id_window">窗口:</label> <select id="id_window" name="window">
                 <option value="" selected="selected">---------</option>
-                <option value="1">华中师范大学-桂香园餐厅-自选窗口</option>
-                <option value="2">华中师范大学-沁园春食堂-石头家</option>
+                <option value="4">桂园小食</option>
             </select></li>
             <li><label for="id_token">Token:</label> <input id="id_token7" maxlength="64" name="token" type="text" /></li>
         </table>
@@ -258,7 +259,7 @@
                 $.post("/qianxun/1/customer/order/create",
                         { window: ($("#id_window").val()),
                             token:($("#id_token7").val()),
-                            dish_list:"[{\"dish_id\":1,\"number\":1},{\"dish_id\":2,\"number\":2}]"
+                            dish_list:"[{\"dish_id\":24,\"number\":1},{\"dish_id\":25,\"number\":2}]"
                         },
                         function(data){
                             alert("Data Loaded: " + data.toString());
