@@ -15,16 +15,6 @@ def dish_model_to_bean(dish_model):
 
 
 # used by create order
-def get_dish_list_byid_bywin(window_id, dish_list):
-    particular_dish_model_list = []
-    for my_dish in dish_list:
-        my_dish_model = Dish.objects.get(window_id__exact=window_id, id__exact=my_dish['dish_id'], is_valid=1)
-        my_dish_model.number = my_dish['number']   # modify the structure of dish_model temporarily.
-        particular_dish_model_list.append(my_dish_model)
-    return particular_dish_model_list
-
-
-# used by create order
 def get_dish_list_cost(particular_dish_model_list):
     cost = 0.0
     for particular_dish_model in particular_dish_model_list:
@@ -75,10 +65,10 @@ def update(window_id, dish_update_dict):
     return impact
 
 
-def delete(window_id, dish_id_list):
+def delete(window_id, delete_id_list):
     impact = 0
-    for dish_id in dish_id_list:
-        impact += Dish.objects.filter(id__exact=dish_id['dish'], window_id__exact=window_id, is_valid=1)\
+    for dish_id in delete_id_list:
+        impact += Dish.objects.filter(id__exact=dish_id['id'], window_id__exact=window_id, is_valid=1)\
             .update(is_valid=0)
     return impact
 

@@ -6,14 +6,13 @@ from utils.Pagination import get_paginator
 from datetime import datetime
 
 
-def create(orders_id, particular_dish_model):
-    order_dish = OrdersDishes()
-    order_dish.orders_id = orders_id
-    order_dish.dish_id = particular_dish_model.id
-    order_dish.number = particular_dish_model.number
-    order_dish.save()
-    order_dish_bean = OrderDishBean(order_dish)
-    return order_dish_bean
+def create(orders_id, dish_json):
+    order_dish_model = OrdersDishes()
+    order_dish_model.orders_id = orders_id
+    order_dish_model.dish_id = dish_json['dish_id']
+    order_dish_model.number = dish_json['number']
+    order_dish_model.save()
+    return order_dish_model
 
 
 def get_order_dish_byid(order_model, orderdish_dict):
@@ -52,17 +51,13 @@ def get_comment_bean_list_bydish(dish_id, pagination_dict):
     return comment_bean_list
 
 
-def update_comment(order_model, comment_dict):
-    comment_model = order_model.ordersdishes_set.get(id__exact=comment_dict['orders_dishes'])
-    if comment_model.comment_time is None:
-        comment_model.grade = comment_dict['grade']
-        comment_model.text = comment_dict['text']
-        comment_model.comment_time = datetime.now()
-        comment_model.save()
-        comment_bean = CommentBean(comment_model)
-        return comment_bean
-    else:
-        return None
+def update_comment(order_model, comment_json):
+    comment_model = order_model.ordersdishes_set.get(id__exact=comment_json['orders_dishes'])
+    comment_model.grade = comment_json['grade']
+    comment_model.text = comment_json['text']
+    comment_model.comment_time = datetime.now()
+    comment_model.save()
+    return comment_model
 
 
 def update_reply(order_dish_model, reply_dict):

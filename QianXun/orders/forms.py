@@ -6,17 +6,12 @@ from conf.enum_value import ORDER_STATUS, ORDER_BY
 from QianXun.orders.models import Orders, Promotions, DeliverTime, Dish
 from utils.Validator import validate_order_status, validate_customer_order_status, validate_window_order_status, \
     validate_pro_type, validate_image
+from utils.Serializer import json_back
 
-
-class OrderForm(forms.ModelForm):
+class OrderCalculateForm(forms.Form):
     token = forms.CharField(max_length=64)
-
-    def __init__(self, *args, **kwargs):
-        super(OrderForm, self).__init__(*args, **kwargs)
-
-    class Meta:
-        model = Orders
-        fields = ['window']
+    window = forms.IntegerField()
+    food_cost = forms.FloatField()
 
 
 class OrderDetailDisplayForm(forms.Form):
@@ -24,19 +19,20 @@ class OrderDetailDisplayForm(forms.Form):
     order = forms.IntegerField()
 
 
-class OrderConfirmForm(forms.ModelForm):
+class OrderCreateForm(forms.ModelForm):
     token = forms.CharField(max_length=64)
-    order = forms.IntegerField()
+    dish_list = forms.CharField(max_length=4096)
 
     def __init__(self, *args, **kwargs):
-        super(OrderConfirmForm, self).__init__(*args, **kwargs)
+        super(OrderCreateForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Orders
-        fields = ['building', 'address', 'notes', 'deliver_time']
+        fields = ['window', 'promotion_list', 'discount', 'food_cost', 'deliver_cost',
+                  'building', 'address', 'notes', 'deliver_time']
 
     def clean_address(self):
-        cleaned_data = super(OrderConfirmForm, self).clean()
+        cleaned_data = super(OrderCreateForm, self).clean()
         building = cleaned_data.get('building', '')
         address = cleaned_data.get('address', '')
         if not building and not address:
@@ -44,6 +40,22 @@ class OrderConfirmForm(forms.ModelForm):
         elif building and address:
             raise forms.ValidationError(u'请输入楼栋ID或自定义地址ID其中之一')
         return address
+
+    def clean_dish_list(self):
+        cleaned_data = super(OrderCreateForm, self).clean()
+        dish_list_str = cleaned_data.get('dish_list', '')
+        if not dish_list_str.startswith("[{") or not dish_list_str.endswith("}]"):
+            raise forms.ValidationError(u'请输入json list格式的dish_list')
+        else:
+            dish_list = json_back(dish_list_str)
+            for dish_json in dish_list:
+                orders_dishes = dish_json.get('dish_id', '')
+                if not isinstance(orders_dishes, int):
+                    raise forms.ValidationError(u'请输入int型的dish_id')
+                number = dish_json.get('number', '')
+                if not isinstance(number, int):
+                    raise forms.ValidationError(orders_dishes+u':请菜品的份数')
+        return dish_list
 
 
 class OrderUpdateForm(forms.Form):
@@ -76,9 +88,26 @@ class WindowOrderUpdateForm(OrderUpdateForm):
 class CommentForm(forms.Form):
     token = forms.CharField(max_length=64)
     order = forms.IntegerField()
-    orders_dishes = forms.IntegerField()
-    grade = forms.FloatField(min_value=1, max_value=5)
-    text = forms.CharField(min_length=1, max_length=64)
+    comment_list = forms.CharField(max_length=4096)
+
+    def clean_comment_list(self):
+        cleaned_data = super(CommentForm, self).clean()
+        comment_list_str = cleaned_data.get('comment_list', '')
+        if not comment_list_str.startswith("[{") or not comment_list_str.endswith("}]"):
+            raise forms.ValidationError(u'请输入json list格式的comment_list')
+        else:
+            comment_list = json_back(comment_list_str)
+            for comment_json in comment_list:
+                orders_dishes = comment_json.get('orders_dishes', '')
+                if not isinstance(orders_dishes, int):
+                    raise forms.ValidationError(u'请输入int型的orders_dishes')
+                grade = comment_json.get('grade', '')
+                if not isinstance(orders_dishes, int) or grade < 1 or grade > 5:
+                    raise forms.ValidationError(orders_dishes+u':请输入[1,5]范围的评分')
+                text = comment_json.get('text', '')
+                if not isinstance(text, unicode) or len(text) == 0:
+                    raise forms.ValidationError(orders_dishes+u':评论不能为空')
+        return comment_list
 
 
 class ReplyForm(forms.Form):
@@ -154,3 +183,21 @@ class SalesForm(forms.Form):
     token = forms.CharField(max_length=64)
     start_date = forms.DateField()
     end_date = forms.DateField()
+
+
+class DeleteIdListForm(forms.Form):
+    token = forms.CharField(max_length=64)
+    data = forms.CharField(max_length=4096)
+
+    def clean_data(self):
+        cleaned_data = super(DeleteIdListForm, self).clean()
+        id_list_str = cleaned_data.get('data', '')
+        if not id_list_str.startswith("[{") or not id_list_str.endswith("}]"):
+            raise forms.ValidationError(u'请输入json list格式的id_list')
+        else:
+            id_list = json_back(id_list_str)
+            for id_json in id_list:
+                id = id_json.get('id', '')
+                if not isinstance(id, int):
+                    raise forms.ValidationError(u'请输入int型的id')
+        return id_list

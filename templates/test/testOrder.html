@@ -105,33 +105,47 @@
         </table>
         <button type="button" id="button66">Click me</button>
     </form>
-
+    <h1>计算菜品价格</h1>
+    <form action="/qianxun/1/customer/order/calculate" method="post">
+        <table>
+            <li><label for="id_token">Token:</label> <input id="id_token8" maxlength="64" name="token" type="text" /></li><li><label for="id_window">窗口:</label> <select id="id_window" name="window">
+            <option value="" selected="selected">---------</option>
+            <option value="1">华中师范大学-桂香园餐厅-自选窗口</option>
+            <option value="2">华中师范大学-沁园春食堂-石头家</option>
+        </select></li>
+            <li><label for="id_food_cost">food_cost:</label> <input id="id_food_cost" name="food_cost" type="number" /></li>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
     <h1>创建订单</h1>
     <form id="order_create"  method="post">
         <table>
-            <li><label for="id_window">窗口:</label> <select id="id_window" name="window">
+            <li><label for="id_window">窗口:</label> <select id="id_window1" name="window">
                 <option value="" selected="selected">---------</option>
-                <option value="4">桂园小食</option>
+                <option value="1">华中师范大学-桂香园餐厅-自选窗口</option>
+                <option value="2">华中师范大学-沁园春食堂-石头家</option>
+                <option value="3">华中师范大学-桂香园餐厅-鹿晗家</option>
+                <option value="5">华中师范大学-桂香园餐厅-樱花の家</option>
+                <option value="6">华中师范大学-沁园春食堂-大白的店</option>
             </select></li>
-            <li><label for="id_token">Token:</label> <input id="id_token7" maxlength="64" name="token" type="text" /></li>
-        </table>
-        <button type="button" id="button1">Click me</button>
-    </form>
-    <h1>确认订单</h1>
-    <form action="/qianxun/1/customer/order/confirm" method="post">
-        <table>
-            <li><label for="id_building">楼栋地址:</label> <select id="id_building" name="building">
+            <li><label for="id_promotion_list">优惠活动:</label> <input id="id_promotion_list1" maxlength="1024" name="promotion_list" type="text" /></li>
+            <li><label for="id_discount">折扣:</label> <input id="id_discount1" name="discount" step="any" type="number" value="0" /></li>
+            <li><label for="id_food_cost">金额:</label> <input id="id_food_cost1" name="food_cost" step="any" type="number" /></li>
+            <li><label for="id_deliver_cost">配送费:</label> <input id="id_deliver_cost1" name="deliver_cost" step="any" type="number" value="1" /></li>
+            <li><label for="id_building">楼栋:</label> <select id="id_building1" name="building">
                 <option value="" selected="selected">---------</option>
                 <option value="1">华中师范大学-东区-5栋</option>
                 <option value="2">华中师范大学-东区-9栋</option>
             </select></li>
-            <li><label for="id_address">自定义地址:</label> <select id="id_address" name="address">
+            <li><label for="id_address">自定义地址:</label> <select id="id_address1" name="address">
                 <option value="" selected="selected">---------</option>
-                <option value="1">自定义地址1</option>
-                <option value="2">自定义地址2</option>
+                <option value="2">华中师范大学-东区-5栋-611</option>
+                <option value="3">武大-信息学部-5舍-618</option>
+                <option value="4">武汉大学-工学部-桂圆-1栋</option>
+                <option value="5">武汉大学-工学部-桂圆-2栋3</option>
             </select></li>
-            <li><label for="id_notes">备注:</label> <input id="id_notes" maxlength="64" name="notes" type="text" /></li>
-            <li><label for="id_deliver_time">送达时间:</label> <select id="id_deliver_time" name="deliver_time">
+            <li><label for="id_notes">备注:</label> <input id="id_notes1" maxlength="64" name="notes" type="text" /></li>
+            <li><label for="id_deliver_time">送达时间:</label> <select id="id_deliver_time1" name="deliver_time">
                 <option value="" selected="selected">---------</option>
                 <option value="1">当天 12:00:00</option>
                 <option value="2">当天 13:00:00</option>
@@ -141,11 +155,14 @@
                 <option value="6">当天 13:00:00</option>
                 <option value="7">当天 14:00:00</option>
                 <option value="8">当天 尽快配送</option>
+                <option value="10">当天 11:00:00</option>
+                <option value="11">第二天 11:00:00</option>
+                <option value="16">当天 15:30:00</option>
+                <option value="17">第二天 尽快配送</option>
             </select></li>
-            <li><label for="id_token">Token:</label> <input id="id_token8" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_order">Order:</label> <input id="id_order" name="order" type="number" /></li>
+            <li><label for="id_token">Token:</label> <input id="id_token7" maxlength="64" name="token" type="text" /></li>
         </table>
-        <input type="submit" value="Submit">
+        <button type="button" id="button1">Click me</button>
     </form>
     <h1>修改订单</h1>
     <form action="/qianxun/1/customer/order/update" method="post">
@@ -213,13 +230,12 @@
     <h1>添加评价</h1>
     <form action="/qianxun/1/customer/comment/create" method="post">
         <table>
-            <li><label for="id_grade">评分:</label> <input id="id_grade" name="grade" step="any" type="number" /></li>
-            <li><label for="id_text">评价:</label> <input id="id_text" maxlength="64" name="text" type="text" /></li>
-            <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
-            <li><label for="id_order">Order:</label> <input id="id_order" name="order" type="number" /></li>
-            <li><label for="id_orders_dishes">Orders dishes:</label> <input id="id_orders_dishes" name="orders_dishes" type="number" /></li>
+            <li><label for="id_token">Token:</label> <input id="id_token33" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_order">Order:</label> <input id="id_order33" name="order" type="number" /></li>
+            <li><label for="id_orders_dishes">Orders dishes1:</label> <input id="id_orders_dishes331" type="number" /></li>
+            <li><label for="id_orders_dishes">Orders dishes2:</label> <input id="id_orders_dishes332" type="number" /></li>
         </table>
-        <input type="submit" value="Submit">
+        <button type="button" id="button3">Click me</button>
     </form>
 
     <h1>添加回复</h1>
@@ -257,7 +273,15 @@
         $(document).ready(function(){
             $("#button1").click(function(){
                 $.post("/qianxun/1/customer/order/create",
-                        { window: ($("#id_window").val()),
+                        { window: ($("#id_window1").val()),
+                            promotion_list:($("#id_promotion_list1").val()),
+                            discount:($("#id_discount1").val()),
+                            food_cost:($("#id_food_cost1").val()),
+                            deliver_cost:($("#id_deliver_cost1").val()),
+                            building:($("#id_building1").val()),
+                            address:($("#id_address1").val()),
+                            notes:($("#id_notes1").val()),
+                            deliver_time:($("#id_deliver_time1").val()),
                             token:($("#id_token7").val()),
                             dish_list:"[{\"dish_id\":24,\"number\":1},{\"dish_id\":25,\"number\":2}]"
                         },
@@ -268,28 +292,38 @@
             $("#button2").click(function(){
                 $.post("/qianxun/1/customer/order/delete",
                         {   token:($("#id_token10").val()),
-                            data:"[{\"order\":52},{\"order\":53}]"
+                            data:"[{\"id\":77},{\"id\":78}]"
+                        }
+                )
+            })
+            $("#button3").click(function(){
+                var orders_dishes_id1 = $("#id_orders_dishes331").val();
+                var orders_dishes_id2 = $("#id_orders_dishes332").val();
+                $.post("/qianxun/1/customer/comment/create",
+                        {   token:($("#id_token33").val()),
+                            order:($("#id_order33").val()),
+                            comment_list:"[{\"orders_dishes\":134,\"grade\":3.5, \"text\":\"ok\"},{\"orders_dishes\":135,\"grade\":3.5, \"text\":\"good\"}]"
                         }
                 )
             })
             $("#button22").click(function(){
                 $.post("/qianxun/1/window/promotion/delete",
                         {   token:($("#id_token22").val()),
-                            data:"[{\"promotion\":13},{\"promotion\":14}]"
+                            data:"[{\"id\":13},{\"id\":14}]"
                         }
                 )
             })
             $("#button44").click(function(){
                 $.post("/qianxun/1/window/delivertime/delete",
                         {   token:($("#id_token44").val()),
-                            data:"[{\"deliver_time\":11},{\"deliver_time\":16}]"
+                            data:"[{\"id\":11},{\"id\":16}]"
                         }
                 )
             })
             $("#button66").click(function(){
                 $.post("/qianxun/1/window/dish/delete",
                         {   token:($("#id_token66").val()),
-                            data:"[{\"dish\":7},{\"dish\":8}]"
+                            data:"[{\"id\":7},{\"id\":8}]"
                         }
                 )
             })

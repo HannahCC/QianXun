@@ -24,14 +24,17 @@ def validate_password(value):
 
 
 def validate_window_status(value):
-    # 商家只能将自己的状态改为4：正常营业或5：歇业, 或出于1：未审核的默认状态
-    if value == WINDOW_STATUS[1][0] or value == WINDOW_STATUS[2][0]:
+    # 商家只能将自己的状态改为4：正常营业或5：歇业
+    order_status = int(value)
+    if order_status == WINDOW_STATUS[3][0] or order_status == WINDOW_STATUS[4][0]:
+        return value
+    else:
         raise ValidationError(u'请输入合法的窗口状态')
 
 
 def validate_customer_order_status(value):
     order_status = int(value)
-    if order_status == ORDER_STATUS[1][0] or order_status == ORDER_STATUS[2][0] or order_status == ORDER_STATUS[6][0]:
+    if order_status == ORDER_STATUS[1][0] or order_status == ORDER_STATUS[4][0] or order_status == ORDER_STATUS[7][0]:
         return value
     else:
         raise ValidationError(u'请输入合法的订单状态<权限错误>')
@@ -39,7 +42,7 @@ def validate_customer_order_status(value):
 
 def validate_window_order_status(value):
     order_status = int(value)
-    if order_status == ORDER_STATUS[3][0] or order_status == ORDER_STATUS[4][0] or order_status == ORDER_STATUS[5][0]:
+    if order_status == ORDER_STATUS[2][0] or order_status == ORDER_STATUS[3][0] or order_status == ORDER_STATUS[5][0]:
         return value
     else:
         raise ValidationError(u'请输入合法的订单状态<权限错误>')
@@ -57,14 +60,14 @@ def validate_image(image):
 def validate_order_status(old_order_status, new_order_status):
     old_order_status = int(old_order_status)
     new_order_status = int(new_order_status)
-    if old_order_status % 10 != 0:  # 不能改变处于完成态的状态（末尾数为0表示处于完成态）
-        # 获取两个状态的首位数字，因为状态只能依次从   x(y1)状态  -->  (x+1)(y2)状态
-        while new_order_status > 10:
-            new_order_status /= 10
-        while old_order_status > 10:
-            old_order_status /= 10
-        if new_order_status - old_order_status == 1:
-            return True
+    # if old_order_status % 10 != 0:  # 不能改变处于完成态的状态（末尾数为0表示处于完成态）可以由已完成转为已评价
+    # 获取两个状态的首位数字，因为状态只能依次从   x(y1)状态  -->  (x+1)(y2)状态
+    while new_order_status > 10:
+        new_order_status /= 10
+    while old_order_status > 10:
+        old_order_status /= 10
+    if new_order_status - old_order_status == 1:
+        return True
     return False
 
 
