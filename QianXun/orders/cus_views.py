@@ -70,7 +70,7 @@ def customer_order_calculate(request):
                 promotion_list = get_promotion_str_from_dict(promotions_dict)
                 new_cost = get_promotions_discount(food_cost, promotions_dict)
                 discount = food_cost - new_cost
-        return json_response(OK, {'promotionList': promotion_list, 'discount': discount, 'deliver_cost': deliver_cost})
+        return json_response(OK, {'promotionList': promotion_list, 'discount': discount, 'deliverCost': deliver_cost})
     else:
         return json_response(PARAM_REQUIRED, order_calculate_form.errors)
 
