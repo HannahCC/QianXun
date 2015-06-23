@@ -44,9 +44,9 @@ def update(window_id, promotion_update_dict):
     return impact
 
 
-def delete(window_id, promotion_id_list):
+def delete(window_id, delete_id_list):
     impact = 0
-    for promotion_id in promotion_id_list:
-        impact += Promotions.objects.filter(id__exact=promotion_id['promotion'], window_id__exact=window_id, is_valid=1)\
+    for promotion_id in delete_id_list:
+        impact += Promotions.objects.filter(id__exact=promotion_id['id'], window_id__exact=window_id, is_valid=1)\
             .update(is_valid=0)
     return impact

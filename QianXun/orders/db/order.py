@@ -9,17 +9,21 @@ from conf.enum_value import ORDER_STATUS
 
 
 def create_bycus(order_dict):
-    order = Orders()
-    order.customer = order_dict['customer']
-    order.window = order_dict['window']
-    order.order_id = order_dict['order_id']
-    order.promotion_list = order_dict['promotion_list']
-    order.discount = order_dict['discount']
-    order.food_cost = order_dict['food_cost']
-    order.deliver_cost = order_dict['deliver_cost']
-    order.save()
-    order_bean = OrderBean(order, None)
-    return order_bean
+    my_order = Orders()
+    my_order.window = order_dict['window']
+    my_order.customer = order_dict['customer']
+    my_order.order_id = order_dict['order_id']
+    my_order.promotion_list = order_dict['promotion_list']
+    my_order.discount = order_dict['discount']
+    my_order.food_cost = order_dict['food_cost']
+    my_order.deliver_cost = order_dict['deliver_cost']
+
+    my_order.building = order_dict['building']
+    my_order.address = order_dict['address']
+    my_order.notes = order_dict['notes']
+    my_order.deliver_time = order_dict['deliver_time']
+    my_order.save()
+    return my_order
 
 
 def get_order_byid_bycus(customer_id, order_dict):
@@ -76,14 +80,6 @@ def get_order_detail_byid_bywin(window_id, order_detail_display_dict):
     return order_detail_bean
 
 
-def update_bycus(customer_id, order_confirm_dict):
-    impact = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_confirm_dict['order'], is_valid2customer=1).update(
-        building_id=order_confirm_dict['building'], address_id=order_confirm_dict['address'], notes=order_confirm_dict['notes'],
-        deliver_time_id=order_confirm_dict['deliver_time'], update_time=datetime.now()
-    )
-    return impact
-
-
 # order_status validation has done in FORM
 # use old_order_status to make concurrency control
 def update_status_bycus(customer_id, order_update_dict):
@@ -108,10 +104,10 @@ def update_status_bywin(window_id, order_update_dict):
     return impact
 
 
-def delete_bycus(customer_id, order_id_list):
+def delete_bycus(customer_id, delete_id_list):
     order_id_list_fail_to_delete = []
-    for order_id in order_id_list:
-        my_order_list = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_id['order'], is_valid2customer=1)
+    for order_id in delete_id_list:
+        my_order_list = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_id['id'], is_valid2customer=1)
         if my_order_list and len(my_order_list) == 1:
             my_order = my_order_list[0]
             order_status = my_order.order_status
@@ -120,16 +116,16 @@ def delete_bycus(customer_id, order_id_list):
                 my_order.is_valid2customer = 0
                 my_order.save()
             else:
-                order_id_list_fail_to_delete.append(order_id['order'])
+                order_id_list_fail_to_delete.append(order_id['id'])
         else:
-            order_id_list_fail_to_delete.append(order_id['order'])
+            order_id_list_fail_to_delete.append(order_id['id'])
     return order_id_list_fail_to_delete
 
 
-def delete_bywin(window_id, order_id_list):
+def delete_bywin(window_id, delete_id_list):
     order_id_list_fail_to_delete = []
-    for order_id in order_id_list:
-        my_order_list = Orders.objects.filter(window_id__exact=window_id, id__exact=order_id['order'], is_valid2window=1)
+    for order_id in delete_id_list:
+        my_order_list = Orders.objects.filter(window_id__exact=window_id, id__exact=order_id['id'], is_valid2window=1)
         if my_order_list and len(my_order_list) == 1:
             my_order = my_order_list[0]
             order_status = my_order.order_status
@@ -138,15 +134,15 @@ def delete_bywin(window_id, order_id_list):
                 my_order.is_valid2window = 0
                 my_order.save()
             else:
-                order_id_list_fail_to_delete.append(order_id['order'])
+                order_id_list_fail_to_delete.append(order_id['id'])
         else:
-            order_id_list_fail_to_delete.append(order_id['order'])
+            order_id_list_fail_to_delete.append(order_id['id'])
     return order_id_list_fail_to_delete
 
 
 # used when calculate sales
 def get_order_list_of_window(window_model):
-    order_model_list = window_model.orders_set.filter(order_status__exact=ORDER_STATUS[6][0],
+    order_model_list = window_model.orders_set.filter(order_status__exact=ORDER_STATUS[7][0],
                                                       update_time__gte=window_model.calculate_time)
     return order_model_list
 
@@ -156,6 +152,6 @@ def get_order_list_ofwin(window_model, pagination_dict, sales_dish_dict):
     paginator = get_paginator(pagination_dict)
     date_from = sales_dish_dict['start_date']
     date_to = sales_dish_dict['end_date']
-    order_model_list = window_model.orders_set.filter(order_status__exact=ORDER_STATUS[6][0],
+    order_model_list = window_model.orders_set.filter(order_status__exact=ORDER_STATUS[7][0],
                                                       update_time__range=(date_from, date_to))[paginator[0]:paginator[1]]
     return order_model_list
