@@ -59,18 +59,19 @@ def customer_order_calculate(request):
         food_cost = order_calculate_dict['food_cost']
         deliver_cost = get_deliver_cost()
         discount = 0
+        promotion_list_str = ""
         if customer.has_vip_balance(customer_model):    # customer is a valid VIP, and has VIP balance
             new_cost = get_vip_discount(food_cost)
             discount = food_cost - new_cost
-            promotion_list = u"会员折扣"
+            promotion_list_str = u"会员折扣"
         else:                                           # window has promotion_list
             promotion_list = promotion.get_promotion_list_bywindow(window_id, {'page': 1, 'count': PROMOTION_MAX})
             if len(promotion_list) > 0:
                 promotions_dict = get_promotions_dict(food_cost, promotion_list)
-                promotion_list = get_promotion_str_from_dict(promotions_dict)
+                promotion_list_str = get_promotion_str_from_dict(promotions_dict)
                 new_cost = get_promotions_discount(food_cost, promotions_dict)
                 discount = food_cost - new_cost
-        return json_response(OK, {'promotionList': promotion_list, 'discount': discount, 'deliverCost': deliver_cost})
+        return json_response(OK, {'promotionList': promotion_list_str, 'discount': discount, 'deliverCost': deliver_cost})
     else:
         return json_response(PARAM_REQUIRED, order_calculate_form.errors)
 
