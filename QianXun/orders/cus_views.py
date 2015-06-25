@@ -83,7 +83,7 @@ def customer_order_create(request):
     order_form = OrderCreateForm(request.POST)
     if order_form.is_valid():
         order_dict = order_form.cleaned_data
-        dish_list = order_form['dish_list']
+        dish_list = order_dict['dish_list']
         if len(dish_list) <= ORDER_DISH_MAX:
             # initial the order_dict
             customer_model = request.user_meta['customer_model']
@@ -94,6 +94,7 @@ def customer_order_create(request):
 
             # add orders_dishes
             for dish_json in dish_list:
+                print dish_json
                 orderdish.create(my_order_model.id, dish_json)
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:
