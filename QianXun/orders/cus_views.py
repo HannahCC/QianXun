@@ -95,7 +95,7 @@ def customer_order_create(request):
             # add orders_dishes
             for dish_json in dish_list:
                 orderdish.create(my_order_model.id, dish_json)
-            return json_response(OK, CODE_MESSAGE.get(OK))
+            return json_response(OK, {"orderId": order_dict['order_id']})
         else:
             return json_response(ORDER_DISH_REACH_MAX, CODE_MESSAGE.get(ORDER_DISH_REACH_MAX))
     else:
