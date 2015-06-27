@@ -94,7 +94,6 @@ def customer_order_create(request):
 
             # add orders_dishes
             for dish_json in dish_list:
-                print dish_json
                 orderdish.create(my_order_model.id, dish_json)
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:
