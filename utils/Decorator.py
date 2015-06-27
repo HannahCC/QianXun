@@ -64,7 +64,7 @@ def verify_code_required(func):
             verify_code_model = verifycode.get_by_username_and_code(user_name, verify_code)
             timedelta = timezone.now() - verify_code_model.create_time
             if timedelta <= datetime.timedelta(minutes=VERIFY_CODE_INVALID):
-                _LOGGER.info('Verify_code hit in db for %s ' % user_name)
+                # _LOGGER.info('Verify_code hit in db for %s ' % user_name)
                 verify_code_meta = {'verify_code_model': verify_code_model}
                 request.verify_code_meta = verify_code_meta
             else:
@@ -86,7 +86,7 @@ def token_required(func):
             return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
         token = post.get('token')
         if token == TOKEN:
-            _LOGGER.info('Token is equal to Default TOKEN.')
+            # _LOGGER.info('Token is equal to Default TOKEN.')
             return func(request, *args, **kwargs)
         else:
             _LOGGER.info('Token is not equal to Default TOKEN.')
@@ -103,7 +103,7 @@ def customer_token_required(func):
         token = post.get('token')
         try:
             my_customer = customer.get_by_token(token)
-            _LOGGER.info('Token hit in db for Customer User')
+            # _LOGGER.info('Token hit in db for Customer User')
             user_meta = {}
             user_meta.update({'customer_model': my_customer})
             request.user_meta = user_meta
@@ -123,7 +123,7 @@ def window_token_required(func):
         token = post.get('token')
         try:
             my_window = window.get_by_token(token)
-            _LOGGER.info('Token hit in db for Window User')
+            # _LOGGER.info('Token hit in db for Window User')
             user_meta = {}
             user_meta.update({'window_model': my_window})
             request.user_meta = user_meta
@@ -143,7 +143,7 @@ def school_manager_token_required(func):
         token = post.get('token')
         try:
             my_manager = manager.school_get_by_token(token)
-            _LOGGER.info('Token hit in db for School Manager')
+            # _LOGGER.info('Token hit in db for School Manager')
             user_meta = {}
             user_meta.update({'manager_model': my_manager})
             request.user_meta = user_meta
@@ -163,7 +163,7 @@ def canteen_manager_token_required(func):
         token = post.get('token')
         try:
             my_manager = manager.canteen_get_by_token(token)
-            _LOGGER.info('Token hit in db for Manager User')
+            # _LOGGER.info('Token hit in db for Manager User')
             user_meta = {}
             user_meta.update({'manager_model': my_manager})
             request.user_meta = user_meta
