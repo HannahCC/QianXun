@@ -46,49 +46,43 @@ class DishBean:
 
 class OrderBean:
     def __init__(self, order_model, order_dish_bean_list=[]):
+        if not order_dish_bean_list:
+            order_dish_bean_list = []
         self.id = order_model.id
         self.orderId = order_model.order_id
-        self.customerId = order_model.customer.id
-        self.windowId = order_model.window.id
-        self.buildingId = order_model.building
-        if self.buildingId:
-            self.buildingId = order_model.building.id
-        self.address = order_model.address
-        if self.address:
-            self.address = order_model.address.addr
+        self.orderStatus = order_model.order_status
         self.notes = order_model.notes
+        self.promotionList = order_model.promotion_list
+        self.discount = order_model.discount
         self.foodCost = order_model.food_cost
         self.deliverCost = order_model.deliver_cost
-        self.orderStatus = order_model.order_status
-        self.dishList = order_dish_bean_list   # a list of instance of OrderDishBean
-        self.createTime = order_model.create_time
-        self.updateTime = order_model.update_time
-        self.dealTime = order_model.deal_time
         self.deliverTime = order_model.deliver_time
         if self.deliverTime:
             self.deliverTime = self.deliverTime.__unicode__()
-        if self.createTime:
-            self.createTime = datetime_format(convert_to_localtime(self.createTime))
+        self.updateTime = order_model.update_time
         if self.updateTime:
             self.updateTime = datetime_format(convert_to_localtime(self.updateTime))
-        if self.dealTime:
-            self.dealTime = datetime_format(convert_to_localtime(self.dealTime))
-
-
-class OrderDetailBean(OrderBean):
-    def __init__(self, order_model, order_dish_bean_list=[]):
-        OrderBean.__init__(self, order_model)
+        self.dishList = order_dish_bean_list   # a list of instance of OrderDishBean
 
         window_model = order_model.window
+        self.windowId = window_model.id
         self.windowName = window_model.window_name
         self.windowTel = window_model.user_name
         self.canteenName = window_model.canteen.canteen_name
 
         customer_model = order_model.customer
+        self.customerId = customer_model.id
         self.customerTel = customer_model.user_name
         self.nickName = customer_model.nick_name
 
+
+class OrderDetailBean(OrderBean):
+    def __init__(self, order_model, order_dish_bean_list=[]):
+        OrderBean.__init__(self, order_model, order_dish_bean_list)
+
+        self.buildingId = order_model.building
         if self.buildingId:
+            self.buildingId = order_model.building.id
             building_model = order_model.building
             self.terminalId = building_model.terminal_id
             self.buildingName = building_model.building_name
@@ -96,7 +90,16 @@ class OrderDetailBean(OrderBean):
             self.districtName = district_model.district_name
             self.schoolName = district_model.school.school_name
 
-        self.dish_list = order_dish_bean_list  # a list of instance of OrderDishBean
+        self.address = order_model.address
+        if self.address:
+            self.address = order_model.address.addr
+
+        self.createTime = order_model.create_time
+        self.dealTime = order_model.deal_time
+        if self.createTime:
+            self.createTime = datetime_format(convert_to_localtime(self.createTime))
+        if self.dealTime:
+            self.dealTime = datetime_format(convert_to_localtime(self.dealTime))
 
 
 class CommentBean():

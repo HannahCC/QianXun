@@ -28,10 +28,9 @@ PROMOTION_REACH_MAX = 22
 DISH_REACH_MAX = 23
 DELIVER_TIME_REACH_MAX = 24
 ORDER_DISH_REACH_MAX = 25
-ORDER_DISH_COMMENTED = 26
 ORDER_DISH_REPLIED = 27
 
-AUTHORFAILED = 28
+AUTHORFAILED = 30
 
 CODE_MESSAGE = {
     OK: {},
@@ -43,7 +42,7 @@ CODE_MESSAGE = {
     DB_INTEGRITY_ERROR: {"error_info": u'插入重复值或外键不存在'},
     DB_NOTEXIST_ERROR: {"error_info": u'数据库中不存在的该值'},
     METHOD_ERROR: {"error_info": u'请求方法错误'},
-    CODE_INVALID: {"error_info": u'验证码失效'},  # ugettext("Verify code invalid."),
+    CODE_INVALID: {"error_info": u'验证码错误或已失效'},  # ugettext("Verify code invalid."),
 
     USER_PWD_ERROR: {"error_info": u'用户密码错误'},
     USER_CANCEL_CONNECT: {"error_info": u'用户断开了连接'},  # ugettext("User cancel the connection."),
@@ -61,8 +60,8 @@ CODE_MESSAGE = {
     DISH_REACH_MAX: {"error_info": u'菜品数量超过限制值'},
     DELIVER_TIME_REACH_MAX: {"error_info": u'配送时间数量超过限制值'},
     ORDER_DISH_REACH_MAX: {"error_info": u'订单中菜品数量超过限制值'},
-    ORDER_DISH_COMMENTED: {"error_info": u'不能重复评论'},
     ORDER_DISH_REPLIED: {"error_info": u'不能重复回复评论'},
+
     AUTHORFAILED: {"error_info": u"只能修改自己发布的通知"},
     }
 

@@ -29,7 +29,7 @@ def common_school_display(request):
 @post_required
 def common_district_display(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['school'] and request.POST['school'].isdigit():
+    if pagination_form.is_valid() and 'school' in request.POST and request.POST['school'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         school_id = request.POST['school']
         district_bean_list = list.get_district_bean_list(school_id, pagination_dict)
@@ -43,7 +43,7 @@ def common_district_display(request):
 @post_required
 def common_building_display(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['district'] and request.POST['district'].isdigit():
+    if pagination_form.is_valid() and 'district' in request.POST and request.POST['district'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         district_id = request.POST['district']
         building_bean_list = list.get_building_bean_list(district_id, pagination_dict)
@@ -57,7 +57,7 @@ def common_building_display(request):
 @post_required
 def common_canteen_display(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['school'] and request.POST['school'].isdigit():
+    if pagination_form.is_valid() and 'school' in request.POST and request.POST['school'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         school_id = request.POST['school']
         canteen_bean_list = list.get_canteen_bean_list(school_id, pagination_dict)

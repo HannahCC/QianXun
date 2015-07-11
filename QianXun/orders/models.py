@@ -29,7 +29,14 @@ class DeliverTime(models.Model):
         else:
             time_str = " ".join([DELIVERY_DATE[self.date-1][1], u'尽快配送'])
         return time_str
-
+    '''
+    def show_datetime(self):
+        if self.time:
+            time_str = " ".join([DELIVERY_DATE[self.date-1][1], str(self.time)])
+        else:
+            time_str = " ".join([DELIVERY_DATE[self.date-1][1], u'尽快配送'])
+        return time_str
+    '''
     def show_time(self):
         if not self.time:
             return u'尽快配送'
@@ -85,6 +92,16 @@ class Dish(models.Model):
     def __unicode__(self):
         return self.dish_name
 
+    def save(self, *args, **kwargs):
+        # delete old file when replacing by updating the file
+        try:
+            this = Dish.objects.get(id=self.id)
+            if this.img_addr != self.img_addr:
+                this.img_addr.delete(save=False)
+        except:
+            pass  # when new photo then we do nothing, normal case
+        super(Dish, self).save(*args, **kwargs)
+
 
 class Orders(models.Model):
     """
@@ -101,6 +118,8 @@ class Orders(models.Model):
     deliver_time = models.ForeignKey(DeliverTime, verbose_name=u'送达时间', blank=True, null=True)
 
     notes = models.CharField(u'备注', max_length=64, default='', blank=True)
+    promotion_list = models.CharField(u'优惠活动', max_length=1024, blank=True)
+    discount = models.FloatField(u'折扣', default=0)
     food_cost = models.FloatField(u'金额')
     deliver_cost = models.FloatField(u'配送费', default=DELIVERY_COST)
     order_status = models.SmallIntegerField(u'订单状态', choices=ORDER_STATUS, default=ORDER_STATUS[0][0])

@@ -9,22 +9,17 @@ from utils.GradeCalculator import dish_grade_calculate
 def dish_model_to_bean(dish_model):
     dish_grade_calculate(dish_model)  # calculate grade of dish
     window_sales_calculate(dish_model.window)  # calculate sales of dish in the same window
-    dish_model = get_dish_byid(dish_model.id)
+    dish_model = Dish.objects.get(id__exact=dish_model.id, is_valid=1)
     dish_bean = DishBean(dish_model)
     return dish_bean
 
 
-def get_dish_list_cost(dish_list):
+# used by create order
+def get_dish_list_cost(particular_dish_model_list):
     cost = 0.0
-    for my_dish in dish_list:
-        my_dish_model = get_dish_byid(my_dish['dish_id'])
-        cost += my_dish_model.price * my_dish['number']
+    for particular_dish_model in particular_dish_model_list:
+        cost += particular_dish_model.price * particular_dish_model.number
     return cost
-
-
-def get_dish_byid(dish_id):
-    dish_model = Dish.objects.get(id__exact=dish_id, is_valid=1)
-    return dish_model
 
 
 def get_dish_list_bywin(window_id, pagination_dict, order_by='sales'):
@@ -70,10 +65,10 @@ def update(window_id, dish_update_dict):
     return impact
 
 
-def delete(window_id, dish_id_list):
+def delete(window_id, delete_id_list):
     impact = 0
-    for dish_id in dish_id_list:
-        impact += Dish.objects.filter(id__exact=dish_id['dish'], window_id__exact=window_id, is_valid=1)\
+    for dish_id in delete_id_list:
+        impact += Dish.objects.filter(id__exact=dish_id['id'], window_id__exact=window_id, is_valid=1)\
             .update(is_valid=0)
     return impact
 

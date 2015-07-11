@@ -3,8 +3,8 @@ __author__ = 'Hannah'
 from QianXun.account.models import Customer, Address
 from QianXun.account.beans import CustomerBean, BuildingBean, AddressBean
 from utils.Pagination import get_paginator
-from utils.MakeSerialNumber import get_serial_number
-from datetime import datetime, date
+from utils.MakeSerialNumber import new_token
+from datetime import date
 from conf.enum_value import IS_VALID
 
 
@@ -20,18 +20,18 @@ def get_by_token(token):
     return customer_model
 
 
-# login
+# login,pwd reset
 def get_by_username(customer_login_dict):
-    customer_model = Customer.objects.get(user_name__exact=customer_login_dict['user_name'],
-                                          password__exact=customer_login_dict['password'], is_valid=IS_VALID[1][0])
+    customer_model = Customer.objects.get(user_name__exact=customer_login_dict['user_name'], is_valid=IS_VALID[1][0])
     return customer_model
 
 
 # login
 def update_token(customer_model, customer_login_dict):
     customer_model.client_id = customer_login_dict['client_id']
+    customer_model.registration_id = customer_login_dict['registration_id']
     customer_model.version = customer_login_dict['version']
-    customer_model.token = get_serial_number(customer_model.id)
+    customer_model.token = new_token()
     customer_model.save()
     return CustomerBean(customer_model)
 
@@ -45,7 +45,7 @@ def update_profile(customer_model, customer_profile_dict):
 
 
 def update_password(customer_model, customer_password_dict):
-    customer_model.password = customer_password_dict['password']
+    customer_model.password = customer_password_dict['new_password']
     customer_model.save()
     return customer_model
 

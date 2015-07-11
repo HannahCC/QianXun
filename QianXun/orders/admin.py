@@ -57,12 +57,14 @@ class OrdersInline(admin.TabularInline):
     model = Orders
     fieldsets = (
         (None, {
-            'fields': ('order_id', 'window', 'building', 'address', 'show_dishes', 'food_cost', 'deliver_cost', 'order_status',
+            'fields': ('order_id', 'window', 'building', 'address', 'show_dishes', 'promotion_list', 'discount',
+                       'food_cost', 'deliver_cost', 'order_status',
                        'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window', )
         }),
     )
     ordering = ('update_time', )
-    readonly_fields = ('order_id', 'window', 'building', 'address', 'show_dishes', 'food_cost', 'deliver_cost', 'order_status',
+    readonly_fields = ('order_id', 'window', 'building', 'address', 'show_dishes', 'promotion_list', 'discount',
+                       'food_cost', 'deliver_cost', 'order_status',
                        'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window', )
 
 
@@ -128,7 +130,7 @@ class DishAdmin(admin.ModelAdmin):
     inlines = [CommentInline, ]
     fieldsets = (
         (None, {
-            'fields': ('window', 'dish_name', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
+            'fields': ('window', 'dish_name', 'img_addr', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
         }),
     )
     list_display = ('dish_name', 'window',  'sales', 'is_valid', 'update_time')
@@ -136,14 +138,15 @@ class DishAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time',)
     search_fields = ('dish_name',)
     ordering = ('window', 'sales', 'update_time')
-    # readonly_fields = ('window', 'dish_name', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
+    # readonly_fields = ('window', 'dish_name','img_addr', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
 
 
 class OrdersAdmin(admin.ModelAdmin):
     inlines = [OrdersDishesInline]
     fieldsets = (
         (None, {
-            'fields': ('order_id', 'window', 'customer', 'building', 'address', 'food_cost', 'deliver_cost', 'order_status',
+            'fields': ('order_id', 'window', 'customer', 'building', 'address',  'promotion_list', 'discount',
+                       'food_cost', 'deliver_cost', 'order_status',
                        'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window')
         }),
     )
@@ -153,7 +156,8 @@ class OrdersAdmin(admin.ModelAdmin):
     list_filter = ('is_valid2customer', 'is_valid2window', 'update_time', 'order_status',)
     search_fields = ('window',)
     ordering = ('window', 'update_time', )
-    #readonly_fields = ('order_id', 'window', 'customer', 'building', 'address', 'food_cost', 'deliver_cost', 'order_status',
+    #readonly_fields = ('order_id', 'window', 'customer', 'building', 'address',  'promotion_list', 'discount',
+                      # 'food_cost', 'deliver_cost', 'order_status',
     #                   'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window')
 
 

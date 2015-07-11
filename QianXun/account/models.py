@@ -15,6 +15,7 @@ class Window(models.Model):
     user_name = models.CharField(u'联系方式', max_length=11, unique=True)
     token = models.CharField(u'用户认证口令', max_length=64, blank=True)
     client_id = models.CharField(u'用户设备', max_length=64)
+    registration_id = models.CharField(u'PushID', max_length=64)
     name = models.CharField(u'法人代表', max_length=64)
     password = models.CharField(u'用户密码', max_length=64, default=WINDOW_PASSWORD)
     version = models.CharField(u'应用版本', max_length=64)
@@ -24,9 +25,10 @@ class Window(models.Model):
     sales = models.IntegerField(u'销量', default=0)
     grade = models.FloatField(u'评级', default=GRADE)
     comment_number = models.IntegerField(u'评论数量', default=0)
-    promotion_number = models.IntegerField(u'活动数量', default=0)
     deliver_time_number = models.IntegerField(u'配送时间数量', default=0)
     dish_number = models.IntegerField(u'菜品数量', default=0)
+    promotion_number = models.IntegerField(u'活动数量', default=0)
+    promotion_list = models.CharField(u'促销活动', max_length=1024, blank=True)
     calculate_time = models.DateTimeField(u'上次计算时间', auto_now=True)  # 上次计算窗口销量的时间
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)
     update_time = models.DateTimeField(u'更新时间', auto_now=True)
@@ -40,6 +42,16 @@ class Window(models.Model):
     def __unicode__(self):
         return "-".join([self.canteen.school.school_name, self.canteen.canteen_name, self.window_name])
 
+    def save(self, *args, **kwargs):
+        # delete old file when replacing by updating the file
+        try:
+            this = Window.objects.get(id=self.id)
+            if this.img_addr != self.img_addr:
+                this.img_addr.delete(save=False)
+        except:
+            pass  # when new photo then we do nothing, normal case
+        super(Window, self).save(*args, **kwargs)
+
 
 class Customer(models.Model):
     """
@@ -49,6 +61,7 @@ class Customer(models.Model):
     user_name = models.CharField(u'联系方式', max_length=11, unique=True)
     token = models.CharField(u'用户认证口令', max_length=64, blank=True)
     client_id = models.CharField(u'用户设备', max_length=64)
+    registration_id = models.CharField(u'PushID', max_length=64)
     password = models.CharField(u'用户密码', max_length=64, default=CUSTOMER_PASSWORD)
     user_type = models.SmallIntegerField(u'用户类别', choices=USER_TYPE)
     nick_name = models.CharField(u'用户昵称', max_length=64, blank=True, unique=True)
@@ -90,5 +103,5 @@ class VerifyCode(models.Model):
     验证码
     """
     user_name = models.CharField(u'手机号', max_length=11, unique=True)
-    code = models.CharField(u'验证码', max_length=6, unique=True)
+    verify_code = models.CharField(u'验证码', max_length=6)
     create_time = models.DateTimeField(u'创建时间', auto_now_add=True)

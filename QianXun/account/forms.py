@@ -3,12 +3,13 @@ __author__ = 'Hannah'
 
 from django import forms
 from QianXun.account.models import Window, Customer
-from utils.Validator import validate_phone, validate_password, validate_window_status
+from utils.Validator import validate_phone, validate_password, validate_window_status, validate_image
 from conf.enum_value import FEEDBACK_TYPE
 
 
 class WindowForm(forms.ModelForm):
     password2 = forms.CharField(max_length=64)
+    verify_code = forms.CharField(max_length=6)
 
     def __init__(self, *args, **kwargs):
         super(WindowForm, self).__init__(*args, **kwargs)
@@ -17,7 +18,7 @@ class WindowForm(forms.ModelForm):
 
     class Meta:
         model = Window
-        fields = ['canteen', 'user_name', 'name', 'password', 'window_name', 'client_id', 'version']
+        fields = ['canteen', 'user_name', 'name', 'password', 'window_name', 'registration_id', 'client_id', 'version']
 
     def clean_password2(self):
         cleaned_data = super(WindowForm, self).clean()
@@ -35,6 +36,7 @@ class WindowProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(WindowProfileForm, self).__init__(*args, **kwargs)
         self.fields['window_status'].validators.append(validate_window_status)
+        self.fields['img_addr'].validators.append(validate_image)
 
     class Meta:
         model = Window
@@ -43,7 +45,7 @@ class WindowProfileForm(forms.ModelForm):
 
 class CustomerForm(forms.ModelForm):
     password2 = forms.CharField(max_length=64)
-    verify_code = forms.CharField(min_length=6, max_length=6)
+    verify_code = forms.CharField(max_length=6)
 
     def __init__(self, *args, **kwargs):
         super(CustomerForm, self).__init__(*args, **kwargs)
@@ -52,7 +54,7 @@ class CustomerForm(forms.ModelForm):
 
     class Meta:
         model = Customer
-        fields = ['school', 'user_type', 'user_name', 'nick_name', 'password', 'client_id', 'version']
+        fields = ['school', 'user_type', 'user_name', 'nick_name', 'password', 'client_id', 'registration_id', 'version']
 
     def clean_password2(self):
         cleaned_data = super(CustomerForm, self).clean()
@@ -80,6 +82,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(min_length=6, max_length=64)
     client_id = forms.CharField(max_length=64)
     version = forms.CharField(max_length=64)
+    registration_id = forms.CharField(max_length=64)
 
 
 class PasswordUpdateForm(forms.Form):
@@ -89,7 +92,7 @@ class PasswordUpdateForm(forms.Form):
     new_password2 = forms.CharField(min_length=6, max_length=64)
 
     def clean_new_password2(self):
-        cleaned_data = super(CustomerForm, self).clean()
+        cleaned_data = super(PasswordUpdateForm, self).clean()
         password = cleaned_data.get('new_password', '')
         password2 = cleaned_data.get('new_password2', '')
         if password != password2:
@@ -98,15 +101,15 @@ class PasswordUpdateForm(forms.Form):
 
 
 class PasswordResetForm(forms.Form):
-    token = forms.CharField(max_length=64)
-    verify_code = forms.CharField(min_length=6, max_length=6)
-    password = forms.CharField(min_length=6, max_length=64)
-    password2 = forms.CharField(max_length=64)
+    user_name = forms.CharField(min_length=11, max_length=11)
+    verify_code = forms.CharField(max_length=6)
+    new_password = forms.CharField(min_length=6, max_length=64)
+    new_password2 = forms.CharField(max_length=64)
 
-    def clean_password2(self):
-        cleaned_data = super(CustomerForm, self).clean()
-        password = cleaned_data.get('password', '')
-        password2 = cleaned_data.get('password2', '')
+    def clean_new_password2(self):
+        cleaned_data = super(PasswordResetForm, self).clean()
+        password = cleaned_data.get('new_password', '')
+        password2 = cleaned_data.get('new_password2', '')
         if password != password2:
             raise forms.ValidationError(u'两次密码输入不一致')
         return password2
@@ -114,7 +117,7 @@ class PasswordResetForm(forms.Form):
 
 class UsernameForm(forms.Form):
     token = forms.CharField(max_length=64)
-    verify_code = forms.CharField(min_length=6, max_length=6)
+    verify_code = forms.CharField(max_length=6)
     user_name = forms.CharField(min_length=11, max_length=11)
 
     def __init__(self, *args, **kwargs):
@@ -160,3 +163,9 @@ class PaginationForm(forms.Form):
     token = forms.CharField(max_length=64)
     page = forms.IntegerField(initial=1, min_value=1, required=False)
     count = forms.IntegerField(initial=10, min_value=1, max_value=20, required=False)
+
+
+class VerifycodeValidationForm(forms.Form):
+    token = forms.CharField(max_length=64)
+    user_name = forms.CharField(min_length=11, max_length=11)
+    verify_code = forms.CharField(max_length=6)

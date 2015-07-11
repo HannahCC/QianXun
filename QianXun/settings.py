@@ -68,7 +68,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'qianxun',
         'USER': 'root',
-        'PASSWORD': '123456',
+        'PASSWORD': 'qianxun123456',
     }
 }
 
@@ -109,25 +109,26 @@ EMAIL_SUBJECT_PREFIX = '[QianXun_Server]'
 EMAIL_USE_TLS = True
 
 SERVER_EMAIL = 'xiaoyuanbiandang@126.com'  # server error will send from here
+
 ADMINS = (
-    ('LiChen', '408559221@qq.com'),     # server error will send to here
+    ('LiChen', 'whulichen@163.com'),     # server error will send to here
 )
 
 ADMIN_EMAIL = {
-    'APP_DEVELPOER_EMAIL': ['408559221@qq.com'],  # app crash report will send to here
-    'MANAGER_EMAIL': ['408559221@qq.com'],  # users feedback will send to here
+    'APP_DEVELPOER_EMAIL': ['whulichen@163.com'],  # app crash report will send to here
+    'MANAGER_EMAIL': ['whulichen@163.com'],  # users feedback will send to here
 }
 
 SEND_BROKEN_LINK_EMAILS = True         # set link interrupted warning
 
 # media config
-MEDIA_ROOT = r'F:\QianXun'
+MEDIA_ROOT = r'D:\QianXun\Data\Img'
 MEDIA_URL = r'/qianxun/img/'
 
 # version
 SERVICE_VERSION = 1
 # LOG
-LOGGING_STATIC = os.path.join(BASE_DIR,  'static/')
+LOGGING_STATIC = os.path.join(BASE_DIR,  'logs/')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -147,7 +148,7 @@ LOGGING = {
         'default': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'all.log'),
+            'filename': os.path.join(LOGGING_STATIC+'/', 'all.log'),
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -160,7 +161,15 @@ LOGGING = {
         'request_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'request.log'),
+            'filename': os.path.join(LOGGING_STATIC+'/', 'request.log'),
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'warning_handler': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_STATIC+'/', 'warning.log'),
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -168,7 +177,15 @@ LOGGING = {
         'scripts_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGGING_STATIC+'/logs/', 'script.log'),
+            'filename': os.path.join(LOGGING_STATIC+'/', 'script.log'),
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'third_party_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_STATIC+'/', 'third_party.log'),
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -176,23 +193,33 @@ LOGGING = {
     },
     'loggers': {
         'scripts': {
-            'handlers': ['scripts_handler', 'console'],
+            'handlers': ['scripts_handler', 'console', 'mail_admins'],
             'level': 'INFO',
             'propagate': False
         },
         'utils.Decorator': {
-            'handlers': ['default', 'console', 'mail_admins'],
+            'handlers': ['default', 'warning_handler', 'console', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'utils.Push': {
+            'handlers': ['third_party_handler', 'console', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'utils.SendMsg': {
+            'handlers': ['third_party_handler', 'console', 'mail_admins'],
             'level': 'INFO',
             'propagate': False
         },
         'django': {
-            'handlers': ['default'],
+            'handlers': ['default', 'mail_admins'],
             'level': 'DEBUG',
             'propagate': False
         },
         'django.request': {
-            'handlers': ['request_handler', 'console'],
-            'level': 'DEBUG',
+            'handlers': ['request_handler', 'console', 'mail_admins'],
+            'level': 'INFO',
             'propagate': True,
         },
     }

@@ -11,7 +11,6 @@ def window_sales_calculate(window_model):
     """
     # 得到该窗口上次计算之后 已完成的所有订单
     order_model_list = order.get_order_list_of_window(window_model)
-    print "window_sales_calculate", len(order_model_list)
     window_model.calculate_time = datetime.now()
     window_model.save()   # 更新数据库中窗口的销量的计算时间
     sales = window_model.sales

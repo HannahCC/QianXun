@@ -28,6 +28,7 @@
             <li><label for="id_nick_name">用户昵称:</label> <input id="id_nick_name" maxlength="64" name="nick_name" type="text" /></li>
             <li><label for="id_password">用户密码:</label> <input id="id_password" maxlength="64" name="password" type="text" /></li>
             <li><label for="id_client_id">用户设备:</label> <input id="id_client_id" maxlength="64" name="client_id" type="text" /></li>
+            <li><label for="id_registration_id">registration_id:</label> <input id="id_registration_id" maxlength="64" name="registration_id" type="text" /></li>
             <li><label for="id_version">应用版本:</label> <input id="id_version" maxlength="64" name="version" type="text" /></li>
             <li><label for="id_password2">Password2:</label> <input id="id_password2" maxlength="64" name="password2" type="text" /></li>
             <li><label for="id_verify_code">Verify_code:</label> <input id="id_verify_code" maxlength="6" name="verify_code" type="text" /></li>
@@ -42,6 +43,7 @@
         <table>
             <li><label for="id_password">用户密码:</label> <input id="id_password" maxlength="64" name="password" type="text" /></li>
             <li><label for="id_client_id">用户设备:</label> <input id="id_client_id" maxlength="64" name="client_id" type="text" /></li>
+            <li><label for="id_registration_id">registration_id:</label> <input id="id_registration_id" maxlength="64" name="registration_id" type="text" /></li>
             <li><label for="id_version">应用版本:</label> <input id="id_version" maxlength="64" name="version" type="text" /></li>
             <li><label for="id_user_name">User name:</label> <input id="id_user_name" maxlength="11" name="user_name" type="text" /></li>
         </table>
@@ -65,9 +67,10 @@
     <form action="/qianxun/1/customer/account/password/reset" method="post">
         <table>
             <li><label for="id_token">Token:</label> <input id="id_token" maxlength="64" name="token" type="text" /></li>
+            <li><label for="id_user_name">Username:</label> <input id="id_user_name" maxlength="11" name="user_name" type="text" /></li>
             <li><label for="id_verify_code">Verify code:</label> <input id="id_verify_code" maxlength="6" name="verify_code" type="text" /></li>
-            <li><label for="id_password">Password:</label> <input id="id_password" maxlength="64" name="password" type="text" /></li>
-            <li><label for="id_password2">Password2:</label> <input id="id_password2" maxlength="64" name="password2" type="text" /></li>
+            <li><label for="id_password">Password:</label> <input id="id_password" maxlength="64" name="new_password" type="text" /></li>
+            <li><label for="id_password2">Password2:</label> <input id="id_password2" maxlength="64" name="new_password2" type="text" /></li>
         </table>
         <input type="submit" value="Submit">
     </form>

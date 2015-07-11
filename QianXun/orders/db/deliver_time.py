@@ -31,9 +31,9 @@ def update(window_id, deliver_time_updated_dict):
     return impact
 
 
-def delete(window_id, deliver_time_id_list):
+def delete(window_id, delete_id_list):
     impact = 0
-    for deliver_time_id in deliver_time_id_list:
-        impact += DeliverTime.objects.filter(id__exact=deliver_time_id['deliver_time'], window_id__exact=window_id, is_valid=1)\
+    for deliver_time_id in delete_id_list:
+        impact += DeliverTime.objects.filter(id__exact=deliver_time_id['id'], window_id__exact=window_id, is_valid=1)\
             .update(is_valid=0)
     return impact

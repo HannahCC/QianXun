@@ -6,7 +6,7 @@ from forms import WindowForm, WindowProfileForm, LoginForm, PasswordResetForm, P
     FeedbackForm
 from db import window
 from utils.Serializer import json_response, json_response_from_object
-from utils.Decorator import window_token_required, post_required, exception_handled
+from utils.Decorator import window_token_required, post_required, exception_handled, verify_code_required
 from utils.SendEmail import email
 from QianXun.settings import ADMIN_EMAIL
 from conf.resp_code import *
@@ -17,6 +17,7 @@ def index(request):
 
 
 @exception_handled
+@verify_code_required
 @post_required
 def window_register(request):
     window_form = WindowForm(request.POST)
@@ -25,6 +26,8 @@ def window_register(request):
         window_model = window.create(window_form, False)
         window_model.school = window_dict['canteen'].school
         window.create(window_model)
+        verify_code_model = request.verify_code_meta['verify_code_model']
+        verify_code_model.delete()
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, window_form.errors)
@@ -37,13 +40,38 @@ def window_login(request):
     if window_login_form.is_valid():
         window_login_dict = window_login_form.cleaned_data
         try:
-            window_model = window.get_by_username(window_login_dict)  # verify user's authority
-            window_bean = window.update_token(window_model, window_login_dict)  # assign a token for verified user
-            return json_response_from_object(OK, window_bean)
+            window_model = window.get_by_username(window_login_dict)
+            if window_model.password == window_login_dict['password']:  # verify user's authority
+                window_bean = window.update_token(window_model, window_login_dict)  # assign a token for user
+                return json_response_from_object(OK, window_bean)
+            else:
+                return json_response(USER_LOGIN_FAILED, CODE_MESSAGE.get(USER_LOGIN_FAILED))
         except ObjectDoesNotExist:
-            return json_response(USER_LOGIN_FAILED, CODE_MESSAGE.get(USER_LOGIN_FAILED))
+            return json_response(USER_NOT_EXIST, CODE_MESSAGE.get(USER_NOT_EXIST))
     else:
         return json_response(PARAM_REQUIRED, window_login_form.errors)
+
+
+@exception_handled
+@verify_code_required
+@post_required
+def window_password_reset(request):
+    window_password_form = PasswordResetForm(request.POST)
+    if window_password_form.is_valid():
+        window_password_dict = window_password_form.cleaned_data
+        try:
+            window_model = window.get_by_username(window_password_dict)  # verify user's authority
+            window.update_password(window_model, window_password_dict)
+            verify_code_model = request.verify_code_meta['verify_code_model']
+            verify_code_model.delete()
+            return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+        except ObjectDoesNotExist:
+            verify_code_model = request.verify_code_meta['verify_code_model']
+            verify_code_model.delete()
+            return json_response(USER_NOT_EXIST, CODE_MESSAGE.get(USER_NOT_EXIST))
+    else:
+        return json_response(PARAM_REQUIRED, window_password_form.errors)
+
 
 @exception_handled
 @window_token_required
@@ -96,20 +124,7 @@ def window_password_update(request):
 
 @exception_handled
 @window_token_required
-@post_required
-def window_password_reset(request):
-    window_password_form = PasswordResetForm(request.POST)
-    if window_password_form.is_valid():
-        window_password_dict = window_password_form.cleaned_data
-        window_model = request.user_meta['window_model']
-        window.update_password(window_model, window_password_dict)
-        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
-    else:
-        return json_response(PARAM_REQUIRED, window_password_form.errors)
-
-
-@exception_handled
-@window_token_required
+@verify_code_required
 @post_required
 def window_username_reset(request):
     window_username_form = UsernameForm(request.POST)
@@ -117,6 +132,8 @@ def window_username_reset(request):
         window_username_dict = window_username_form.cleaned_data
         window_model = request.user_meta['window_model']
         window.update_username(window_model, window_username_dict)
+        verify_code_model = request.verify_code_meta['verify_code_model']
+        verify_code_model.delete()
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, window_username_form.errors)

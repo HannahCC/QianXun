@@ -3,8 +3,9 @@ from QianXun.account.models import Window
 from QianXun.account.beans import WindowBean
 from datetime import datetime
 from utils.Pagination import get_paginator
-from utils.MakeSerialNumber import get_serial_number
+from utils.MakeSerialNumber import new_token
 from utils.SalesCalculator import window_sales_calculate
+from utils.CostCalculator import get_promotion_str_from_list
 from conf.enum_value import WINDOW_STATUS
 
 
@@ -22,10 +23,11 @@ def get_by_token(token):
 def get_by_id(window_id):
     window_model = Window.objects.get(id__exact=window_id)
     window_bean = WindowBean(window_model)
-    return  window_bean
+    return window_bean
+
 
 def get_by_username(window_login_dict):
-    window_model = Window.objects.get(user_name__exact=window_login_dict['user_name'], password__exact=window_login_dict['password'], is_valid=1)
+    window_model = Window.objects.get(user_name__exact=window_login_dict['user_name'], is_valid=1)
     return window_model
 
 
@@ -60,16 +62,12 @@ def get_window_bean_list_byid(window_id_list):
     return window_bean_list
 
 
-def update_username(window_id, user_name):
-    impact = Window.objects.filter(id__exact=window_id, is_valid=1).update(
-        user_name=user_name, update_time=datetime.now())
-    return impact
-
-
-def update_password(window_id, password):
-    impact = Window.objects.filter(id__exact=window_id, is_valid=1).update(
-        password=password, update_time=datetime.now())
-    return impact
+def update_promotion_list(window_model):
+    promotion_model_list = window_model.promotions_set.filter(is_valid__exact=1).order_by("pro_type", "-rules")
+    promotion_str = get_promotion_str_from_list(promotion_model_list)
+    window_model.promotion_list = promotion_str
+    window_model.save()
+    return window_model
 
 
 def update_promotion_number(window_model, promotion_number_extra):
@@ -115,15 +113,16 @@ def update_profile(window_model, window_profile_dict):
 
 
 def update_token(window_model, window_login_dict):
+    window_model.registration_id = window_login_dict['registration_id']
     window_model.client_id = window_login_dict['client_id']
     window_model.version = window_login_dict['version']
-    window_model.token = get_serial_number(window_model.id)
+    window_model.token = new_token()
     window_model.save()
     return window_model_to_bean(window_model)
 
 
 def update_password(window_model, window_password_dict):
-    window_model.password = window_password_dict['password']
+    window_model.password = window_password_dict['new_password']
     window_model.save()
     return window_model
 

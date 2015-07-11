@@ -5,8 +5,8 @@ from utils.Serializer import json_response, json_response_from_object, json_back
 from conf.resp_code import *
 from conf.default_value import PROMOTION_MAX, DELIVER_TIME_MAX, DISH_MAX
 from conf.enum_value import ORDER_STATUS
-from forms import PaginationForm, PromotionForm, PromotionUpdateForm, DeliverTimeForm, DeliverTimeUpdateForm, DishForm, DishUpdateForm, \
-    OrderDetailDisplayForm, WindowOrderUpdateForm, ReplyForm, SalesForm
+from forms import PaginationForm, PromotionForm, PromotionUpdateForm, DeliverTimeForm, DeliverTimeUpdateForm, DishForm, \
+    DishUpdateForm, OrderDetailDisplayForm, WindowOrderUpdateForm, ReplyForm, SalesForm, DeleteIdListForm
 from QianXun.orders.db import promotion, deliver_time, dish, order, orderdish
 from QianXun.orders.beans import DishSaleBean
 from QianXun.account.db import window
@@ -28,6 +28,7 @@ def window_promotion_create(request):
             new_promotion.window = window_model
             promotion_bean = promotion.create(new_promotion)
             window.update_promotion_number(window_model, 1)  # update promotion_number of window
+            window.update_promotion_list(window_model)
             return json_response_from_object(OK, promotion_bean)
         else:
             return json_response(PROMOTION_REACH_MAX, CODE_MESSAGE.get(PROMOTION_REACH_MAX))
@@ -41,10 +42,11 @@ def window_promotion_create(request):
 def window_promotion_update(request):
     promotion_update_form = PromotionUpdateForm(request.POST)
     if promotion_update_form.is_valid():
+        window_model = request.user_meta['window_model']
         promotion_update_dict = promotion_update_form.cleaned_data
-        window_id = request.user_meta['window_model'].id
-        impact = promotion.update(window_id, promotion_update_dict)
+        impact = promotion.update(window_model.id, promotion_update_dict)
         if impact == 1:
+            window.update_promotion_list(window_model)
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:
             return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))
@@ -56,14 +58,16 @@ def window_promotion_update(request):
 @window_token_required
 @post_required
 def window_promotion_delete(request):
-    if request.POST['data']:
-        promotion_id_list_str = request.POST['data']  # not the serial number,but the id
-        promotion_id_list = json_back(promotion_id_list_str)
-        window_id = request.user_meta['window_model'].id
-        promotion.delete(window_id, promotion_id_list)
+    delete_id_list_form = DeleteIdListForm(request.POST)
+    if delete_id_list_form.is_valid():
+        delete_id_list_dict = delete_id_list_form.cleaned_data
+        delete_id_list = delete_id_list_dict['data']
+        window_model = request.user_meta['window_model']
+        promotion.delete(window_model.id, delete_id_list)
+        window.update_promotion_list(window_model)
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
-        return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
+        return json_response(PARAM_REQUIRED, delete_id_list_form.errors)
 
 
 @exception_handled
@@ -106,14 +110,15 @@ def window_deliver_time_update(request):
 @window_token_required
 @post_required
 def window_deliver_time_delete(request):
-    if request.POST['data']:
-        deliver_time_id_list_str = request.POST['data']  # not the serial number,but the id
-        deliver_time_id_list = json_back(deliver_time_id_list_str)
+    delete_id_list_form = DeleteIdListForm(request.POST)
+    if delete_id_list_form.is_valid():
+        delete_id_list_dict = delete_id_list_form.cleaned_data
+        delete_id_list = delete_id_list_dict['data']
         window_id = request.user_meta['window_model'].id
-        deliver_time.delete(window_id, deliver_time_id_list)
+        deliver_time.delete(window_id, delete_id_list)
         return json_response(OK, CODE_MESSAGE.get(OK))
     else:
-        return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
+        return json_response(PARAM_REQUIRED, delete_id_list_form.errors)
 
 
 @exception_handled
@@ -156,14 +161,15 @@ def window_dish_update(request):
 @window_token_required
 @post_required
 def window_dish_delete(request):
-    if request.POST['data']:
-        dish_id_list_str = request.POST['data']  # not the serial number,but the id
-        dish_id_list = json_back(dish_id_list_str)
+    delete_id_list_form = DeleteIdListForm(request.POST)
+    if delete_id_list_form.is_valid():
+        delete_id_list_dict = delete_id_list_form.cleaned_data
+        delete_id_list = delete_id_list_dict['data']
         window_id = request.user_meta['window_model'].id
-        dish.delete(window_id, dish_id_list)
+        dish.delete(window_id, delete_id_list)
         return json_response(OK, CODE_MESSAGE.get(OK))
     else:
-        return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
+        return json_response(PARAM_REQUIRED, delete_id_list_form.errors)
 
 
 @exception_handled
@@ -219,14 +225,15 @@ def window_order_update(request):
 @window_token_required
 @post_required
 def window_order_delete(request):
-    if request.POST['data']:
-        order_id_list_str = request.POST['data']  # not the serial number,but the id
-        order_id_list = json_back(order_id_list_str)
+    delete_id_list_form = DeleteIdListForm(request.POST)
+    if delete_id_list_form.is_valid():
+        delete_id_list_dict = delete_id_list_form.cleaned_data
+        delete_id_list = delete_id_list_dict['data']
         window_id = request.user_meta['window_model'].id
-        order_id_list_fail_to_delete = order.delete_bywin(window_id, order_id_list)
+        order_id_list_fail_to_delete = order.delete_bywin(window_id, delete_id_list)
         return json_response_from_object(OK, order_id_list_fail_to_delete, 'orderIdList')
     else:
-        return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
+        return json_response(PARAM_REQUIRED, delete_id_list_form.errors)
 
 
 @exception_handled
@@ -255,9 +262,9 @@ def window_comment_reply(request):
 @window_token_required
 @post_required
 def window_sales_dish(request):
-    sales_dish_form = SalesForm(request.POST)
-    if sales_dish_form.is_valid():
-        sales_dish_dict = sales_dish_form.cleaned_data
+    sales_form = SalesForm(request.POST)
+    if sales_form.is_valid():
+        sales_dict = sales_form.cleaned_data
         window_model = request.user_meta['window_model']
         # get all dishes of this window
         dish_model_list = dish.get_dish_list_bywin(window_model.id, {'page': 1, 'count': DISH_MAX})
@@ -268,7 +275,7 @@ def window_sales_dish(request):
             dish_sale_dict.update({dish_model: 0})
         page = 1
         while True:
-            order_model_list = order.get_order_list_ofwin(window_model, {'page': page, 'count': 1000}, sales_dish_dict)
+            order_model_list = order.get_order_list_ofwin(window_model, {'page': page, 'count': 1000}, sales_dict)
             for order_model in order_model_list:
                 sales_volume += order_model.food_cost
                 order_dish_model_list = orderdish.get_dish_list_byorder(order_model)

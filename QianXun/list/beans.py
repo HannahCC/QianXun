@@ -24,12 +24,6 @@ class CanteenBean:
     def __init__(self, canteen_model):
         self.canteenId = canteen_model.id
         self.canteenName = canteen_model.canteen_name
-        self.imgAddr = canteen_model.img_addr
-
-        if self.imgAddr:
-            self.imgAddr = str(self.imgAddr)
-        else:
-            self.imgAddr = None
 
 
 class ProtypeBean:

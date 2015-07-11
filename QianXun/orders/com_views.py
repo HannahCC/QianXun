@@ -45,8 +45,8 @@ def common_delivertime_display_bywindow(request):
 @post_required
 def common_dish_display_bywindow(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['order_by'] \
-            and request.POST['window'] and request.POST['window'].isdigit():
+    if pagination_form.is_valid() and 'order_by' in request.POST \
+            and 'window' in request.POST and request.POST['window'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         window_id = request.POST['window']
         order_by = ORDER_BY[int(request.POST['order_by'])][1]
@@ -61,9 +61,9 @@ def common_dish_display_bywindow(request):
 @post_required
 def common_dish_display_byname(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['order_by'] \
-            and request.POST['dish_name'] and len(request.POST['dish_name']) <= 64\
-            and request.POST['school'] and request.POST['school'].isdigit():
+    if pagination_form.is_valid() and 'order_by' in request.POST \
+            and 'dish_name' in request.POST and len(request.POST['dish_name']) <= 64\
+            and 'school' in request.POST and request.POST['school'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         dish_name = request.POST['dish_name']
         school_id = request.POST['school']
@@ -79,7 +79,7 @@ def common_dish_display_byname(request):
 @post_required
 def common_comment_display_bydish(request):
     pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid() and request.POST['dish'] and request.POST['dish'].isdigit():
+    if pagination_form.is_valid() and 'dish' in request.POST and request.POST['dish'].isdigit():
         pagination_dict = pagination_form.cleaned_data
         dish_id = request.POST['dish']
         comment_bean_list = orderdish.get_comment_bean_list_bydish(dish_id, pagination_dict)
