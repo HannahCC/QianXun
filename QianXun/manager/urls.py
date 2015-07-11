@@ -22,4 +22,7 @@ urlpatterns = patterns('',
                        url(r'^create/school/notice$', sm_create_notice),
                        url(r'^modify/school/notice$', sm_modify_own_notice),
                        url(r'^delete/school/notice$', sm_delete_notice),
+
+                       url(r'^school/windows$', get_all_school_windows),
+                       url(r'^canteen/windows$', get_all_canteen_windows),
                        )

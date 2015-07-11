@@ -71,8 +71,8 @@ def manager_password_reset(request):
 @post_required
 def view_upper_notice(request):
     canteen_manager = request.user_meta.get("manager_model").school
-    shcool_notice_bean_list = manager.get_upper_notice(canteen_manager)
-    return json_response_from_object(OK, shcool_notice_bean_list, "schoolNoticeList")
+    school_notice_bean_list = manager.get_upper_notice(canteen_manager)
+    return json_response_from_object(OK, school_notice_bean_list, "schoolNoticeList")
 
 
 @exception_handled
@@ -229,3 +229,21 @@ def sm_delete_notice(request):
         return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
     notice.delte_notice(notice_model)
     return json_response(OK, CODE_MESSAGE.get(OK))
+
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def get_all_school_windows(request):
+    school_manager = request.user_meta.get("manager_model")
+    all_windows_list_bean = manager.get_all_school_windows(school_manager)
+    return json_response_from_object(OK, all_windows_list_bean)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def get_all_canteen_windows(request):
+    school_manager = request.user_meta.get("manager_model")
+    all_windows_list_bean = manager.get_all_canteen_windows(school_manager)
+    return json_response_from_object(OK, all_windows_list_bean)
