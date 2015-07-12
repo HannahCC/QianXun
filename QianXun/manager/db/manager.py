@@ -78,3 +78,9 @@ def get_all_canteen_windows(manager_model):
     windows_list = Window.objects.filter(canteen_id__exact=manager_model.canteen.id)
     return_bean_list = [WindowBean(window) for window in windows_list]
     return return_bean_list
+
+
+def search_canteen_by_name(school_id, canteen_id, query_str):
+    window_list = Window.objects.filter(school_id__exact=school_id, canteen_id__exact=canteen_id,\
+                                    window_name__contains=query_str)
+    return [WindowBean(window) for window in window_list]

@@ -70,7 +70,7 @@ def manager_password_reset(request):
 @canteen_manager_token_required
 @post_required
 def view_upper_notice(request):
-    canteen_manager = request.user_meta.get("manager_model").school
+    canteen_manager = request.user_meta.get("manager_model")
     school_notice_bean_list = manager.get_upper_notice(canteen_manager)
     return json_response_from_object(OK, school_notice_bean_list, "schoolNoticeList")
 
@@ -79,7 +79,7 @@ def view_upper_notice(request):
 @canteen_manager_token_required
 @post_required
 def view_canteen_notice(request):
-    canteen_manager = request.user_meta.get("manager_model").school
+    canteen_manager = request.user_meta.get("manager_model")
     canteen_notice_bean_list = manager.get_canteen_notice(canteen_manager)
     return json_response_from_object(OK, canteen_notice_bean_list, "canteenNoticeList")
 
@@ -247,3 +247,13 @@ def get_all_canteen_windows(request):
     school_manager = request.user_meta.get("manager_model")
     all_windows_list_bean = manager.get_all_canteen_windows(school_manager)
     return json_response_from_object(OK, all_windows_list_bean)
+
+
+@exception_handled
+def search_window_by_name(request):
+    school_id = request.GET.get("school_id")
+    canteen_id = request.GET.get("canteen_id")
+    query_str = request.GET.get("q")
+    window_list_bean = manager.search_canteen_by_name(school_id, canteen_id, query_str)
+    return json_response_from_object(OK, window_list_bean)
+
