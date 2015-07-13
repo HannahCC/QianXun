@@ -13,6 +13,8 @@ def dish_grade_calculate(dish_model):
     order_dish_model_list = orderdish.get_comment_list_bydish(dish_model)
     dish_model.calculate_time = datetime.now()
     dish_model.save()   # 更新数据库中窗口的销量的计算时间
+    if len(order_dish_model_list)==0:
+        return dish_model
     grade = dish_model.grade
     comment_number = dish_model.comment_number
     new_grade_sum = 0.0   # 新增评分的总和

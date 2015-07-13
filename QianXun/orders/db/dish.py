@@ -33,7 +33,7 @@ def get_dish_bean_list_bywin(window_id, pagination_dict, order_by='sales'):
     dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
     dish_bean_list = []
     for dish_model in dish_model_list:
-        dish_bean = DishBean(dish_model)
+        dish_bean = dish_model_to_bean(dish_model)
         dish_bean_list.append(dish_bean)
     return dish_bean_list
 
@@ -44,7 +44,7 @@ def get_dish_bean_list_byname(school_id, dish_name, pagination_dict, order_by='s
                                           is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
     dish_bean_list = []
     for dish_model in dish_model_list:
-        dish_bean = DishBean(dish_model)
+        dish_bean = dish_model_to_bean(dish_model)
         dish_bean_list.append(dish_bean)
     return dish_bean_list
 
