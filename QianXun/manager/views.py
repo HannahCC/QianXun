@@ -3,9 +3,9 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
 from forms import LoginForm, ManagerPasswordForm
-from QianXun.notice.db import notice
 from QianXun.account.db import window
 from QianXun.notice.db import notice
+from QianXun.orders.db import dish
 from QianXun.list.db import list
 from QianXun.notice.forms import ChangeCNoticeForm, CreateCNoticeForm, ChangeSNoticeForm, CreateSNoticeForm
 from db import manager
@@ -257,3 +257,11 @@ def search_window_by_name(request):
     window_list_bean = manager.search_canteen_by_name(school_id, canteen_id, query_str)
     return json_response_from_object(OK, window_list_bean)
 
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def show_window_dish(request):
+    window_id = request.POST.get("window_id")
+    dish_list_bean = dish.get_dish_bean_list_bywin(window_id=window_id)
+    return json_response_from_object(OK, dish_list_bean)

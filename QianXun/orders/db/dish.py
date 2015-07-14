@@ -28,9 +28,12 @@ def get_dish_list_bywin(window_id, pagination_dict, order_by='sales'):
     return dish_model_list
 
 
-def get_dish_bean_list_bywin(window_id, pagination_dict, order_by='sales'):
-    paginator = get_paginator(pagination_dict)
-    dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
+def get_dish_bean_list_bywin(window_id, pagination_dict=None, order_by='sales'):
+    if pagination_dict:
+        paginator = get_paginator(pagination_dict)
+        dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
+    else:
+        dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1)
     dish_bean_list = []
     for dish_model in dish_model_list:
         dish_bean = DishBean(dish_model)
@@ -56,6 +59,7 @@ def create(dish_model, is_commit=True):
     else:
         new_dish_model = dish_model.save(commit=False)
     return new_dish_model
+
 
 
 def update(window_id, dish_update_dict):

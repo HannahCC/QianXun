@@ -27,4 +27,6 @@ urlpatterns = patterns('',
                        url(r'^canteen/windows$', get_all_canteen_windows),
 
                        url(r'^window/search$', search_window_by_name),
+
+                       url(r'window/dish$', show_window_dish),
                        )
