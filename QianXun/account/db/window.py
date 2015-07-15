@@ -14,7 +14,7 @@ def isUnregistered(user_name):
     window_list = Window.objects.filter(user_name__exact=user_name)
     if len(window_list)==0:
         return True
-    else
+    else:
         return False
 
 def window_model_to_bean(window_model):

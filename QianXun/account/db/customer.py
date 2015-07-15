@@ -9,12 +9,12 @@ from conf.enum_value import IS_VALID
 
 
 # register
-def isRegistered(user_name):
+def isUnregistered(user_name):
     customer_list = Customer.objects.filter(user_name__exact=user_name)
     if len(customer_list)==0:
-        return False
-    else
         return True
+    else:
+        return False
 
 
 # register
