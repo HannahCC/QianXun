@@ -7,8 +7,11 @@ class NoticeBean:
         self.id = notice_model.id
         self.title = notice_model.title
         self.updateTime = notice_model.update_time
+        self.createTime = notice_model.create_time
         if self.updateTime:
             self.updateTime = datetime_format(convert_to_localtime(self.updateTime))
+        if self.createTime:
+            self.createTime = datetime_format(convert_to_localtime(self.createTime))
 
 
 class CanteenNoticeDetailBean(NoticeBean):
@@ -23,6 +26,7 @@ class CanteenNoticeDetailBean(NoticeBean):
 
 class SchoolNoticeDetailBean(NoticeBean):
     def __init__(self, school_notice_model):
+        NoticeBean.__init__(self, school_notice_model)
         self.title = school_notice_model.title
         self.manager = school_notice_model.manager.name
         self.school = school_notice_model.school.school_name
