@@ -13,6 +13,8 @@ def window_sales_calculate(window_model):
     order_model_list = order.get_order_list_of_window(window_model)
     window_model.calculate_time = datetime.now()
     window_model.save()   # 更新数据库中窗口的销量的计算时间
+    if len(order_model_list) == 0 :
+        return window_model
     sales = window_model.sales
     for order_model in order_model_list:
         order_dish_model_list = orderdish.get_dish_list_byorder(order_model)

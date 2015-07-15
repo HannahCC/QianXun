@@ -38,6 +38,7 @@ class DishBean:
         self.imgAddr = dish_model.img_addr
         self.sales = dish_model.sales
         self.grade = dish_model.grade
+        self.commentNumber = dish_model.comment_number
         if self.imgAddr:
             self.imgAddr = str(self.imgAddr)
         else:

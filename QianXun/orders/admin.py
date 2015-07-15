@@ -130,7 +130,7 @@ class DishAdmin(admin.ModelAdmin):
     inlines = [CommentInline, ]
     fieldsets = (
         (None, {
-            'fields': ('window', 'dish_name', 'img_addr', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
+            'fields': ('window', 'dish_name', 'img_addr', 'price', 'grade', 'comment_number', 'sales', 'is_heat', 'description', 'is_valid',)
         }),
     )
     list_display = ('dish_name', 'window',  'sales', 'is_valid', 'update_time')
