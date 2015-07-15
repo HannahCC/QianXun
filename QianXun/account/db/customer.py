@@ -9,6 +9,15 @@ from conf.enum_value import IS_VALID
 
 
 # register
+def isRegistered(user_name):
+    customer_list = Customer.objects.filter(user_name__exact=user_name)
+    if len(customer_list)==0:
+        return False
+    else
+        return True
+
+
+# register
 def create(customer):
     customer_model = customer.save()
     return customer_model

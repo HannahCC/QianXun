@@ -23,12 +23,15 @@ def window_register(request):
     window_form = WindowForm(request.POST)
     if window_form.is_valid():
         window_dict = window_form.cleaned_data
-        window_model = window.create(window_form, False)
-        window_model.school = window_dict['canteen'].school
-        window.create(window_model)
-        verify_code_model = request.verify_code_meta['verify_code_model']
-        verify_code_model.delete()
-        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+        if window.isUnregistered(window_dict['user_name']):
+            window_model = window.create(window_form, False)
+            window_model.school = window_dict['canteen'].school
+            window.create(window_model)
+            verify_code_model = request.verify_code_meta['verify_code_model']
+            verify_code_model.delete()
+            return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+        else:
+            return json_response(USER_REGISTERED, CODE_MESSAGE.get(USER_REGISTERED))
     else:
         return json_response(PARAM_REQUIRED, window_form.errors)
 
