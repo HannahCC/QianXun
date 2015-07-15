@@ -13,7 +13,7 @@ def isRegistered(user_name):
     customer_list = Customer.objects.filter(user_name__exact=user_name)
     if len(customer_list)==0:
         return False
-    else
+    else:
         return True
 
 
