@@ -1,0 +1,41 @@
+	<div id="mgcennavi" class="easyui-accordion" data-options="border:false">
+		<div class="navi_bar" title="公告管理" >
+			<a class="navi_item" href="../manager/nm_schoolnotice.html" > 学校公告</a></br>
+			<a class="navi_item" href="../manager/mgcenter-top.html" > 食堂公告</a></br>
+			<a class="navi_item" href="../manager/mgcenter-top.html" > 发布公告</a></br>
+			<a class="navi_item" href="../manager/mgcenter-top.html" > 修改公告</a></br>
+			<a class="navi_item" href="../manager/mgcenter-top.html" > 删除公告</a></br>
+		</div>
+		<div class="navi_bar" title="窗口管理" >
+			<a class="navi_item" href="../manager/mgcenter-top.html" > 窗口列表</a></br>
+			<a class="navi_item" href="../manager/mgcenter-top.html" > 窗口审核</a></br>
+			<a class="navi_item" href="../manager/mgcenter-top.html" > 销量统计</a></br>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$("#mgcennavi .navi_item").click(function(){
+			var href = $(this).attr("href");
+			var title = $(this).text()
+			var c = $("body").layout("panel", "center");
+			c.tabs('add',{
+				fit: true,   
+				title: title,   
+    			href:href,   
+    			closable:true,   
+    			tools:[{   
+        			iconCls:'icon-mini-refresh',   
+        			handler:function(){
+        				var tab = c.tabs('getSelected');
+        				c.tabs('update', {
+        					tab: tab,
+							options: {
+								title: title,
+								href: href,
+							}
+						});
+        			}   
+    			}]   
+			});  
+			return false;
+		});
+	</script>

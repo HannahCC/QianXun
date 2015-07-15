@@ -47,7 +47,10 @@ class WindowBean:
         canteen_model = window_model.canteen
         self.canteenId = canteen_model.id
         self.canteenName = canteen_model.canteen_name
-
+        school_model = window_model.school
+        self.schoolId = school_model.id
+        self.schoolName = school_model.school_name
+        
         if self.imgAddr:
             self.imgAddr = str(self.imgAddr)
         else:

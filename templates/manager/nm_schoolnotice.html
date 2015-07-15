@@ -1,0 +1,41 @@
+<table class="notice">
+    <tbody>  
+        <tr>  
+            <td>001</td><td>name1</td><td>2323</td><td>我靠，什么鬼1</td> 
+        </tr>  
+        <tr>  
+            <td>002</td><td>name2</td><td>4612</td><td>我靠，什么鬼2</td>  
+        </tr>  
+    </tbody>  
+</table> 
+<script type="text/javascript">
+    var token = "dsfdsfd";
+    $('.notice').datagrid({   
+        url:'../../qianxun/1/manager/school/notice',
+        queryParams: {
+            token: token,
+            page: 1,
+            count: 20,
+        },
+        fitColumns:true,
+        singleSelect:true,
+        pagination:true,
+        pageSize: 20,
+        sortName:'update_time',
+        loadMsg:'载入数据中，请稍等...',
+        columns:[[   
+            {field:'title',title:'标题',width:500,algin:'center',sortable:true},   
+            {field:'manager',title:'作者',width:100,algin:'center',sortable:true},   
+            {field:'update_time',title:'时间',width:200,algin:'center',sortable:true}, 
+            {field:'content',title:'content',hidden:true},  
+        ]],
+        onClickRow:function(index, data){
+            $('#window').window({
+                modal:true,
+                shadow:true,
+                title:data.title,
+                content:data.manager+"&nbsp;&nbsp;&nbsp;&nbsp;"+data.update_time+"<br>"+data.content,
+            });  
+        }
+    }); 
+</script>
