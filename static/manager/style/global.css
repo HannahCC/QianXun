@@ -1,0 +1,6 @@
+@charset "utf-8";
+html{color:rgb(0, 0, 0);font:normal 12px/1.8em 微软雅黑,Arial, Helvetica, sans-serif;}
+body.easyui-layout{ margin:0px; padding:0px; width:100%; color:#9a9a9a;font:normal 12px/1.8em 微软雅黑,Arial, Helvetica, sans-serif;}
+a{ color:rgb(0, 0, 0); text-decoration:none;}
+a:hover { text-decoration:underline;}
+div.navi_bar{text-align:center;margin:15px 0px;background:url('../img/spilt.png')  0px 22px repeat;}

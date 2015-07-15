@@ -1,0 +1,19 @@
+<div data-options="region:'center'"> 
+    <h1 id="title">通知1</h1>
+    <p class="note"></p>
+    <p class="content"></p>
+</div> 
+
+
+<script type="text/javascript">
+    var id = $("#viriable").val();
+	$.ajax({
+	   type: "POST",
+	   url: "some.php",
+	   data: "id="+id,
+	   success: function(msg){
+	     alert( "Data Saved: " + msg );
+
+	   }
+	});
+</script>
