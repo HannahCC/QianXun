@@ -9,6 +9,14 @@ from utils.CostCalculator import get_promotion_str_from_list
 from conf.enum_value import WINDOW_STATUS
 
 
+# register
+def isUnregistered(user_name):
+    window_list = Window.objects.filter(user_name__exact=user_name)
+    if len(window_list)==0:
+        return True
+    else
+        return False
+
 def window_model_to_bean(window_model):
     window_model = window_sales_calculate(window_model)  # calculate sales of dish in the same window
     window_bean = WindowBean(window_model)

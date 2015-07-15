@@ -23,10 +23,14 @@ def index(request):
 def customer_register(request):
     customer_form = CustomerForm(request.POST)
     if customer_form.is_valid():
-        customer.create(customer_form)
-        verify_code_model = request.verify_code_meta['verify_code_model']
-        verify_code_model.delete()
-        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+        customer_dict = customer_form.cleaned_data
+        if customer.isUnregistered(customer_dict['user_name']):
+            customer.create(customer_form)
+            verify_code_model = request.verify_code_meta['verify_code_model']
+            verify_code_model.delete()
+            return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+        else:
+            return json_response(USER_REGISTERED, CODE_MESSAGE.get(USER_REGISTERED))
     else:
         return json_response(PARAM_REQUIRED, customer_form.errors)
 

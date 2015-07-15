@@ -10,6 +10,7 @@ from conf.enum_value import FEEDBACK_TYPE
 class WindowForm(forms.ModelForm):
     password2 = forms.CharField(max_length=64)
     verify_code = forms.CharField(max_length=6)
+    user_name = forms.CharField(max_length=11)
 
     def __init__(self, *args, **kwargs):
         super(WindowForm, self).__init__(*args, **kwargs)
@@ -18,7 +19,7 @@ class WindowForm(forms.ModelForm):
 
     class Meta:
         model = Window
-        fields = ['canteen', 'user_name', 'name', 'password', 'window_name', 'registration_id', 'client_id', 'version']
+        fields = ['canteen', 'name', 'password', 'window_name', 'registration_id', 'client_id', 'version']
 
     def clean_password2(self):
         cleaned_data = super(WindowForm, self).clean()
@@ -46,6 +47,7 @@ class WindowProfileForm(forms.ModelForm):
 class CustomerForm(forms.ModelForm):
     password2 = forms.CharField(max_length=64)
     verify_code = forms.CharField(max_length=6)
+    user_name = forms.CharField(max_length=11)
 
     def __init__(self, *args, **kwargs):
         super(CustomerForm, self).__init__(*args, **kwargs)
@@ -54,7 +56,7 @@ class CustomerForm(forms.ModelForm):
 
     class Meta:
         model = Customer
-        fields = ['school', 'user_type', 'user_name', 'nick_name', 'password', 'client_id', 'registration_id', 'version']
+        fields = ['school', 'user_type', 'nick_name', 'password', 'client_id', 'registration_id', 'version']
 
     def clean_password2(self):
         cleaned_data = super(CustomerForm, self).clean()
