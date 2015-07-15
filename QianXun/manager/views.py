@@ -3,9 +3,9 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
 from forms import LoginForm, ManagerPasswordForm
-from QianXun.notice.db import notice
 from QianXun.account.db import window
 from QianXun.notice.db import notice
+from QianXun.orders.db import dish
 from QianXun.list.db import list
 from QianXun.notice.forms import ChangeCNoticeForm, CreateCNoticeForm, ChangeSNoticeForm, CreateSNoticeForm
 from db import manager
@@ -70,16 +70,16 @@ def manager_password_reset(request):
 @canteen_manager_token_required
 @post_required
 def view_upper_notice(request):
-    canteen_manager = request.user_meta.get("manager_model").school
-    shcool_notice_bean_list = manager.get_upper_notice(canteen_manager)
-    return json_response_from_object(OK, shcool_notice_bean_list, "schoolNoticeList")
+    canteen_manager = request.user_meta.get("manager_model")
+    school_notice_bean_list = manager.get_upper_notice(canteen_manager)
+    return json_response_from_object(OK, school_notice_bean_list, "schoolNoticeList")
 
 
 @exception_handled
 @canteen_manager_token_required
 @post_required
 def view_canteen_notice(request):
-    canteen_manager = request.user_meta.get("manager_model").school
+    canteen_manager = request.user_meta.get("manager_model")
     canteen_notice_bean_list = manager.get_canteen_notice(canteen_manager)
     return json_response_from_object(OK, canteen_notice_bean_list, "canteenNoticeList")
 
@@ -229,3 +229,39 @@ def sm_delete_notice(request):
         return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
     notice.delte_notice(notice_model)
     return json_response(OK, CODE_MESSAGE.get(OK))
+
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def get_all_school_windows(request):
+    school_manager = request.user_meta.get("manager_model")
+    all_windows_list_bean = manager.get_all_school_windows(school_manager)
+    return json_response_from_object(OK, all_windows_list_bean)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def get_all_canteen_windows(request):
+    school_manager = request.user_meta.get("manager_model")
+    all_windows_list_bean = manager.get_all_canteen_windows(school_manager)
+    return json_response_from_object(OK, all_windows_list_bean)
+
+
+@exception_handled
+def search_window_by_name(request):
+    school_id = request.GET.get("school_id")
+    canteen_id = request.GET.get("canteen_id")
+    query_str = request.GET.get("q")
+    window_list_bean = manager.search_canteen_by_name(school_id, canteen_id, query_str)
+    return json_response_from_object(OK, window_list_bean)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def show_window_dish(request):
+    window_id = request.POST.get("window_id")
+    dish_list_bean = dish.get_dish_bean_list_bywin(window_id=window_id)
+    return json_response_from_object(OK, dish_list_bean)

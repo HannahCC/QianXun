@@ -1,6 +1,9 @@
+# -*- encoding=utf-8 -*-
 __author__ = 'Jeremy'
 
 from QianXun.manager.models import SchoolManager, CanteenManager
+from QianXun.account.models import Window
+from QianXun.account.beans import WindowBean
 from QianXun.notice.models import SchoolNotice, CanteenNotice
 from QianXun.manager.beans import ManagerBean
 from QianXun.notice.beans import SchoolNoticeDetailBean, CanteenNoticeDetailBean
@@ -62,3 +65,22 @@ def get_canteen_notice(manager_model):
     return_bean_list = [CanteenNoticeDetailBean(notice) for notice in notice_list]
     return return_bean_list
 
+
+def get_all_school_windows(manager_model):
+    school = manager_model.school
+    windows_list = Window.objects.filter(school_id__exact=school.id)
+    return_bean_list = [WindowBean(window) for window in windows_list]
+    return return_bean_list
+
+
+def get_all_canteen_windows(manager_model):
+    # 一个餐厅管理员只能管理一个餐厅
+    windows_list = Window.objects.filter(canteen_id__exact=manager_model.canteen.id)
+    return_bean_list = [WindowBean(window) for window in windows_list]
+    return return_bean_list
+
+
+def search_canteen_by_name(school_id, canteen_id, query_str):
+    window_list = Window.objects.filter(school_id__exact=school_id, canteen_id__exact=canteen_id,\
+                                    window_name__contains=query_str)
+    return [WindowBean(window) for window in window_list]

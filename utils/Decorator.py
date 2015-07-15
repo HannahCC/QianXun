@@ -46,7 +46,7 @@ def exception_handled(func):
 def post_required(func):
     def _view2(request, *args, **kwargs):
         if request.method != 'POST':
-            _LOGGER.warning('Post menthod required')
+            _LOGGER.error('Post method required')
             return json_response(METHOD_ERROR, CODE_MESSAGE.get(METHOD_ERROR))
         return func(request, *args, **kwargs)
     return _view2
