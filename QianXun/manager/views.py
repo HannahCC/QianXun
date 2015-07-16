@@ -9,12 +9,14 @@ from QianXun.orders.db import dish
 from QianXun.notice.forms import ChangeCNoticeForm, CreateCNoticeForm, ChangeSNoticeForm, CreateSNoticeForm
 from db import manager
 from utils.Serializer import json_response, json_response_from_object
-from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required, exception_handled
+from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required,\
+    exception_handled, manager_token_required
 from utils.SendEmail import email
 from utils.MakeSerialNumber import new_order_id
 from QianXun.settings import ADMIN_EMAIL
 from conf.resp_code import *
 from conf.enum_value import LOGINTYPE
+from conf.default_value import CANTEEN_FLAG, SCHOOL_FLAG
 
 # Create your views here.
 
@@ -66,14 +68,19 @@ def manager_password_reset(request):
         return json_response(PARAM_REQUIRED, manager_password_form.errors)
 
 @exception_handled
-@canteen_manager_token_required
+@manager_token_required
 @post_required
 def view_upper_notice(request):
     pagination_form = PaginationForm(request.POST)
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
-        canteen_manager = request.user_meta.get("manager_model")
-        school_notice_bean_list = manager.get_upper_notice(canteen_manager, pagination_dict)
+        print request.user_meta.get("flag")
+        if request.user_meta.get("flag") == CANTEEN_FLAG:
+            canteen_manager = request.user_meta.get("manager_model")
+            school_notice_bean_list = manager.get_upper_notice(canteen_manager, pagination_dict)
+        else:
+            school_manager = request.user_meta.get("manager_model")
+            school_notice_bean_list = manager.get_all_school_notice(school_manager, pagination_dict)
         return json_response_from_object(OK, school_notice_bean_list, "schoolNoticeList")
     else:
         return json_response(PARAM_REQUIRED, pagination_form.errors)
@@ -191,6 +198,15 @@ def cm_delete_notice(request):
     return json_response(OK, CODE_MESSAGE.get(OK))
 
 
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_show_notice(request):
+    canteen_manager = request.user_meta.get("manager_model")
+    notice_bean_list = notice.find_canteen_notice_list_by_canteen_manager(canteen_manager)
+    return json_response_from_object(OK, notice_bean_list)
+
+
 
 @exception_handled
 @school_manager_token_required
@@ -238,6 +254,16 @@ def sm_delete_notice(request):
         return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
     notice.delte_notice(notice_model)
     return json_response(OK, CODE_MESSAGE.get(OK))
+
+
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def sm_show_notice(request):
+    school_manager = request.user_meta.get("manager_model")
+    notice_bean_list = notice.find_school_notice_list_by_school_manager(school_manager)
+    return json_response_from_object(OK, notice_bean_list)
 
 
 @exception_handled

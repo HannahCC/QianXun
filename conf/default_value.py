@@ -33,3 +33,7 @@ MOB_URL = 'https://api.sms.mob.com/sms/verify'
 MOB_APP_KEY = u'7ad9715ba43a'
 ZONE = '86'
 
+
+#manger flag
+CANTEEN_FLAG = 1
+SCHOOL_FLAG = 0
