@@ -92,7 +92,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-TEMPLATE_URL = '/template/'
+TEMPLATE_URL = '/qianxun/template/'
+TEMPLATE_ROOT = os.path.join(BASE_DIR, "templates")
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
