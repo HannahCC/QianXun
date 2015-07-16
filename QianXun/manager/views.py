@@ -198,6 +198,15 @@ def cm_delete_notice(request):
     return json_response(OK, CODE_MESSAGE.get(OK))
 
 
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_show_notice(request):
+    canteen_manager = request.user_meta.get("manager_model")
+    notice_bean_list = notice.find_canteen_notice_list_by_canteen_manager(canteen_manager)
+    return json_response_from_object(OK, notice_bean_list)
+
+
 
 @exception_handled
 @school_manager_token_required
@@ -245,6 +254,16 @@ def sm_delete_notice(request):
         return json_response(AUTHORFAILED, CODE_MESSAGE.get(AUTHORFAILED))
     notice.delte_notice(notice_model)
     return json_response(OK, CODE_MESSAGE.get(OK))
+
+
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def sm_show_notice(request):
+    school_manager = request.user_meta.get("manager_model")
+    notice_bean_list = notice.find_school_notice_list_by_school_manager(school_manager)
+    return json_response_from_object(OK, notice_bean_list)
 
 
 @exception_handled
