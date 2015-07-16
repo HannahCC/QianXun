@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>哇O管理系统</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link href="../../static/manager/style/login.css" rel='stylesheet' type='text/css' />
+<script type="text/javascript" src="../../static/manager/js/jquery-1.9.0.min.js"></script>
+
+</head>
+<body>
+
+
+<h1>哇O管理系统登录</h1>
+<div class="login-form">
+	<div class="avtar"><img src="../../static/manager/img/avtar.png" /></div>
+	<form id="loginForm">
+		<input type="text" class="text" id="user_name" name="user_name" value="13344445555" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '手机号码';}" >
+		<div class="key"><input type="password" id="password" name="password" value="123456" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Password';}"></div>
+	</form>
+	<div class="signin"><input id ="login" class="text" type="submit" value="登录"></div>
+</div>
+<div class="copy-rights">
+	<p align="center">
+			版权所有 © XXXX公司
+			开发小组 ：fdklfsdklfdskflds
+	</p>
+	<p align="center">联系我们&nbsp;&nbsp; 12345678901&nbsp;&nbsp;&nbsp;&nbsp;2345678@163.com</p>
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+ $("#login").click(
+     	function(){
+     		var user_name = $("#user_name").val();
+     		var password = $("#password").val();
+     		$.ajax({
+     			type: "POST",
+     			url: "http://121.40.84.109/qianxun/1/manager/login", 
+     			processData: false,
+     			data: "login_type=0&user_name="+user_name+"&password="+password,
+			   	success:function(data){
+			    	alert(data); 
+			    	alert($.parseJSON(data));
+			   	},
+			   	error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				    this; // 调用本次AJAX请求时传递的options参数
+				},
+			});
+     	});
+</script>
