@@ -61,6 +61,14 @@ def get_upper_notice(manager_model, pagination_dict):
     return_bean_list = [SchoolNoticeDetailBean(notice) for notice in notice_list]
     return return_bean_list
 
+
+def get_all_school_notice(manager_model, pagination_dict):
+    paginator = get_paginator(pagination_dict)
+    school = manager_model.school
+    notice_list = SchoolNotice.objects.filter(school_id__exact=school.id).order_by('-update_time')[paginator[0]:paginator[1]]
+    return [SchoolNoticeDetailBean(notice) for notice in notice_list]
+
+
 def get_canteen_notice(manager_model, pagination_dict):
     paginator = get_paginator(pagination_dict)
     canteen = manager_model.canteen

@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from utils.Serializer import json_response
 from conf.resp_code import *
-from conf.default_value import TOKEN, VERIFY_CODE_INVALID
+from conf.default_value import TOKEN, VERIFY_CODE_INVALID, CANTEEN_FLAG, SCHOOL_FLAG
 from QianXun.account.db import window, customer, verifycode
 from QianXun.manager.db import manager
 
@@ -170,5 +170,37 @@ def canteen_manager_token_required(func):
         except ObjectDoesNotExist:
             _LOGGER.info('Token not in db for Canteen Manager.')
             return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
+        return func(request, *args, **kwargs)
+    return _view3
+
+
+def manager_token_required(func):
+    def _view3(request, *args, **kwargs):
+        post = request.POST
+        if not post or not post.get('token'):
+            _LOGGER.info('Token Required for Manager.')
+            return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
+        token = post.get('token')
+        user_meta = {}
+        try:
+            my_manager = manager.canteen_get_by_token(token)
+            _LOGGER.info('Token hit in db for Manager User')
+            user_meta.update({'manager_model': my_manager})
+            user_meta.update({"flag": CANTEEN_FLAG})
+            request.user_meta = user_meta
+        except ObjectDoesNotExist:
+            pass
+            # _LOGGER.info('Token not in db for Canteen Manager.')
+            # return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
+        if user_meta.get("flag",None) is None:
+            try:
+                my_manager = manager.school_get_by_token(token)
+                _LOGGER.info('Token hit in db for School User')
+                user_meta.update({'manager_model': my_manager})
+                user_meta.update({"flag": SCHOOL_FLAG})
+                request.user_meta = user_meta
+            except ObjectDoesNotExist:
+                _LOGGER.info('Token not in db for Manager.')
+                return json_response(TOKEN_INVALID, CODE_MESSAGE.get(TOKEN_INVALID))
         return func(request, *args, **kwargs)
     return _view3
