@@ -1,12 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 <title>哇O管理系统</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<link href="../../static/manager/style/login.css" rel='stylesheet' type='text/css' />
-<script type="text/javascript" src="../../static/manager/js/jquery-1.9.0.min.js"></script>
+<link href="/static/manager/style/login.css" rel='stylesheet' type='text/css' />
+<script type="text/javascript" src="/static/manager/js/jquery-1.9.0.min.js"></script>
 
 </head>
 <body>
@@ -14,10 +13,13 @@
 
 <h1>哇O管理系统登录</h1>
 <div class="login-form">
-	<div class="avtar"><img src="../../static/manager/img/avtar.png" /></div>
+	<div class="avtar"><img src="/static/manager/img/avtar.png" /></div>
 	<form id="loginForm">
+		<input type="radio" class="radio" name="login_type" value="0">学校管理员
+		<input type="radio" class="radio" name="login_type" value="1" >食堂管理员
 		<input type="text" class="text" id="user_name" name="user_name" value="13344445555" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '手机号码';}" >
 		<div class="key"><input type="password" id="password" name="password" value="123456" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Password';}"></div>
+		<div class="tips"><span id="tip"></span></div>
 	</form>
 	<div class="signin"><input id ="login" class="text" type="submit" value="登录"></div>
 </div>
@@ -35,20 +37,31 @@
 <script type="text/javascript">
  $("#login").click(
      	function(){
+     		var tip = document.getElementById("tip");
+     		var login_type = $('input:radio[name="login_type"]:checked').val();
+     		if(login_type == undefined){tip.innerText = "请选择用户类别";return false;}
      		var user_name = $("#user_name").val();
+     		if(user_name == "手机号码"){tip.innerText  = "请输入用户名，即您的手机号码。";return false;}
      		var password = $("#password").val();
+     		if(password == "Password"){tip.innerText  = "请输入密码，初始密码为123456。";return false;}
      		$.ajax({
      			type: "POST",
-     			url: "http://121.40.84.109/qianxun/1/manager/login", 
+     			url: "/qianxun/1/manager/login", 
      			processData: false,
-     			data: "login_type=0&user_name="+user_name+"&password="+password,
+     			data: "login_type="+login_type+"&user_name="+user_name+"&password="+password,
 			   	success:function(data){
-			    	alert(data); 
-			    	alert($.parseJSON(data));
+			    	alert(data.status); 
+			   		if(data.status == 0){
+			   			var newpage = window.location.href = "/qianxun/template/manager/mgcenter.html";
+			   			newpage.document.getElementById("token").innerText = data.token;
+			   		}else{
+			   			tip.innerText = data.data.error_info;
+			   		}
 			   	},
 			   	error:function (XMLHttpRequest, textStatus, errorThrown) {
 				    // 通常 textStatus 和 errorThrown 之中
 				    // 只有一个会包含信息
+  					alert("An error occurred!");
 				    this; // 调用本次AJAX请求时传递的options参数
 				},
 			});
