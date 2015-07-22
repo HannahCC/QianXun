@@ -77,11 +77,14 @@ def view_upper_notice(request):
         print request.user_meta.get("flag")
         if request.user_meta.get("flag") == CANTEEN_FLAG:
             canteen_manager = request.user_meta.get("manager_model")
+            total = manager.get_upper_notice_number(canteen_manager)
             school_notice_bean_list = manager.get_upper_notice(canteen_manager, pagination_dict)
         else:
             school_manager = request.user_meta.get("manager_model")
+            total = manager.get_all_school_notice_number(school_manager)
             school_notice_bean_list = manager.get_all_school_notice(school_manager, pagination_dict)
-        return json_response_from_object(OK, school_notice_bean_list, "schoolNoticeList")
+        result = {"total":total,"rows":school_notice_bean_list}
+        return json_response_from_object(OK, result)
     else:
         return json_response(PARAM_REQUIRED, pagination_form.errors)
 
@@ -94,8 +97,10 @@ def view_canteen_notice(request):
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
         canteen_manager = request.user_meta.get("manager_model")
+        total = manager.get_canteen_notice_number(canteen_manager)
         canteen_notice_bean_list = manager.get_canteen_notice(canteen_manager, pagination_dict)
-        return json_response_from_object(OK, canteen_notice_bean_list, "canteenNoticeList")
+        result = {"total":total,"rows":canteen_notice_bean_list}
+        return json_response_from_object(OK, result)
     else:
          return json_response(PARAM_REQUIRED, pagination_form.errors)
 

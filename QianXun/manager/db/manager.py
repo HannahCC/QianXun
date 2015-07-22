@@ -57,24 +57,42 @@ def update_password(manager_model, password_dict):
 def get_upper_notice(manager_model, pagination_dict):
     paginator = get_paginator(pagination_dict)
     canteen = manager_model.canteen
-    notice_list = SchoolNotice.objects.filter(school_id__exact=canteen.school_id).order_by('-update_time')[paginator[0]:paginator[1]]
+    notice_list = SchoolNotice.objects.filter(school_id__exact=canteen.school_id,is_valid=1).order_by('-update_time')[paginator[0]:paginator[1]]
     return_bean_list = [SchoolNoticeDetailBean(notice) for notice in notice_list]
     return return_bean_list
+
+
+def get_upper_notice_number(manager_model):
+    canteen = manager_model.canteen
+    notice_list = SchoolNotice.objects.filter(school_id__exact=canteen.school_id,is_valid=1)
+    return len(notice_list)
 
 
 def get_all_school_notice(manager_model, pagination_dict):
     paginator = get_paginator(pagination_dict)
     school = manager_model.school
-    notice_list = SchoolNotice.objects.filter(school_id__exact=school.id).order_by('-update_time')[paginator[0]:paginator[1]]
+    notice_list = SchoolNotice.objects.filter(school_id__exact=school.id,is_valid=1).order_by('-update_time')[paginator[0]:paginator[1]]
     return [SchoolNoticeDetailBean(notice) for notice in notice_list]
+
+
+def get_all_school_notice_number(manager_model):
+    school = manager_model.school
+    notice_list = SchoolNotice.objects.filter(school_id__exact=school.id,is_valid=1)
+    return len(notice_list)
 
 
 def get_canteen_notice(manager_model, pagination_dict):
     paginator = get_paginator(pagination_dict)
     canteen = manager_model.canteen
-    notice_list = CanteenNotice.objects.filter(canteen_id__exact=canteen.id).order_by('-update_time')[paginator[0]:paginator[1]]
+    notice_list = CanteenNotice.objects.filter(canteen_id__exact=canteen.id,is_valid=1).order_by('-update_time')[paginator[0]:paginator[1]]
     return_bean_list = [CanteenNoticeDetailBean(notice) for notice in notice_list]
     return return_bean_list
+
+
+def get_canteen_notice_number(manager_model):
+    canteen = manager_model.canteen
+    notice_list = CanteenNotice.objects.filter(canteen_id__exact=canteen.id,is_valid=1)
+    return len(notice_list)
 
 
 def get_all_school_windows(manager_model):

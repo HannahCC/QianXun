@@ -52,6 +52,7 @@
 				success:function(data){
 					if(data.status == 0){
      					window.location.assign("/qianxun/template/manager/mgcenter.html");
+						localStorage.setItem("type",login_type);
 						localStorage.setItem("token",data.data.token);
 					}else{
 						tip.innerText = data.data.error_info;
