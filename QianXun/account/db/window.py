@@ -115,7 +115,6 @@ def update_profile(window_model, window_profile_dict):
     window_model.img_addr = window_profile_dict['img_addr']
     window_model.window_name = window_profile_dict['window_name']
     window_model.window_status = window_profile_dict['window_status']
-    window_model.canteen = window_profile_dict['canteen']
     window_model.save()
     return window_model
 

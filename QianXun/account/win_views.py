@@ -25,6 +25,7 @@ def window_register(request):
         window_dict = window_form.cleaned_data
         if window.isUnregistered(window_dict['user_name']):
             window_model = window.create(window_form, False)
+            window_model.user_name = window_dict['user_name']
             window_model.school = window_dict['canteen'].school
             window.create(window_model)
             verify_code_model = request.verify_code_meta['verify_code_model']

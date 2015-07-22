@@ -1,19 +1,14 @@
-<table class="notice">
-
-</table> 
+<table id="notice"></table> 
+<div id="window"></div>
 <script type="text/javascript">
-    var token = "b857ec3f08684b05bf7f81799cac8922";
-    $('.notice').datagrid({   
-        url:'/qianxun/1/manager/school/notice',
-        queryParams: {
-            token: token,
-            page: 1,
-            count: 20,
-        },
+    var token =localStorage.getItem("token");
+    $('#notice').datagrid({   
         fitColumns:true,
         singleSelect:true,
+        rownumbers:true,
         pagination:true,
-        pageSize: 20,
+        pageSize: 1,
+        pageList:[1,2,5],
         loadMsg:'载入数据中，请稍等...',
         columns:[[   
             {field:'title',title:'标题',width:500,algin:'center',sortable:true},   
@@ -33,5 +28,60 @@
                 content:"管理员："+data.manager+"&nbsp;&nbsp;&nbsp;&nbsp;发布时间："+data.update_time+"<br>"+data.content,
             });  
         }
+    });
+
+    var jsonstr = '{"total":2,"rows":[{"title":"我是title","manager":"我是manager","update_time":"我是update_time","content":"我是content"},{"title":"我是title2","manager":"我是manager2","update_time":"我是update_time2","content":"我是content2"}]}';
+
+    var data = $.parseJSON(jsonstr);    
+    $('#notice').datagrid('loadData', data); //将数据绑定到datagrid  
+    /*
+
+    //初始化dategrid   
+    $('#notice').datagrid({   
+        url:null,   
+        fitColumns:true,
+        singleSelect:true,
+        pagination:true,   
+        pageSize:20,   
+        pageNumber:1,   
+        rownumbers:true,  
+        loadMsg:'载入数据中，请稍等...', 
+        doPagination:function(pPageIndex, pPageSize) { 
+            //定义查询条件      
+            var gridOpts = $('#notice').datagrid('options');  
+            var queryCondition_opts = {pageNumber:gridOpts.pageNumber,pageSize:gridOpts.pageSize}; 
+            var queryCondition = {token:token};   
+            var queryParams = $.extend(queryCondition,queryCondition_opts);
+            //异步获取数据到javascript对象，入参为查询条件和页码信息 
+            $.ajax({
+                type: "POST",
+                url: '/qianxun/1/manager/school/notice',
+                data: queryParams,
+                success:function(data){
+                    if(data.status == 0){
+                        $('#notice').datagrid('loadData',{"total" : oData.page.recordCount,"rows" : oData.data}); 
+                    }else{
+                        tip.innerText = data.data.error_info;
+                    }
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown) {
+                    ajax_error_catcher(XMLHttpRequest, textStatus, errorThrown);
+                    this; // 调用本次AJAX请求时传递的options参数
+                },
+            });   
+        }, 
+        onClickRow:function(index, data){
+            $('#window').window({
+                modal:true,
+                shadow:true,
+                top:100,
+                width:1000,
+                height:300,
+                doSize:true,
+                title:data.title,
+                content:"管理员："+data.manager+"&nbsp;&nbsp;&nbsp;&nbsp;发布时间："+data.update_time+"<br>"+data.content,
+            });  
+        } 
     }); 
+    */
 </script>

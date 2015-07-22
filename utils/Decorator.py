@@ -69,7 +69,7 @@ def verify_code_required(func):
                 request.verify_code_meta = verify_code_meta
             else:
                 verify_code_model.delete()
-                _LOGGER.info('Verify_code not in db for %s ' % user_name)
+                _LOGGER.info('Verify_code is delete for %s ' % user_name)
                 return json_response(CODE_INVALID, CODE_MESSAGE.get(CODE_INVALID))
         except ObjectDoesNotExist:
             _LOGGER.info('Verify_code not in db for %s ' % user_name)

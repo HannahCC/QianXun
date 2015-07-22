@@ -41,7 +41,7 @@ class WindowProfileForm(forms.ModelForm):
 
     class Meta:
         model = Window
-        fields = ['canteen', 'name', 'window_status', 'img_addr']
+        fields = ['name', 'window_status', 'img_addr']
 
 
 class CustomerForm(forms.ModelForm):
