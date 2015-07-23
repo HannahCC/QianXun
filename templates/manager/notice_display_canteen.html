@@ -1,0 +1,20 @@
+<table class="notice_canteen_display"></table>
+<div id ="window"></div>
+<script type="text/javascript">
+    var token =localStorage.getItem("token");
+    var url = "/qianxun/1/manager/canteen/notice";
+    newNoticeDatagrid(".notice_canteen_display");
+    $('.notice_canteen_display').datagrid({   
+        onClickRow:function(index, data){
+            newWindow(data.title,"管理员："+data.manager+"&nbsp;&nbsp;&nbsp;&nbsp;发布时间："+data.updateTime+"<br>"+data.content);  
+        }
+    });
+    /*  do pagination */
+    var pg = $(".notice_canteen_display").datagrid("getPager"); 
+    $(pg).pagination({
+        onSelectPage: function (pageNumber, pageSize) {
+            getNoticeData(".notice_canteen_display",url,pageNumber, pageSize); 
+        } 
+    });
+    getNoticeData(".notice_canteen_display",url,1,20);
+</script>

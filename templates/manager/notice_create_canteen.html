@@ -1,0 +1,47 @@
+<div id="notice_create" class="panel_form">
+	<div class="form_item">
+		<label for="title">标题：</label>
+		<input id="notice_title" class="easyui-validatebox" type="text" name="title" data-options="required:true,validType:'length[1,20]',missingMessage:'请输入标题',invalidMessage:'请输入长度为1-20的字符'" />
+	</div> 
+	<div class="form_item">
+		<label for="content">内容：</label>
+		<textarea id="notice_content" rows="20" cols="80" name="content" class="easyui-validatebox" data-options="required:true,validType:'length[5,5000]',missingMessage:'请输入通知内容',invalidMessage:'请输入长度为1-5000的字符'" style="vertical-align: top;"></textarea>
+	</div>
+	<div class="form_item">
+		<button onclick="form_submit()" style="margin: 0 38px;">确定</button>
+	</div> 
+</div>
+
+<script type="text/javascript">
+    var token = localStorage.getItem("token");
+    function form_submit(){
+    	var title = $('#notice_title').val();
+    	var content = $('#notice_content').val();
+		$.ajax({
+	        type: "POST",
+	        url: "/qianxun/1/manager/create/canteen/notice",
+	        data: {token:token,title:title,content:content},
+	        beforeSend:function(XMLHttpRequest){
+	        	var valid1 = $("#notice_title").validatebox("isValid");
+	        	var valid2 = $("#notice_content").validatebox("isValid");
+				if(!valid1||!valid2){
+					newMessager("提示","请按照提示输入合法数据。");
+					return false;
+				}
+				return true;
+	        },
+	        success:function(data){
+	            if(data.status == 0){
+	                newMessager("提示","通知添加成功！");
+
+	            }else{
+	                newMessager("出现错误",data.data.error_info);
+	            }
+	        },
+	        error:function (XMLHttpRequest, textStatus, errorThrown) {
+	            ajax_error_catcher(XMLHttpRequest, textStatus, errorThrown);
+	           this; // 调用本次AJAX请求时传递的options参数
+	        },
+	    }); 
+	}
+</script>

@@ -1,0 +1,20 @@
+<table class="notice_display_school"></table>
+<div id ="window"></div>
+<script type="text/javascript">
+    var token =localStorage.getItem("token");
+    var url = "/qianxun/1/manager/school/notice";
+    newNoticeDatagrid(".notice_display_school");
+    $('.notice_display_school').datagrid({
+        onClickRow:function(index, data){
+            newWindow(data.title,"管理员："+data.manager+"&nbsp;&nbsp;&nbsp;&nbsp;发布时间："+data.updateTime+"<br>"+data.content); 
+        }
+    });
+    /*  do pagination */
+    var pg = $(".notice_display_school").datagrid("getPager"); 
+    $(pg).pagination({
+        onSelectPage: function (pageNumber, pageSize) {
+            getNoticeData(".notice_display_school",url,pageNumber, pageSize); 
+        } 
+    });
+    getNoticeData(".notice_display_school",url,1,20);
+</script>

@@ -1,0 +1,61 @@
+<table class="notice_delete_school"></table> 
+<div id ="window"></div>
+<div class ="another_window"></div>
+<script type="text/javascript">
+    var token =localStorage.getItem("token");
+    var url = "/qianxun/1/manager/school/notice";
+    newNoticeDatagrid(".notice_delete_school");
+    $('.notice_delete_school').datagrid({  
+        onClickRow:function(index, data){
+            $('.another_window').dialog({
+                modal:true,
+                width:300,
+                height:150,
+                title:"删除公告",
+                content:'确定删除公告"'+data.title+'"?',
+                buttons:[{
+                    text:'确定',
+                    handler:function(){
+                        $.ajax({
+                            type: "POST",
+                            url: "/qianxun/1/manager/delete/school/notice",
+                            data: {token:token,notice_id:data.id},
+                            success:function(data){
+                                if(data.status == 0){
+                                    $('.another_window').dialog('close');
+                                    newMessager("提示","删除修改成功！");
+                                }else{
+                                    newMessager("出现错误",data.data.error_info);
+                                }
+                            },
+                            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                                ajax_error_catcher(XMLHttpRequest, textStatus, errorThrown);
+                                this; // 调用本次AJAX请求时传递的options参数
+                            },
+                        }); 
+                    }
+                },{
+                    text:'取消',
+                    handler:function(){
+                        $('.another_window').dialog('close');
+                    }
+                }]
+            });
+        }
+    });
+    /*  do pagination */
+    var pg = $(".notice_delete_school").datagrid("getPager"); 
+    $(pg).pagination({
+        onSelectPage: function (pageNumber, pageSize) {
+            getNoticeData(".notice_delete_school",url,pageNumber, pageSize); 
+        } 
+    });
+    getNoticeData(".notice_delete_school",url,1,20);
+
+
+    function setNoticeData(id,title,content){
+        $('#noticeId').val(id);
+        $('#noticeTitle').val(title);
+        $('#noticeContent').val(content);
+    }
+</script>

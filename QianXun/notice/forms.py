@@ -24,7 +24,7 @@ class ChangeCNoticeForm(forms.ModelForm):
 
     class Meta:
         model = CanteenNotice
-        fields = ['title', 'content', 'is_valid']
+        fields = ['title', 'content']
 
 
 class CreateCNoticeForm(forms.ModelForm):
@@ -35,7 +35,7 @@ class CreateCNoticeForm(forms.ModelForm):
 
     class Meta:
         model = CanteenNotice
-        fields = ['title', 'content', 'is_valid']
+        fields = ['title', 'content']
 
 class ChangeSNoticeForm(forms.ModelForm):
     token = forms.CharField(max_length=64)
@@ -45,7 +45,7 @@ class ChangeSNoticeForm(forms.ModelForm):
 
     class Meta:
         model = SchoolNotice
-        fields = ['title', 'content', 'is_valid']
+        fields = ['title', 'content']
 
 
 class CreateSNoticeForm(forms.ModelForm):
@@ -56,5 +56,5 @@ class CreateSNoticeForm(forms.ModelForm):
 
     class Meta:
         model = SchoolNotice
-        fields = ['title', 'content', 'is_valid']
+        fields = ['title', 'content']
 
