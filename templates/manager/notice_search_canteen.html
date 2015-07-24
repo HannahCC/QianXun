@@ -19,12 +19,12 @@
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
             var key_words = $("#searchbar").val();
-            getNoticeDataWithKeyword(".notice_search_canteen", url, token, pageNumber, pageSize, key_words);
+            getAjaxData(".notice_search_canteen", url,{token:token,page:pageNumber,count:pageSize,key_words:key_words},"暂无公告");
         } 
     });
 
     function notice_search(){
         var key_words = $("#searchbar").val();
-        getNoticeDataWithKeyword(".notice_search_canteen", url, token, 1, 20, key_words);
+        getAjaxData(".notice_search_canteen", url,{token:token,page:1,count:20,key_words:key_words},"暂无公告");
     }
 </script>

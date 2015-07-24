@@ -18,21 +18,19 @@
                 },
                 onClose:function(){
                     document.getElementsByClassName("another_window").innerHTML = "";
-                    getNoticeData(".notice_modify_canteen",url,token,1,20);
+                    getAjaxData(".notice_modify_canteen", url,{token:token,page:1,count:20},"暂无公告");
                 }
             });
-                
-
         }
     });
     /*  do pagination */
     var pg = $(".notice_modify_canteen").datagrid("getPager"); 
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
-            getNoticeData(".notice_modify_canteen",url,token,pageNumber, pageSize); 
+            getAjaxData(".notice_modify_canteen", url,{token:token,page:pageNumber,count:pageSize},"暂无公告");
         } 
     });
-    getNoticeData(".notice_modify_canteen",url,token,1,20);
+    getAjaxData(".notice_modify_canteen", url,{token:token,page:1,count:20},"暂无公告");
 
 
     function setNoticeData(id,title,content){

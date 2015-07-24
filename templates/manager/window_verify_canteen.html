@@ -1,0 +1,45 @@
+<table class="window_display_canteen"></table>
+<div id ="window"></div>
+<div class ="another_window" ></div>
+<script type="text/javascript">
+    var token =localStorage.getItem("token");
+    var url = "/qianxun/1/manager/canteen/windows";
+    newWindowDatagrid(".window_display_canteen");
+    $('.window_display_canteen').datagrid({
+        onClickRow:function(index, data){
+            $('.another_window').window({
+                href:'window_verify_canteen_form.html',
+                modal:true,
+                width:300,
+                height:150,
+                title:"窗口审核",
+                onLoad:function(){
+                    setWindowStatus(data.id,data.windowName);
+                },
+                onClose:function(){
+                    document.getElementsByClassName("another_window").innerHTML = "";
+                    getAjaxData(".window_display_canteen", url,{token:token,page:1,count:20,order_by:'window_status'},"暂无窗口");
+                }
+            });
+        }
+    });
+    /*  do pagination */
+    var pg = $(".window_display_canteen").datagrid("getPager"); 
+    $(pg).pagination({
+        onSelectPage: function (pageNumber, pageSize) {
+            getAjaxData(".window_display_canteen", url,{token:token,page:pageNumber,count:pageSize,order_by:'window_status'},"暂无窗口");
+        } 
+    });
+    getAjaxData(".window_display_canteen", url,{token:token,page:1,count:20,order_by:'window_status'},"暂无窗口");
+
+    function setWindowStatus(id,name){
+        var IdList = document.getElementsByName("windowId");
+        for(var i=0;i<IdList.length;i++){
+            IdList[i].value = id;
+        }
+        var NameList = document.getElementsByName("windowName");
+        for(var i=0;i<NameList.length;i++){
+            NameList[i].innerHTML = name;
+        }
+    }
+</script>

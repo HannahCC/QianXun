@@ -95,21 +95,38 @@ def get_canteen_notice_number(manager_model):
     return len(notice_list)
 
 
-def get_all_school_windows(manager_model):
+def get_school_windows(manager_model, pagination_dict):
+    paginator = get_paginator(pagination_dict)
     school = manager_model.school
-    windows_list = Window.objects.filter(school_id__exact=school.id)
+    windows_list = Window.objects.filter(school_id__exact=school.id,is_valid=1).order_by('canteen','-sales')[paginator[0]:paginator[1]]
     return_bean_list = [WindowBean(window) for window in windows_list]
     return return_bean_list
 
 
-def get_all_canteen_windows(manager_model):
+def get_school_windows_number(manager_model):
+    school = manager_model.school
+    windows_list = Window.objects.filter(school_id__exact=school.id,is_valid=1)
+    return len(windows_list)
+    
+
+def get_canteen_windows(manager_model, pagination_dict):
     # 一个餐厅管理员只能管理一个餐厅
-    windows_list = Window.objects.filter(canteen_id__exact=manager_model.canteen.id)
+    paginator = get_paginator(pagination_dict)
+    order_by = pagination_dict['order_by']
+    if not order_by:
+        order_by = '-sales'
+    windows_list = Window.objects.filter(canteen_id__exact=manager_model.canteen.id,is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
     return_bean_list = [WindowBean(window) for window in windows_list]
     return return_bean_list
+
+
+def get_canteen_windows_number(manager_model):
+    canteen = manager_model.canteen
+    windows_list = Window.objects.filter(canteen_id__exact=canteen.id,is_valid=1)
+    return len(windows_list)
 
 
 def search_canteen_by_name(school_id, canteen_id, query_str):
     window_list = Window.objects.filter(school_id__exact=school_id, canteen_id__exact=canteen_id,\
-                                    window_name__contains=query_str)
+                                    is_valid=1, window_name__contains=query_str)
     return [WindowBean(window) for window in window_list]

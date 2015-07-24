@@ -18,7 +18,7 @@
                 },
                 onClose:function(){
                     document.getElementsByClassName("another_window").innerHTML = "";
-                    getNoticeData(".notice_modify_school",url,token,1,20);
+                    getAjaxData(".notice_modify_school", url,{token:token,page:1,count:20},"暂无公告");
                 }
             });
                 
@@ -30,9 +30,10 @@
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
             getNoticeData(".notice_modify_school",url,token,pageNumber, pageSize); 
+            getAjaxData(".notice_modify_school", url,{token:token,page:pageNumber,count:pageSize},"暂无公告");
         } 
     });
-    getNoticeData(".notice_modify_school",url,token,1,20);
+    getAjaxData(".notice_modify_school", url,{token:token,page:1,count:20},"暂无公告");
 
 
     function setNoticeData(id,title,content){

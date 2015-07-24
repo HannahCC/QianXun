@@ -1,0 +1,46 @@
+<div style="margin-top: 10px;margin-left: 40px;">
+    <span>将窗口“<span name="windowName"></span>”的状态设置为：</span>
+    <select name="windowStatus">
+        <option value="2">审核通过</option>
+        <option value="3">审核未通过</option>
+    </select> <br/><br/>
+    <input name="windowId" hidden="true"/>
+    <button onclick="form_submit()" style="left: 40%;position: absolute;">确定</button>
+    
+</div>
+
+<script type="text/javascript">
+    var token = localStorage.getItem("token");
+    function form_submit(){
+        var idList = document.getElementsByName("windowId");
+        var statusList = document.getElementsByName("windowStatus");
+        var windowId = idList[idList.length-1].value;
+        var windowStatus = statusList[statusList.length-1].value;
+        $.ajax({
+            type: "POST",
+            url: "/qianxun/1/manager/verify",
+            data: {token:token,window_id:windowId,window_status:windowStatus},
+            beforeSend:function(XMLHttpRequest){
+                if(windowStatus!=2&&windowStatus!=3){
+                    newMessager("提示","请输入合法数据。");
+                    return false;
+                }
+                return true;
+            },
+            success:function(data){
+                if(data.status == 0){
+                    $('.another_window').window('close');
+                    newMessager("提示","窗口状态修改成功。");
+                }else{
+                    newMessager("出现错误",data.data.error_info);
+                }
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                ajax_error_catcher(XMLHttpRequest, textStatus, errorThrown);
+                this; // 调用本次AJAX请求时传递的options参数
+            },
+        }); 
+    }
+
+
+</script>

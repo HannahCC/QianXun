@@ -146,17 +146,10 @@ def delete_token(window_model):
     return window_model
 
 
-def permit(window_id):
+def update_status(window_verify_dict):
+    window_id = window_verify_dict['window_id']
+    window_status = window_verify_dict['window_status']
     window_model = Window.objects.get(id__exact=window_id)
-    window_model.window_status = WINDOW_STATUS[1][0]
+    window_model.window_status = window_status
     window_model.save()
-    window_model_bean = WindowBean(window_model)
-    return window_model_bean
-
-
-def not_permit(window_id):
-    window_model = Window.objects.get(id__exact=window_id)
-    window_model.window_status = WINDOW_STATUS[2][0]
-    window_model.save()
-    window_model_bean = WindowBean(window_model)
-    return window_model_bean
+    return window_model

@@ -3,7 +3,7 @@ __author__ = 'Jeremy'
 
 from django import forms
 
-from conf.enum_value import LOGINTYPE
+from conf.enum_value import LOGINTYPE, WINDOW_STATUS
 
 
 class LoginForm(forms.Form):
@@ -31,3 +31,18 @@ class PaginationForm(forms.Form):
     token = forms.CharField(max_length=64)
     page = forms.IntegerField(initial=1, required=False)
     count = forms.IntegerField(initial=10, max_value=20, required=False)
+    order_by = forms.CharField(max_length=64, required=False)
+
+class WindowVerifyForm(forms.Form):
+    token = forms.CharField(max_length=64)
+    window_id = forms.IntegerField()
+    window_status = forms.ChoiceField(choices=WINDOW_STATUS)
+
+    def clean_window_status(self):
+        cleaned_data = super(WindowVerifyForm, self).clean()
+        window_status_str = cleaned_data.get('window_status', '')
+        window_status = int(window_status_str)
+        if window_status!=WINDOW_STATUS[1][0] and window_status!=WINDOW_STATUS[2][0] :
+            raise forms.ValidationError(u'请输入合法的窗口状态')
+        return window_status_str
+

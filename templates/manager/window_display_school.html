@@ -1,0 +1,36 @@
+<table class="window_display_school"></table>
+<div id ="window"></div>
+<div class ="another_window" ></div>
+<script type="text/javascript">
+    var token =localStorage.getItem("token");
+    var url = "/qianxun/1/manager/school/windows";
+    newWindowDatagrid(".window_display_school");
+    $('.window_display_school').datagrid({
+        onClickRow:function(index, data){
+            var window_dish_url = "/qianxun/1/manager/window/dish"
+            $('.another_window').window({
+                href:'window_dishes_display.html',
+                modal:true,
+                width:800,
+                height:500,
+                title:"窗口菜品",
+                onLoad:function(){
+                    getAjaxData(".window_dishes_display", window_dish_url,{token:token,window_id:data.id},"该窗口暂无菜品");
+                },
+                onClose:function(){
+                    document.getElementsByClassName("another_window").innerHTML = "";
+                }
+            });
+        }
+    });
+    /*  do pagination */
+    var pg = $(".window_display_school").datagrid("getPager"); 
+    $(pg).pagination({
+        onSelectPage: function (pageNumber, pageSize) {
+            getAjaxData(".window_display_school", url,{token:token,page:pageNumber,count:pageSize},"暂无窗口");
+        } 
+    });
+    getAjaxData(".window_display_school", url,{token:token,page:1,count:20},"暂无窗口");
+
+
+</script>

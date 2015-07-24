@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
-from forms import LoginForm, ManagerPasswordForm, PaginationForm
+from forms import LoginForm, ManagerPasswordForm, PaginationForm, WindowVerifyForm
 from QianXun.account.db import window
 from QianXun.notice.db import notice
 from QianXun.orders.db import dish
@@ -147,33 +147,6 @@ def cm_find_notice_by_keyword(request):
 @exception_handled
 @canteen_manager_token_required
 @post_required
-def view_window_info(request):
-    window_id = request.POST.get("window_id")
-    window_bean = window.get_by_id(window_id)
-    return json_response_from_object(OK, window_bean)
-
-
-@exception_handled
-@canteen_manager_token_required
-@post_required
-def permit_window(request):
-    window_id = request.POST.get("window_id")
-    window_model_bean = window.permit(window_id)
-    return json_response_from_object(OK, window_model_bean)
-
-
-@exception_handled
-@canteen_manager_token_required
-@post_required
-def not_permit_window(request):
-    window_id = request.POST.get("window_id")
-    window_model_bean = window.not_permit(window_id)
-    return json_response_from_object(OK, window_model_bean)
-
-
-@exception_handled
-@canteen_manager_token_required
-@post_required
 def cm_modify_own_notice(request):
     change_notice_form = ChangeCNoticeForm(request.POST)
     if change_notice_form.is_valid():
@@ -290,20 +263,33 @@ def sm_show_notice(request):
 @exception_handled
 @school_manager_token_required
 @post_required
-def get_all_school_windows(request):
-    school_manager = request.user_meta.get("manager_model")
-    all_windows_list_bean = manager.get_all_school_windows(school_manager)
-    return json_response_from_object(OK, all_windows_list_bean)
+def get_school_windows(request):
+    pagination_form = PaginationForm(request.POST)
+    if pagination_form.is_valid():
+        pagination_dict = pagination_form.cleaned_data
+        school_manager = request.user_meta.get("manager_model")
+        total = manager.get_school_windows_number(school_manager)
+        windows_list_bean = manager.get_school_windows(school_manager,pagination_dict)
+        result = {"total":total,"rows":windows_list_bean}
+        return json_response_from_object(OK, result)
+    else:
+         return json_response(PARAM_REQUIRED, pagination_form.errors)
 
 
 @exception_handled
 @canteen_manager_token_required
 @post_required
-def get_all_canteen_windows(request):
-    school_manager = request.user_meta.get("manager_model")
-    all_windows_list_bean = manager.get_all_canteen_windows(school_manager)
-    return json_response_from_object(OK, all_windows_list_bean)
-
+def get_canteen_windows(request):
+    pagination_form = PaginationForm(request.POST)
+    if pagination_form.is_valid():
+        pagination_dict = pagination_form.cleaned_data
+        canteen_manager = request.user_meta.get("manager_model")
+        total = manager.get_canteen_windows_number(canteen_manager)
+        windows_list_bean = manager.get_canteen_windows(canteen_manager,pagination_dict)
+        result = {"total":total,"rows":windows_list_bean}
+        return json_response_from_object(OK, result)
+    else:
+         return json_response(PARAM_REQUIRED, pagination_form.errors)
 
 @exception_handled
 def search_window_by_name(request):
@@ -315,9 +301,22 @@ def search_window_by_name(request):
 
 
 @exception_handled
-@canteen_manager_token_required
+@manager_token_required
 @post_required
 def show_window_dish(request):
     window_id = request.POST.get("window_id")
     dish_list_bean = dish.get_dish_bean_list_bywin(window_id=window_id)
     return json_response_from_object(OK, dish_list_bean)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def verify_window(request):
+    window_verify_form = WindowVerifyForm(request.POST)
+    if window_verify_form.is_valid():
+        window_verify_dict = window_verify_form.cleaned_data
+        window_model = window.update_status(window_verify_dict)
+        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+    else:
+        return json_response(PARAM_REQUIRED, window_verify_form.errors)

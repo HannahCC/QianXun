@@ -1,5 +1,5 @@
 __author__ = 'Hannah'
-
+from conf.enum_value import WINDOW_STATUS
 
 class BuildingBean:
     def __init__(self, building_model):
@@ -36,6 +36,7 @@ class WindowBean:
         self.name = window_model.name
         self.windowName = window_model.window_name
         self.windowStatus = window_model.window_status
+        self.windowStatusDesc = WINDOW_STATUS[window_model.window_status-1][1]
         self.imgAddr = window_model.img_addr
         self.sales = window_model.sales
         self.grade = window_model.grade

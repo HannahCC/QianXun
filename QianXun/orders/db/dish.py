@@ -22,18 +22,18 @@ def get_dish_list_cost(particular_dish_model_list):
     return cost
 
 
-def get_dish_list_bywin(window_id, pagination_dict, order_by='sales'):
+def get_dish_list_bywin(window_id, pagination_dict, order_by='-sales'):
     paginator = get_paginator(pagination_dict)
     dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
     return dish_model_list
 
 
-def get_dish_bean_list_bywin(window_id, pagination_dict=None, order_by='sales'):
+def get_dish_bean_list_bywin(window_id, pagination_dict=None, order_by='-sales'):
     if pagination_dict:
         paginator = get_paginator(pagination_dict)
         dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
     else:
-        dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1)
+        dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1).order_by(order_by)
     dish_bean_list = []
     for dish_model in dish_model_list:
         dish_bean = dish_model_to_bean(dish_model)
@@ -41,7 +41,7 @@ def get_dish_bean_list_bywin(window_id, pagination_dict=None, order_by='sales'):
     return dish_bean_list
 
 
-def get_dish_bean_list_byname(school_id, dish_name, pagination_dict, order_by='sales'):
+def get_dish_bean_list_byname(school_id, dish_name, pagination_dict, order_by='-sales'):
     paginator = get_paginator(pagination_dict)
     dish_model_list = Dish.objects.filter(window__school_id__exact=school_id, dish_name__icontains=dish_name,
                                           is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]

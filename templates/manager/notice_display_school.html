@@ -13,8 +13,8 @@
     var pg = $(".notice_display_school").datagrid("getPager"); 
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
-            getNoticeData(".notice_display_school",url,token,pageNumber, pageSize); 
+            getAjaxData(".notice_display_school", url,{token:token,page:pageNumber,count:pageSize},"暂无公告");
         } 
     });
-    getNoticeData(".notice_display_school",url,token,1,20);
+    getAjaxData(".notice_display_school", url,{token:token,page:1,count:20},"暂无公告");
 </script>

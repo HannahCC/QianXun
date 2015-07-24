@@ -13,8 +13,8 @@
     var pg = $(".notice_canteen_display").datagrid("getPager"); 
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
-            getNoticeData(".notice_canteen_display",url,token,pageNumber, pageSize); 
+            getAjaxData(".notice_canteen_display", url,{token:token,page:pageNumber,count:pageSize},"暂无公告");
         } 
     });
-    getNoticeData(".notice_canteen_display",url,token,1,20);
+    getAjaxData(".notice_canteen_display", url,{token:token,page:1,count:20},"暂无公告");
 </script>
