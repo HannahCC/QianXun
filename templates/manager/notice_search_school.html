@@ -1,0 +1,30 @@
+<div class="search_div" ><!-- DIV needed for valid HTML -->
+    <input type="text" size="40" id="searchbar" name="key_words" value="请输入标题关键字"  onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '请输入标题关键字';}"  >
+    <input type="submit" value="搜索" onclick="notice_search()">
+</div>
+<table class="notice_search_school"></table>
+<div id ="window"></div>
+<script type="text/javascript">
+    var token =localStorage.getItem("token");
+    var url = "/qianxun/1/manager/school/notice/search";
+    
+    newNoticeDatagrid(".notice_search_school");
+    $('.notice_search_school').datagrid({
+        onClickRow:function(index, data){
+            newWindow(data.title,"管理员："+data.manager+"&nbsp;&nbsp;&nbsp;&nbsp;发布时间："+data.updateTime+"<br>"+data.content); 
+        }
+    });
+    /*  do pagination */
+    var pg = $(".notice_search_school").datagrid("getPager"); 
+    $(pg).pagination({
+        onSelectPage: function (pageNumber, pageSize) {
+            var key_words = $("#searchbar").val();
+            getNoticeDataWithKeyword(".notice_search_school", url, token, pageNumber, pageSize, key_words);
+        } 
+    });
+
+    function notice_search(){
+        var key_words = $("#searchbar").val();
+        getNoticeDataWithKeyword(".notice_search_school", url, token, 1, 20, key_words);
+    }
+</script>

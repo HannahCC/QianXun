@@ -13,8 +13,8 @@
     var pg = $(".notice_canteen_display").datagrid("getPager"); 
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
-            getNoticeData(".notice_canteen_display",url,pageNumber, pageSize); 
+            getNoticeData(".notice_canteen_display",url,token,pageNumber, pageSize); 
         } 
     });
-    getNoticeData(".notice_canteen_display",url,1,20);
+    getNoticeData(".notice_canteen_display",url,token,1,20);
 </script>

@@ -51,12 +51,37 @@ function newNoticeDatagrid(gridName){
     });
 }
 
-function getNoticeData(gridName, url, pageNumber, pageSize){
+function getNoticeData(gridName, url, token, pageNumber, pageSize){
     //异步获取数据到javascript对象，入参为查询条件和页码信息 
     $.ajax({
         type: "POST",
         url: url,
         data: {token:token,page:pageNumber,count:pageSize},
+        success:function(data){
+            if(data.status == 0){
+                var gridData = data.data;
+                if(data.data.total==0){
+                    newMessager("提示","暂无公告");
+                }else{
+                    $(gridName).datagrid('loadData', data.data); 
+                }
+            }else{
+                newMessager("出现错误",data.data.error_info);
+            }
+        },
+        error:function (XMLHttpRequest, textStatus, errorThrown) {
+            ajax_error_catcher(XMLHttpRequest, textStatus, errorThrown);
+            this; // 调用本次AJAX请求时传递的options参数
+        },
+    });  
+}
+
+function getNoticeDataWithKeyword(gridName, url, token, pageNumber, pageSize, keyword){
+    //异步获取数据到javascript对象，入参为查询条件和页码信息 
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {token:token,page:pageNumber,count:pageSize,key_words:keyword},
         success:function(data){
             if(data.status == 0){
                 var gridData = data.data;

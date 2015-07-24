@@ -21,24 +21,24 @@ def get_canteen_notice_detail_bean_byid(canteen_model, notice_detail_display_for
 
 
 def find_school_notice_list_by_word(school_model, search_words):
-    school_notice_list = SchoolNotice.objects.filter(school=school_model, title__icontains=search_words,is_valid=1)
+    school_notice_list = SchoolNotice.objects.filter(school=school_model, title__icontains=search_words,is_valid=1).order_by('-update_time')
     school_notice_list_bean = [SchoolNoticeDetailBean(notice) for notice in school_notice_list]
     return school_notice_list_bean
 
 
 def find_canteen_notice_list_by_word(canteen_model, seach_words):
-    canteen_notice_list = CanteenNotice.objects.filter(canteen=canteen_model, title__icontains=seach_words,is_valid=1)
+    canteen_notice_list = CanteenNotice.objects.filter(canteen=canteen_model, title__icontains=seach_words,is_valid=1).order_by('-update_time')
     canteen_notice_list_bean = [CanteenNoticeDetailBean(notice) for notice in canteen_notice_list]
     return canteen_notice_list_bean
 
 def find_canteen_notice_list_by_canteen_manager(canteen_manager_model):
-    canteen_notice_list = CanteenNotice.objects.filter(manager=canteen_manager_model,is_valid=1)
+    canteen_notice_list = CanteenNotice.objects.filter(manager=canteen_manager_model,is_valid=1).order_by('-update_time')
     canteen_notice_list_bean = [CanteenNoticeDetailBean(notice) for notice in canteen_notice_list]
     return canteen_notice_list_bean
 
 
 def find_school_notice_list_by_school_manager(school_manager_model):
-    school_notice_list = SchoolNotice.objects.filter(manager=school_manager_model,is_valid=1)
+    school_notice_list = SchoolNotice.objects.filter(manager=school_manager_model,is_valid=1).order_by('-update_time')
     school_notice_list_bean = [SchoolNoticeDetailBean(notice) for notice in school_notice_list]
     return school_notice_list_bean
 

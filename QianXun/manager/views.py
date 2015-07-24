@@ -17,6 +17,7 @@ from QianXun.settings import ADMIN_EMAIL
 from conf.resp_code import *
 from conf.enum_value import LOGINTYPE
 from conf.default_value import CANTEEN_FLAG, SCHOOL_FLAG
+from utils.Pagination import get_paginator
 
 # Create your views here.
 
@@ -74,7 +75,6 @@ def view_upper_notice(request):
     pagination_form = PaginationForm(request.POST)
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
-        print request.user_meta.get("flag")
         if request.user_meta.get("flag") == CANTEEN_FLAG:
             canteen_manager = request.user_meta.get("manager_model")
             total = manager.get_upper_notice_number(canteen_manager)
@@ -106,26 +106,42 @@ def view_canteen_notice(request):
 
 
 @exception_handled
-@school_manager_token_required
+@manager_token_required
 @post_required
 def sm_find_notice_by_keyword(request):
-    search_words = request.POST.get("key_words")
-    school = request.user_meta.get("manager_model").school
-    school_notice_bean_list = notice.find_school_notice_list_by_word(school, search_words)
-    return json_response_from_object(OK, school_notice_bean_list)
+    pagination_form = PaginationForm(request.POST)
+    if pagination_form.is_valid():
+        pagination_dict = pagination_form.cleaned_data
+        paginator = get_paginator(pagination_dict)
+        search_words = request.POST.get("key_words")
+        if request.user_meta.get("flag") == CANTEEN_FLAG:
+            school = request.user_meta.get("manager_model").canteen.school
+        else:
+            school = request.user_meta.get("manager_model").school
+        school_notice_bean_list = notice.find_school_notice_list_by_word(school, search_words)
+        total = len(school_notice_bean_list)
+        result = {"total":total,"rows":school_notice_bean_list[paginator[0]:paginator[1]]}
+        return json_response_from_object(OK, result)
+    else:
+         return json_response(PARAM_REQUIRED, pagination_form.errors)
 
 
 @exception_handled
 @canteen_manager_token_required
 @post_required
 def cm_find_notice_by_keyword(request):
-    canteen_manager = request.user_meta.get("manager_model")
-    search_words = request.POST.get("key_words")
-    school_notice_bean_list = notice.find_school_notice_list_by_word(canteen_manager.canteen.school, search_words)
-    canteen_notice_bean_list = notice.find_canteen_notice_list_by_word(canteen_manager.canteen, search_words)
-    all_bean_list = school_notice_bean_list
-    all_bean_list.extend(canteen_notice_bean_list)
-    return json_response_from_object(OK, all_bean_list)
+    pagination_form = PaginationForm(request.POST)
+    if pagination_form.is_valid():
+        pagination_dict = pagination_form.cleaned_data
+        paginator = get_paginator(pagination_dict)
+        search_words = request.POST.get("key_words")
+        canteen = request.user_meta.get("manager_model").canteen
+        canteen_notice_bean_list = notice.find_canteen_notice_list_by_word(canteen, search_words)
+        total = len(canteen_notice_bean_list)
+        result = {"total":total,"rows":canteen_notice_bean_list[paginator[0]:paginator[1]]}
+        return json_response_from_object(OK, result)
+    else:
+         return json_response(PARAM_REQUIRED, pagination_form.errors)
 
 
 @exception_handled

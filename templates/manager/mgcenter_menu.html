@@ -1,18 +1,23 @@
 	<div id="mgcennavi" class="easyui-accordion" data-options="border:false">
 		<div class="navi_bar" title="公告管理" >
-			<!-- for both school and canteen manager  -->
-			<div id="schoolnotice"><a class="navi_item" href="notice_display_school.html"> 学校公告</a></br></div>
-
 			<!-- only for school manager  -->
-			<div id="newschoolnotice"><a class="navi_item" href="notice_create_school.html"> 发布公告</a></br></div>
-			<div id="modifyschoolnotice"><a class="navi_item" href="notice_modify_school.html" > 修改公告</a></br></div>
-			<div id="delschoolnotice"><a class="navi_item" href="notice_delete_school.html" > 删除公告</a></br></div>
-
+			<div class="schoolItem">
+				<a class="navi_item" href="notice_display_school.html"> 学校公告</a></br>
+				<a class="navi_item" href="notice_create_school.html"> 发布公告</a></br>
+				<a class="navi_item" href="notice_modify_school.html" > 修改公告</a></br>
+				<a class="navi_item" href="notice_delete_school.html" > 删除公告</a></br>
+				<a class="navi_item" href="notice_search_school.html"> 查询公告</a></br>
+			</div>
 			<!-- only for canteen manager  -->
-			<div id="canteennotice"><a class="navi_item" href="notice_display_canteen.html"> 食堂公告</a></br></div>
-			<div id="newcanteennotice"><a class="navi_item" href="notice_create_canteen.html"> 发布公告</a></br></div>
-			<div id="modifycanteennotice"><a class="navi_item" href="notice_modify_canteen.html" > 修改公告</a></br></div>
-			<div id="delcanteennotice"><a class="navi_item" href="notice_delete_canteen.html" > 删除公告</a></br></div>
+			<div class="canteenItem">
+				<a class="navi_item" href="notice_display_school.html"> 学校公告</a></br>
+				<a class="navi_item" href="notice_display_canteen.html"> 食堂公告</a></br>
+				<a class="navi_item" href="notice_create_canteen.html"> 发布公告</a></br>
+				<a class="navi_item" href="notice_modify_canteen.html" > 修改公告</a></br>
+				<a class="navi_item" href="notice_delete_canteen.html" > 删除公告</a></br>
+				<a class="navi_item" href="notice_search_school.html"> 查询学校公告</a></br>
+				<a class="navi_item" href="notice_search_canteen.html"> 查询食堂公告</a></br>
+			</div>
 		</div>
 		<div class="navi_bar" title="窗口管理" >
 			<div id="windisplay"><a class="navi_item" href="mgcenter-top.html" > 窗口列表</a></br></div>
@@ -23,39 +28,16 @@
 	<script type="text/javascript">
 		var login_type = localStorage.getItem('type');
 		if(login_type=='0'){   // schoolmanager
-			$("#canteennotice").remove();
-			$("#newcanteennotice").remove();
-			$("#modifycanteennotice").remove();
-			$("#delcanteennotice").remove();
-			$("#winverify").remove();
+			$(".canteenItem").remove();
 		}else if(login_type=='1'){  //canteen manager
-			$("#newschoolnotice").remove();
-			$("#modifyschoolnotice").remove();
-			$("#delschoolnotice").remove();
+			$(".schoolItem").remove();
 		}
 		$("#mgcennavi .navi_item").click(function(){
 			var href = $(this).attr("href");
 			var title = $(this).text();
-			var c = $("body").layout("panel", "center");
-			c.tabs('add',{
-				fit: true,
-				title: title,   
-    			href:href,   
-    			closable:true,   
-    			tools:[{   
-        			iconCls:'icon-mini-refresh',   
-        			handler:function(){
-        				var tab = c.tabs('getSelected');
-        				c.tabs('update', {
-        					tab: tab,
-							options: {
-								title: title,
-								href: href,
-							}
-						});
-        			}   
-    			}]   
-			});  
+			$("#mg_center").panel('refresh',href);
+			$("#mg_center").panel('setTitle',title);
+			
 			return false;
 		});
 	</script>

@@ -1,12 +1,13 @@
 <table class="notice_modify_school"></table> 
 <div id ="window"></div>
+<div class ="another_window" ></div>
 <script type="text/javascript">
     var token =localStorage.getItem("token");
     var url = "/qianxun/1/manager/school/notice";
     newNoticeDatagrid(".notice_modify_school");
     $('.notice_modify_school').datagrid({  
         onClickRow:function(index, data){
-            $('#window').window({
+            $('.another_window').window({
                 href:'notice_modify_school_form.html',
                 modal:true,
                 width:800,
@@ -16,7 +17,8 @@
                     setNoticeData(data.id,data.title,data.content);
                 },
                 onClose:function(){
-                    document.getElementById("window").innerHTML="";
+                    document.getElementsByClassName("another_window").innerHTML = "";
+                    getNoticeData(".notice_modify_school",url,token,1,20);
                 }
             });
                 
@@ -27,15 +29,24 @@
     var pg = $(".notice_modify_school").datagrid("getPager"); 
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
-            getNoticeData(".notice_modify_school",url,pageNumber, pageSize); 
+            getNoticeData(".notice_modify_school",url,token,pageNumber, pageSize); 
         } 
     });
-    getNoticeData(".notice_modify_school",url,1,20);
+    getNoticeData(".notice_modify_school",url,token,1,20);
 
 
     function setNoticeData(id,title,content){
-        $('#noticeId').val(id);
-        $('#noticeTitle').val(title);
-        $('#noticeContent').val(content);
+        var IdList = document.getElementsByName("noticeId");
+        for(var i=0;i<IdList.length;i++){
+            IdList[i].value = id;
+        }
+        var TitleList = document.getElementsByName("noticeTitle");
+        for(var i=0;i<TitleList.length;i++){
+            TitleList[i].value = title;
+        }
+        var ContentList = document.getElementsByName("noticeContent");
+        for(var i=0;i<ContentList.length;i++){
+            ContentList[i].value = content;
+        }
     }
 </script>

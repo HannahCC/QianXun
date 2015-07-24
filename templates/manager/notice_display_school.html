@@ -13,8 +13,8 @@
     var pg = $(".notice_display_school").datagrid("getPager"); 
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
-            getNoticeData(".notice_display_school",url,pageNumber, pageSize); 
+            getNoticeData(".notice_display_school",url,token,pageNumber, pageSize); 
         } 
     });
-    getNoticeData(".notice_display_school",url,1,20);
+    getNoticeData(".notice_display_school",url,token,1,20);
 </script>

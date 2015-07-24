@@ -2,7 +2,6 @@
   background-color: rgb(232, 233, 238);
   overflow: hidden;
   font-size: 12px;
-  text-align: center;
 }
 .panel-header,
 .panel-body {
@@ -105,11 +104,8 @@
   border:0px;
 }
 .panel-header {
-  background-color: #fdf5b5;
-  background: -webkit-linear-gradient(top,#F2c759 0,#fdf5b5 100%);
-  background: -moz-linear-gradient(top,#F2c759 0,#fdf5b5 100%);
-  background: -o-linear-gradient(top,#F2c759 0,#fdf5b5 100%);
-  background: linear-gradient(to bottom,#f2c759 0,#fdf5b5 100%);
+  background-color: #BCBCBC;
+  background: #D7D9DF;
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#f2c759,endColorstr=#fdf5b5,GradientType=0);
 }
