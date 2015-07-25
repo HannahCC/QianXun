@@ -18,7 +18,7 @@
         var windowStatus = statusList[statusList.length-1].value;
         $.ajax({
             type: "POST",
-            url: "/qianxun/1/manager/verify",
+            url: "/qianxun/1/manager/verify/window",
             data: {token:token,window_id:windowId,window_status:windowStatus},
             beforeSend:function(XMLHttpRequest){
                 if(windowStatus!=2&&windowStatus!=3){

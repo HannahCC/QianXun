@@ -3,11 +3,11 @@
 <div class ="another_window" ></div>
 <script type="text/javascript">
     var token =localStorage.getItem("token");
-    var url = "/qianxun/1/manager/school/windows";
+    var url = "/qianxun/1/manager/show/school/window";
     newWindowDatagrid(".window_display_school");
     $('.window_display_school').datagrid({
         onClickRow:function(index, data){
-            var window_dish_url = "/qianxun/1/manager/window/dish"
+            var window_dish_url = "/qianxun/1/manager/show/window/dish";
             $('.another_window').window({
                 href:'window_dishes_display.html',
                 modal:true,

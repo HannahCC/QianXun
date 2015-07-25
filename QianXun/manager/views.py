@@ -88,7 +88,7 @@ def manager_logout(request):
 @exception_handled
 @manager_token_required
 @post_required
-def view_upper_notice(request):
+def mg_show_notice(request):
     pagination_form = PaginationForm(request.POST)
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
@@ -107,25 +107,9 @@ def view_upper_notice(request):
 
 
 @exception_handled
-@canteen_manager_token_required
-@post_required
-def view_canteen_notice(request):
-    pagination_form = PaginationForm(request.POST)
-    if pagination_form.is_valid():
-        pagination_dict = pagination_form.cleaned_data
-        canteen_manager = request.user_meta.get("manager_model")
-        total = manager.get_canteen_notice_number(canteen_manager)
-        canteen_notice_bean_list = manager.get_canteen_notice(canteen_manager, pagination_dict)
-        result = {"total":total,"rows":canteen_notice_bean_list}
-        return json_response_from_object(OK, result)
-    else:
-         return json_response(PARAM_REQUIRED, pagination_form.errors)
-
-
-@exception_handled
 @manager_token_required
 @post_required
-def sm_find_notice_by_keyword(request):
+def mg_find_notice_by_keyword(request):
     pagination_form = PaginationForm(request.POST)
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
@@ -141,6 +125,32 @@ def sm_find_notice_by_keyword(request):
         return json_response_from_object(OK, result)
     else:
          return json_response(PARAM_REQUIRED, pagination_form.errors)
+
+
+@exception_handled
+@manager_token_required
+@post_required
+def show_window_dish(request):
+    window_id = request.POST.get("window_id")
+    dish_list_bean = dish.get_dish_bean_list_bywin(window_id=window_id)
+    return json_response_from_object(OK, dish_list_bean)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_show_notice(request):
+    pagination_form = PaginationForm(request.POST)
+    if pagination_form.is_valid():
+        pagination_dict = pagination_form.cleaned_data
+        canteen_manager = request.user_meta.get("manager_model")
+        total = manager.get_canteen_notice_number(canteen_manager)
+        canteen_notice_bean_list = manager.get_canteen_notice(canteen_manager, pagination_dict)
+        result = {"total":total,"rows":canteen_notice_bean_list}
+        return json_response_from_object(OK, result)
+    else:
+         return json_response(PARAM_REQUIRED, pagination_form.errors)
+
 
 
 @exception_handled
@@ -212,10 +222,48 @@ def cm_delete_notice(request):
 @exception_handled
 @canteen_manager_token_required
 @post_required
-def cm_show_notice(request):
-    canteen_manager = request.user_meta.get("manager_model")
-    notice_bean_list = notice.find_canteen_notice_list_by_canteen_manager(canteen_manager)
-    return json_response_from_object(OK, notice_bean_list)
+def cm_get_canteen_windows(request):
+    pagination_form = PaginationForm(request.POST)
+    if pagination_form.is_valid():
+        pagination_dict = pagination_form.cleaned_data
+        canteen_manager = request.user_meta.get("manager_model")
+        total = manager.get_canteen_windows_number(canteen_manager)
+        windows_list_bean = manager.get_canteen_windows(canteen_manager,pagination_dict)
+        result = {"total":total,"rows":windows_list_bean}
+        return json_response_from_object(OK, result)
+    else:
+         return json_response(PARAM_REQUIRED, pagination_form.errors)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_search_window_byname(request):
+    pagination_form = PaginationForm(request.POST)
+    if pagination_form.is_valid():
+        pagination_dict = pagination_form.cleaned_data
+        paginator = get_paginator(pagination_dict)
+        search_words = request.POST.get("key_words")
+        canteen = request.user_meta.get("manager_model").canteen
+        window_list_bean_list = manager.search_canteen_windows_by_name(canteen, search_words)
+        total = len(window_list_bean_list)
+        result = {"total":total,"rows":window_list_bean_list[paginator[0]:paginator[1]]}
+        return json_response_from_object(OK, result)
+    else:
+         return json_response(PARAM_REQUIRED, pagination_form.errors)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_verify_window(request):
+    window_verify_form = WindowVerifyForm(request.POST)
+    if window_verify_form.is_valid():
+        window_verify_dict = window_verify_form.cleaned_data
+        window_model = window.update_status(window_verify_dict)
+        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+    else:
+        return json_response(PARAM_REQUIRED, window_verify_form.errors)
 
 
 
@@ -271,16 +319,7 @@ def sm_delete_notice(request):
 @exception_handled
 @school_manager_token_required
 @post_required
-def sm_show_notice(request):
-    school_manager = request.user_meta.get("manager_model")
-    notice_bean_list = notice.find_school_notice_list_by_school_manager(school_manager)
-    return json_response_from_object(OK, notice_bean_list)
-
-
-@exception_handled
-@school_manager_token_required
-@post_required
-def get_school_windows(request):
+def sm_get_school_windows(request):
     pagination_form = PaginationForm(request.POST)
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
@@ -293,47 +332,21 @@ def get_school_windows(request):
          return json_response(PARAM_REQUIRED, pagination_form.errors)
 
 
+
 @exception_handled
-@canteen_manager_token_required
+@school_manager_token_required
 @post_required
-def get_canteen_windows(request):
+def sm_search_window_byname(request):
     pagination_form = PaginationForm(request.POST)
     if pagination_form.is_valid():
         pagination_dict = pagination_form.cleaned_data
-        canteen_manager = request.user_meta.get("manager_model")
-        total = manager.get_canteen_windows_number(canteen_manager)
-        windows_list_bean = manager.get_canteen_windows(canteen_manager,pagination_dict)
-        result = {"total":total,"rows":windows_list_bean}
+        paginator = get_paginator(pagination_dict)
+        search_words = request.POST.get("key_words")
+        school = request.user_meta.get("manager_model").school
+        window_list_bean_list = manager.search_school_windows_by_name(school, search_words)
+        total = len(window_list_bean_list)
+        result = {"total":total,"rows":window_list_bean_list[paginator[0]:paginator[1]]}
         return json_response_from_object(OK, result)
     else:
          return json_response(PARAM_REQUIRED, pagination_form.errors)
 
-@exception_handled
-def search_window_by_name(request):
-    school_id = request.GET.get("school_id")
-    canteen_id = request.GET.get("canteen_id")
-    query_str = request.GET.get("q")
-    window_list_bean = manager.search_canteen_by_name(school_id, canteen_id, query_str)
-    return json_response_from_object(OK, window_list_bean)
-
-
-@exception_handled
-@manager_token_required
-@post_required
-def show_window_dish(request):
-    window_id = request.POST.get("window_id")
-    dish_list_bean = dish.get_dish_bean_list_bywin(window_id=window_id)
-    return json_response_from_object(OK, dish_list_bean)
-
-
-@exception_handled
-@canteen_manager_token_required
-@post_required
-def verify_window(request):
-    window_verify_form = WindowVerifyForm(request.POST)
-    if window_verify_form.is_valid():
-        window_verify_dict = window_verify_form.cleaned_data
-        window_model = window.update_status(window_verify_dict)
-        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
-    else:
-        return json_response(PARAM_REQUIRED, window_verify_form.errors)

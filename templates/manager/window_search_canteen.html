@@ -1,0 +1,44 @@
+<div class="search_div" ><!-- DIV needed for valid HTML -->
+    <input type="text" size="40" id="searchbar" name="key_words" value="请输入标题关键字"  onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '请输入标题关键字';}"  >
+    <input type="submit" value="搜索" onclick="window_search()">
+</div>
+<table class="window_search_canteen"></table>
+<div id ="window"></div>
+<div class ="another_window" ></div>
+<script type="text/javascript">
+    var token =localStorage.getItem("token");
+    var url = "/qianxun/1/manager/search/canteen/window";
+    
+    newWindowDatagrid(".window_search_canteen");
+    $('.window_search_canteen').datagrid({
+        onClickRow:function(index, data){
+            var window_dish_url = "/qianxun/1/manager/show/window/dish";
+            $('.another_window').window({
+                href:'window_dishes_display.html',
+                modal:true,
+                width:800,
+                height:500,
+                title:"窗口菜品",
+                onLoad:function(){
+                    getAjaxData(".window_dishes_display", window_dish_url,{token:token,window_id:data.id},"该窗口暂无菜品");
+                },
+                onClose:function(){
+                    document.getElementsByClassName("another_window").innerHTML = "";
+                }
+            });
+        }
+    });
+    /*  do pagination */
+    var pg = $(".window_search_canteen").datagrid("getPager"); 
+    $(pg).pagination({
+        onSelectPage: function (pageNumber, pageSize) {
+            var key_words = $("#searchbar").val();
+            getAjaxData(".window_search_canteen", url,{token:token,page:pageNumber,count:pageSize,key_words:key_words},"暂无窗口");
+        } 
+    });
+
+    function window_search(){
+        var key_words = $("#searchbar").val();
+        getAjaxData(".window_search_canteen", url,{token:token,page:1,count:20,key_words:key_words},"暂无窗口");
+    }
+</script>

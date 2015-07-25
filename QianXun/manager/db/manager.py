@@ -130,7 +130,11 @@ def get_canteen_windows_number(manager_model):
     return len(windows_list)
 
 
-def search_canteen_by_name(school_id, canteen_id, query_str):
-    window_list = Window.objects.filter(school_id__exact=school_id, canteen_id__exact=canteen_id,\
-                                    is_valid=1, window_name__contains=query_str)
+def search_school_windows_by_name(school_model, search_words):
+    window_list = Window.objects.filter(school_id__exact=school_model.id, is_valid=1, window_name__contains=search_words).order_by('canteen','-sales')
+    return [WindowBean(window) for window in window_list]
+
+
+def search_canteen_windows_by_name(canteen_model, search_words):
+    window_list = Window.objects.filter(canteen_id__exact=canteen_model.id, is_valid=1, window_name__contains=search_words).order_by('-sales')
     return [WindowBean(window) for window in window_list]
