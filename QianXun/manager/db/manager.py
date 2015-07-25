@@ -12,15 +12,19 @@ from utils.MakeSerialNumber import new_token
 from conf.enum_value import IS_VALID
 
 
+def delete_token(manager_model):
+    manager_model.token = ''
+    manager_model.save()
+    return manager_model
+
+
 def school_get_by_username(login_dict):
-    manager = SchoolManager.objects.get(user_name__exact=login_dict["user_name"],
-                                        password__exact=login_dict["password"], is_valid=IS_VALID[1][0])
+    manager = SchoolManager.objects.get(user_name__exact=login_dict["user_name"],is_valid=IS_VALID[1][0])
     return manager
 
 
 def canteen_get_by_username(login_dict):
-    manager = CanteenManager.objects.get(user_name__exact=login_dict["user_name"],
-                                         password__exact=login_dict["password"], is_valid=IS_VALID[1][0])
+    manager = CanteenManager.objects.get(user_name__exact=login_dict["user_name"],is_valid=IS_VALID[1][0])
     return manager
 
 
@@ -49,7 +53,7 @@ def canteen_get_by_token(token):
 
 
 def update_password(manager_model, password_dict):
-    manager_model.password = password_dict['password']
+    manager_model.password = password_dict['new_password']
     manager_model.save()
     manager_bean = ManagerBean(manager_model)
     return manager_bean

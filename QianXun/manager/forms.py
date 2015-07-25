@@ -12,16 +12,32 @@ class LoginForm(forms.Form):
     password = forms.CharField(max_length=64)
 
 
-class ManagerPasswordForm(forms.Form):
-    token = forms.CharField(max_length=64)
-    verify_code = forms.CharField(min_length=6, max_length=6)
-    password = forms.CharField(min_length=6, max_length=64)
-    password2 = forms.CharField(max_length=64)
+class PasswordResetForm(forms.Form):
+    user_name = forms.CharField(min_length=11, max_length=11)
+    login_type = forms.ChoiceField(choices=LOGINTYPE)
+    verify_code = forms.CharField(max_length=6)
+    new_password = forms.CharField(min_length=6, max_length=64)
+    new_password2 = forms.CharField(max_length=64)
 
-    def clean_password2(self):
-        cleaned_data = self.clean()
-        password = cleaned_data.get('password', '')
-        password2 = cleaned_data.get('password2', ' ')
+    def clean_new_password2(self):
+        cleaned_data = super(PasswordResetForm, self).clean()
+        password = cleaned_data.get('new_password', '')
+        password2 = cleaned_data.get('new_password2', '')
+        if password != password2:
+            raise forms.ValidationError(u'两次密码输入不一致')
+        return password2
+
+
+class PasswordUpdateForm(forms.Form):
+    token = forms.CharField(max_length=64)
+    old_password = forms.CharField(min_length=6, max_length=64)
+    new_password = forms.CharField(min_length=6, max_length=64)
+    new_password2 = forms.CharField(min_length=6, max_length=64)
+
+    def clean_new_password2(self):
+        cleaned_data = super(PasswordUpdateForm, self).clean()
+        password = cleaned_data.get('new_password', '')
+        password2 = cleaned_data.get('new_password2', '')
         if password != password2:
             raise forms.ValidationError(u'两次密码输入不一致')
         return password2
@@ -32,6 +48,7 @@ class PaginationForm(forms.Form):
     page = forms.IntegerField(initial=1, required=False)
     count = forms.IntegerField(initial=10, max_value=20, required=False)
     order_by = forms.CharField(max_length=64, required=False)
+
 
 class WindowVerifyForm(forms.Form):
     token = forms.CharField(max_length=64)

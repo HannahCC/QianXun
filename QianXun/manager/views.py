@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
-from forms import LoginForm, ManagerPasswordForm, PaginationForm, WindowVerifyForm
+from forms import LoginForm, PaginationForm, WindowVerifyForm, PasswordResetForm, PasswordUpdateForm
 from QianXun.account.db import window
 from QianXun.notice.db import notice
 from QianXun.orders.db import dish
@@ -10,7 +10,7 @@ from QianXun.notice.forms import ChangeCNoticeForm, CreateCNoticeForm, ChangeSNo
 from db import manager
 from utils.Serializer import json_response, json_response_from_object
 from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required,\
-    exception_handled, manager_token_required
+    exception_handled, manager_token_required, verify_code_required
 from utils.SendEmail import email
 from utils.MakeSerialNumber import new_order_id
 from QianXun.settings import ADMIN_EMAIL
@@ -32,41 +32,58 @@ def manager_login(request):
     if login_form.is_valid():
         manager_login_dict = login_form.cleaned_data
         login_type = int(manager_login_dict.get("login_type"))
-        if login_type == LOGINTYPE[0][0]:   #school manager
+        if login_type == LOGINTYPE[0][0]:   #school manager            
             try:
-                school_manager_model = manager.school_get_by_username(manager_login_dict)  # verify user's authority
-                manager_bean = manager.school_update_token(school_manager_model)  # assign a token for user
-                return json_response_from_object(OK, manager_bean)
+                school_manager_model = manager.school_get_by_username(manager_login_dict)
+                if school_manager_model.password == manager_login_dict['password']:  # verify user's authority
+                    manager_bean = manager.school_update_token(school_manager_model)  # assign a token for user
+                    return json_response_from_object(OK, manager_bean)
+                else:
+                    return json_response(USER_LOGIN_FAILED, CODE_MESSAGE.get(USER_LOGIN_FAILED))
             except ObjectDoesNotExist:
-                return json_response(USER_LOGIN_FAILED, CODE_MESSAGE.get(USER_LOGIN_FAILED))
+                return json_response(USER_NOT_EXIST, CODE_MESSAGE.get(USER_NOT_EXIST))
         elif login_type == LOGINTYPE[1][0]:
             try:
-                canteen_manager_model = manager.canteen_get_by_username(manager_login_dict)  # verify user's authority
-                manager_bean = manager.canteen_update_token(canteen_manager_model)  # assign a token for user
-                return json_response_from_object(OK, manager_bean)
+                canteen_manager_model = manager.canteen_get_by_username(manager_login_dict)
+                if canteen_manager_model.password == manager_login_dict['password']:  # verify user's authority
+                    manager_bean = manager.canteen_update_token(canteen_manager_model)  # assign a token for user
+                    return json_response_from_object(OK, manager_bean)
+                else:
+                    return json_response(USER_LOGIN_FAILED, CODE_MESSAGE.get(USER_LOGIN_FAILED))
             except ObjectDoesNotExist:
-                return json_response(USER_LOGIN_FAILED, CODE_MESSAGE.get(USER_LOGIN_FAILED))
+                return json_response(USER_NOT_EXIST, CODE_MESSAGE.get(USER_NOT_EXIST))
         else:
-            return json_response(PARAM_REQUIRED, "Wrong")
+            return json_response(PARAM_REQUIRED, "LOGINTYPE Needed!")
     else:
         return json_response(PARAM_REQUIRED, login_form.errors)
 
 
 @exception_handled
-@school_manager_token_required
+@manager_token_required
 @post_required
-def manager_password_reset(request):
-    '''
-    仅支持schoolmanager修改密码，不想写canteen的
-    '''
-    manager_password_form = ManagerPasswordForm(request.POST)
+def manager_password_update(request):
+    manager_password_form = PasswordUpdateForm(request.POST)
     if manager_password_form.is_valid():
         manager_password_dict = manager_password_form.cleaned_data
         manager_model = request.user_meta['manager_model']
-        manager_bean = manager.update_password(manager_model, manager_password_dict)
-        return json_response_from_object(OK, manager_bean)
+        if manager_model.password == manager_password_dict['old_password']:
+            manager.update_password(manager_model, manager_password_dict)
+            return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+        else:
+            return json_response(USER_PWD_ERROR, CODE_MESSAGE.get(USER_PWD_ERROR))
     else:
         return json_response(PARAM_REQUIRED, manager_password_form.errors)
+
+
+@exception_handled
+@manager_token_required
+@post_required
+def manager_logout(request):
+    manager_model = request.user_meta.get("manager_model")
+    manager.delete_token(manager_model)
+    return json_response(OK, CODE_MESSAGE.get(OK))
+
+
 
 @exception_handled
 @manager_token_required

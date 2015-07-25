@@ -1,3 +1,24 @@
+function logout(){
+    var token = localStorage.getItem("token");
+    $.ajax({
+        type: "POST",
+        url: "/qianxun/1/manager/logout",
+        data: {token:token},
+        success:function(data){
+            if(data.status == 0){
+                localStorage.clear();
+                window.location.href = "/qianxun/template/manager/login.html";
+            }else{
+                newMessager("出现错误",data.data.error_info);
+            }
+           },
+        error:function (XMLHttpRequest, textStatus, errorThrown) {
+            ajax_error_catcher(XMLHttpRequest, textStatus, errorThrown);
+            this; // 调用本次AJAX请求时传递的options参数
+        },
+    }); 
+}
+
 function login_required () {
 	var token = localStorage.getItem("token");
 	if(token==null){

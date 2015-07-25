@@ -2,6 +2,7 @@
   background-color: rgb(232, 233, 238);
   overflow: hidden;
   font-size: 12px;
+  border-top: solid 1px #ffffff;
 }
 .panel-header,
 .panel-body {

@@ -6,7 +6,7 @@
     newNoticeDatagrid(".notice_display_school");
     $('.notice_display_school').datagrid({
         onClickRow:function(index, data){
-            newWindow(data.title,"管理员："+data.manager+"&nbsp;&nbsp;&nbsp;&nbsp;发布时间："+data.updateTime+"<br>"+data.content); 
+            newWindow(data.title,'<div class="content"><p class="note">管理员：'+data.manager+'&nbsp;&nbsp;&nbsp;&nbsp;发布时间：'+data.updateTime+'</p><p class="paragraph"><pre>'+data.content+'</pre></p></div>'); 
         }
     });
     /*  do pagination */
