@@ -103,8 +103,7 @@ def get_school_windows(manager_model, pagination_dict):
     paginator = get_paginator(pagination_dict)
     school = manager_model.school
     windows_list = Window.objects.filter(school_id__exact=school.id,is_valid=1).order_by('canteen','-sales')[paginator[0]:paginator[1]]
-    return_bean_list = [WindowBean(window) for window in windows_list]
-    return return_bean_list
+    return windows_list
 
 
 def get_school_windows_number(manager_model):
@@ -120,8 +119,7 @@ def get_canteen_windows(manager_model, pagination_dict):
     if not order_by:
         order_by = '-sales'
     windows_list = Window.objects.filter(canteen_id__exact=manager_model.canteen.id,is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
-    return_bean_list = [WindowBean(window) for window in windows_list]
-    return return_bean_list
+    return windows_list
 
 
 def get_canteen_windows_number(manager_model):

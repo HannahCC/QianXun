@@ -96,7 +96,6 @@ function newWindowDatagrid(gridName){
     });
 }
 
-
 function newWindowDishDatagrid(gridName){
     $(gridName).datagrid({
         fitColumns:true,
@@ -104,11 +103,27 @@ function newWindowDishDatagrid(gridName){
         rownumbers:true,
         loadMsg:'载入数据中，请稍等...',
         columns:[[
-            {field:'dishName',title:'窗口名称',width:100,algin:'center'},   
+            {field:'dishName',title:'菜品名称',width:100,algin:'center'},   
             {field:'price',title:'价格',width:50,algin:'center'},  
             {field:'grade',title:'评级',width:50,algin:'center'},   
             {field:'sales',title:'销量',width:50,algin:'center'},   
             {field:'description',title:'菜品描述',width:200,algin:'center'},
+            {field:'id',title:'id',hidden:true}, 
+        ]]
+    });
+}
+
+
+function newWindowSalesDatagrid(gridName){
+    $(gridName).datagrid({
+        fitColumns:true,
+        singleSelect:true,
+        rownumbers:true,
+        loadMsg:'载入数据中，请稍等...',
+        columns:[[
+            {field:'dishName',title:'菜品名称',width:100,algin:'center'},   
+            {field:'price',title:'价格',width:50,algin:'center'},
+            {field:'sales',title:'销量',width:50,algin:'center'}, 
             {field:'id',title:'id',hidden:true}, 
         ]]
     });

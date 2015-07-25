@@ -2,8 +2,9 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
-from forms import LoginForm, PaginationForm, WindowVerifyForm, PasswordResetForm, PasswordUpdateForm
+from forms import LoginForm, PaginationForm, WindowVerifyForm, PasswordResetForm, PasswordUpdateForm, SalesForm
 from QianXun.account.db import window
+from QianXun.account.beans import WindowBean
 from QianXun.notice.db import notice
 from QianXun.orders.db import dish
 from QianXun.notice.forms import ChangeCNoticeForm, CreateCNoticeForm, ChangeSNoticeForm, CreateSNoticeForm
@@ -18,6 +19,7 @@ from conf.resp_code import *
 from conf.enum_value import LOGINTYPE
 from conf.default_value import CANTEEN_FLAG, SCHOOL_FLAG
 from utils.Pagination import get_paginator
+from utils.SalesCalculator import stat_window_sales
 
 # Create your views here.
 
@@ -152,7 +154,6 @@ def cm_show_notice(request):
          return json_response(PARAM_REQUIRED, pagination_form.errors)
 
 
-
 @exception_handled
 @canteen_manager_token_required
 @post_required
@@ -228,11 +229,34 @@ def cm_get_canteen_windows(request):
         pagination_dict = pagination_form.cleaned_data
         canteen_manager = request.user_meta.get("manager_model")
         total = manager.get_canteen_windows_number(canteen_manager)
-        windows_list_bean = manager.get_canteen_windows(canteen_manager,pagination_dict)
+        windows_list_model = manager.get_canteen_windows(canteen_manager,pagination_dict)
+        windows_list_bean = [WindowBean(window) for window in windows_list_model]
         result = {"total":total,"rows":windows_list_bean}
         return json_response_from_object(OK, result)
     else:
          return json_response(PARAM_REQUIRED, pagination_form.errors)
+
+
+@exception_handled
+@canteen_manager_token_required
+@post_required
+def cm_stat_window_sales(request):
+    sales_form = SalesForm(request.POST)
+    if sales_form.is_valid():
+        sales_dict = sales_form.cleaned_data
+        canteen_manager = request.user_meta.get("manager_model")
+        total = manager.get_canteen_windows_number(canteen_manager)
+        windows_list_model = manager.get_canteen_windows(canteen_manager,sales_dict)
+        window_sales_bean_list = []
+        for window_model in windows_list_model:
+            window_sales_dict = stat_window_sales(window_model, sales_dict) #{"total": sales_volume, "dishList": sorted_dish_sale_bean_list}
+            window_bean = WindowBean(window_model)
+            window_bean.sales_dict = window_sales_dict
+            window_sales_bean_list.append(window_bean)
+        result = {"total":total,"rows":window_sales_bean_list}
+        return json_response_from_object(OK, result)
+    else:
+        return json_response(PARAM_REQUIRED, sales_form.errors)
 
 
 @exception_handled
@@ -264,7 +288,6 @@ def cm_verify_window(request):
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, window_verify_form.errors)
-
 
 
 @exception_handled
@@ -325,12 +348,34 @@ def sm_get_school_windows(request):
         pagination_dict = pagination_form.cleaned_data
         school_manager = request.user_meta.get("manager_model")
         total = manager.get_school_windows_number(school_manager)
-        windows_list_bean = manager.get_school_windows(school_manager,pagination_dict)
+        windows_list_model = manager.get_school_windows(school_manager,pagination_dict)
+        windows_list_bean = [WindowBean(window) for window in windows_list_model]
         result = {"total":total,"rows":windows_list_bean}
         return json_response_from_object(OK, result)
     else:
          return json_response(PARAM_REQUIRED, pagination_form.errors)
 
+
+@exception_handled
+@school_manager_token_required
+@post_required
+def sm_stat_window_sales(request):
+    sales_form = SalesForm(request.POST)
+    if sales_form.is_valid():
+        sales_dict = sales_form.cleaned_data
+        school_manager = request.user_meta.get("manager_model")
+        total = manager.get_school_windows_number(school_manager)
+        windows_list_model = manager.get_school_windows(school_manager,sales_dict)
+        window_sales_bean_list = []
+        for window_model in windows_list_model:
+            window_sales_dict = stat_window_sales(window_model, sales_dict) #{"total": sales_volume, "dishList": sorted_dish_sale_bean_list}
+            window_bean = WindowBean(window_model)
+            window_bean.sales_dict = window_sales_dict
+            window_sales_bean_list.append(window_bean)
+        result = {"total":total,"rows":window_sales_bean_list}
+        return json_response_from_object(OK, result)
+    else:
+        return json_response(PARAM_REQUIRED, sales_form.errors)
 
 
 @exception_handled

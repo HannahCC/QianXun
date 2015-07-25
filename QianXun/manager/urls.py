@@ -22,6 +22,7 @@ urlpatterns = patterns('',
                        url(r'^delete/canteen/notice$', cm_delete_notice),
                        url(r'^show/canteen/window$', cm_get_canteen_windows),
                        url(r'^search/canteen/window$', cm_search_window_byname),
+                       url(r'^stat/canteen/window/sales$',cm_stat_window_sales),
                        url(r'^verify/window$', cm_verify_window),
 
                        url(r'^create/school/notice$', sm_create_notice),
@@ -29,6 +30,7 @@ urlpatterns = patterns('',
                        url(r'^delete/school/notice$', sm_delete_notice),
                        url(r'^show/school/window$', sm_get_school_windows),
                        url(r'^search/school/window$', sm_search_window_byname),
-
+                       url(r'^stat/school/window/sales$',sm_stat_window_sales),
+                       
 
                        )

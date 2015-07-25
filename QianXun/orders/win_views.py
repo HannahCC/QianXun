@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response
 
 from utils.Decorator import window_token_required, post_required, exception_handled
 from utils.Serializer import json_response, json_response_from_object, json_back
+from utils.SalesCalculator import stat_window_sales
 from conf.resp_code import *
 from conf.default_value import PROMOTION_MAX, DELIVER_TIME_MAX, DISH_MAX
 from conf.enum_value import ORDER_STATUS
@@ -266,33 +267,7 @@ def window_sales_dish(request):
     if sales_form.is_valid():
         sales_dict = sales_form.cleaned_data
         window_model = request.user_meta['window_model']
-        # get all dishes of this window
-        dish_model_list = dish.get_dish_list_bywin(window_model.id, {'page': 1, 'count': DISH_MAX})
-        # get all orders of this window during given time interval, and calculate sales of dishes.
-        sales_volume = 0
-        dish_sale_dict = {}
-        for dish_model in dish_model_list:
-            dish_sale_dict.update({dish_model: 0})
-        page = 1
-        while True:
-            order_model_list = order.get_order_list_ofwin(window_model, {'page': page, 'count': 1000}, sales_dict)
-            for order_model in order_model_list:
-                sales_volume += order_model.food_cost
-                order_dish_model_list = orderdish.get_dish_list_byorder(order_model)
-                for order_dish_model in order_dish_model_list:
-                    dish_model = order_dish_model.dish
-                    dish_sale_dict.update({dish_model: dish_sale_dict.get(dish_model)+order_dish_model.number})
-            page += 1
-            if len(order_model_list) < 1000:
-                break
-        # make it serialized
-        dish_sale_bean_list = []
-        for dish_model, sale in dish_sale_dict.items():
-            dish_sale_bean = DishSaleBean(dish_model, sale)
-            dish_sale_bean_list.append(dish_sale_bean)
-        # sorted by sales
-        sorted_dish_sale_bean_list = sorted(dish_sale_bean_list, key=operator.attrgetter("sales"), reverse=True)
-        result_dict = {"total": sales_volume, "dishList": sorted_dish_sale_bean_list}
+        result_dict = stat_window_sales(window_model, sales_dict)
         return json_response_from_object(OK, result_dict)
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))

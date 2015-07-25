@@ -1,0 +1,34 @@
+<div class="search_div" ><!-- DIV needed for valid HTML -->
+    <input class="easyui-datebox" id="start_date" name="start_date" data-options="required:true,showSeconds:false" value="2015-04-01" style="width:150px">
+    <input class="easyui-datebox" id="end_date" name="end_date" data-options="required:true,showSeconds:false" value="2015-08-01" style="width:150px">
+    <input type="submit" value="统计" onclick="window_sales_stat()">
+</div>
+<table class="window_sales_stat_school"></table>
+<div id ="window"></div>
+<div class ="another_window" ></div>
+<script type="text/javascript">
+    var token =localStorage.getItem("token");
+    var url = "/qianxun/1/manager/stat/school/window/sales";
+    newWindowDatagrid(".window_sales_stat_school");
+    $('.window_sales_stat_school').datagrid({
+        onClickRow:function(index, data){
+            alert("ok");
+        }
+    });
+    /*  do pagination */
+    var pg = $(".window_sales_stat_school").datagrid("getPager"); 
+    $(pg).pagination({
+        onSelectPage: function (pageNumber, pageSize) {
+            var start_date = $("#start_date").val();
+            var end_date = $("#end_date").val();
+            getAjaxData(".window_sales_stat_school", url,{token:token,page:pageNumber,count:pageSize,start_date:start_date,end_date:end_date},"该窗口暂无菜品");
+        } 
+    });
+
+    function window_sales_stat(){
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+        getAjaxData(".notice_search_school", url,{token:token,page:1,count:20,start_date:start_date,end_date:end_date},"该窗口暂无菜品");
+    }
+
+</script>

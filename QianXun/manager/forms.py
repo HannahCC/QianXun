@@ -63,3 +63,10 @@ class WindowVerifyForm(forms.Form):
             raise forms.ValidationError(u'请输入合法的窗口状态')
         return window_status_str
 
+
+class SalesForm(forms.Form):
+    token = forms.CharField(max_length=64)
+    start_date = forms.DateField()
+    end_date = forms.DateField()
+    page = forms.IntegerField(initial=1, required=False)
+    count = forms.IntegerField(initial=10, max_value=20, required=False)
