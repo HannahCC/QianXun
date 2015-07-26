@@ -1,18 +1,19 @@
 <table class="notice_delete_canteen"></table> 
 <div id ="window"></div>
-<div class ="another_window" ></div>
+<div id ="window_add"></div>
 <script type="text/javascript">
     var token =localStorage.getItem("token");
-    var url = "/qianxun/1/manager/canteen/notice";
+    var url = "/qianxun/1/manager/show/canteen/notice";
     newNoticeDatagrid(".notice_delete_canteen");
     $('.notice_delete_canteen').datagrid({  
         onClickRow:function(index, data){
-            $('.another_window').dialog({
+            document.getElementById('window_add').innerHTML = '<div id ="another_window" ></div>';
+            $('#another_window').dialog({
                 modal:true,
                 width:300,
                 height:150,
                 title:"删除公告",
-                content:'确定删除公告"'+data.title+'"?',
+                content:'<p class="note">确定删除公告"'+data.title+'"?</p>',
                 buttons:[{
                     text:'确定',
                     handler:function(){
@@ -22,7 +23,7 @@
                             data: {token:token,notice_id:data.id},
                             success:function(data){
                                 if(data.status == 0){
-                                    $('.another_window').dialog('close');
+                                    $('#another_window').dialog('close');
                                     newMessager("提示","删除修改成功！");
                                 }else{
                                     newMessager("出现错误",data.data.error_info);
@@ -37,10 +38,11 @@
                 },{
                     text:'取消',
                     handler:function(){
-                        $('.another_window').dialog('close');
+                        $('#another_window').dialog('close');
                     }
                 }],
                 onClose:function(){
+                    $('#another_window').window('destroy');
                     getAjaxData(".notice_delete_canteen", url,{token:token,page:1,count:20},"暂无公告");
                 }
             });

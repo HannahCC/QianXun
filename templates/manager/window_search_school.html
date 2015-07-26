@@ -4,7 +4,7 @@
 </div>
 <table class="window_search_school"></table>
 <div id ="window"></div>
-<div class ="another_window" ></div>
+<div id ="window_add" ></div>
 <script type="text/javascript">
     var token =localStorage.getItem("token");
     var url = "/qianxun/1/manager/search/school/window";
@@ -13,7 +13,8 @@
     $('.window_search_school').datagrid({
         onClickRow:function(index, data){
             var window_dish_url = "/qianxun/1/manager/show/window/dish";
-            $('.another_window').window({
+            document.getElementById('window_add').innerHTML = '<div id ="another_window" ></div>';
+            $('#another_window').window({
                 href:'window_dishes_display.html',
                 modal:true,
                 width:800,
@@ -23,7 +24,7 @@
                     getAjaxData(".window_dishes_display", window_dish_url,{token:token,window_id:data.id},"该窗口暂无菜品");
                 },
                 onClose:function(){
-                    document.getElementsByClassName("another_window").innerHTML = "";
+                    $('#another_window').window('destroy');
                 }
             });
         }

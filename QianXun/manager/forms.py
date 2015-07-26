@@ -66,7 +66,7 @@ class WindowVerifyForm(forms.Form):
 
 class SalesForm(forms.Form):
     token = forms.CharField(max_length=64)
-    start_date = forms.DateField()
-    end_date = forms.DateField()
+    start_date = forms.DateTimeField()
+    end_date = forms.DateTimeField()
     page = forms.IntegerField(initial=1, required=False)
     count = forms.IntegerField(initial=10, max_value=20, required=False)

@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 
 from utils.Decorator import window_token_required, post_required, exception_handled
 from utils.Serializer import json_response, json_response_from_object, json_back
-from utils.SalesCalculator import stat_window_sales
+from utils.SalesStat import stat_window_sales
 from conf.resp_code import *
 from conf.default_value import PROMOTION_MAX, DELIVER_TIME_MAX, DISH_MAX
 from conf.enum_value import ORDER_STATUS
@@ -11,7 +11,6 @@ from forms import PaginationForm, PromotionForm, PromotionUpdateForm, DeliverTim
 from QianXun.orders.db import promotion, deliver_time, dish, order, orderdish
 from QianXun.orders.beans import DishSaleBean
 from QianXun.account.db import window
-import operator
 
 def index(request):
     return render_to_response('test/testOrder.html')

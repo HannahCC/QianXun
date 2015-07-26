@@ -115,7 +115,7 @@ def get_school_windows_number(manager_model):
 def get_canteen_windows(manager_model, pagination_dict):
     # 一个餐厅管理员只能管理一个餐厅
     paginator = get_paginator(pagination_dict)
-    order_by = pagination_dict['order_by']
+    order_by = pagination_dict.get('order_by','-sales')
     if not order_by:
         order_by = '-sales'
     windows_list = Window.objects.filter(canteen_id__exact=manager_model.canteen.id,is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]

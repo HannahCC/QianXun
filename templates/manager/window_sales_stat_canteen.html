@@ -3,14 +3,14 @@
     <input class="easyui-datetimebox" id="end_date" name="end_date" data-options="required:true" value="2015-12-31 23:59">
     <input type="submit" value="统计" onclick="window_sales_stat()">
 </div>
-<table class="window_sales_stat_school"></table>
+<table class="window_sales_stat_canteen"></table>
 <div id ="window"></div>
 <div id ="window_add"></div>
 <script type="text/javascript">
     var token =localStorage.getItem("token");
-    var url = "/qianxun/1/manager/stat/school/window/sales";
-    newWindowDatagrid(".window_sales_stat_school");
-    $('.window_sales_stat_school').datagrid({
+    var url = "/qianxun/1/manager/stat/canteen/window/sales";
+    newWindowDatagrid(".window_sales_stat_canteen");
+    $('.window_sales_stat_canteen').datagrid({
         onClickRow:function(index, data){
             var new_sales_dict = {};
             new_sales_dict.sales_volumn = data.sales_dict.total;
@@ -38,19 +38,19 @@
         }
     });
     /*  do pagination */
-    var pg = $(".window_sales_stat_school").datagrid("getPager"); 
+    var pg = $(".window_sales_stat_canteen").datagrid("getPager"); 
     $(pg).pagination({
         onSelectPage: function (pageNumber, pageSize) {
             var start_date = $("#start_date").datetimebox('getValue');
             var end_date = $("#end_date").datetimebox('getValue');
-            getAjaxData(".window_sales_stat_school", url,{token:token,page:pageNumber,count:pageSize,start_date:start_date,end_date:end_date},"该窗口暂无菜品");
+            getAjaxData(".window_sales_stat_canteen", url,{token:token,page:pageNumber,count:pageSize,start_date:start_date,end_date:end_date},"该窗口暂无菜品");
         } 
     });
 
     function window_sales_stat(){
         var start_date = $("#start_date").datetimebox('getValue');
         var end_date = $("#end_date").datetimebox('getValue');
-        getAjaxData(".window_sales_stat_school", url,{token:token,page:1,count:20,start_date:start_date,end_date:end_date},"该窗口暂无菜品");
+        getAjaxData(".window_sales_stat_canteen", url,{token:token,page:1,count:20,start_date:start_date,end_date:end_date},"该窗口暂无菜品");
     }
 
 </script>

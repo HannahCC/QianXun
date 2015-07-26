@@ -1,13 +1,14 @@
 <table class="window_display_canteen"></table>
 <div id ="window"></div>
-<div class ="another_window" ></div>
+<div id ="window_add" ></div>
 <script type="text/javascript">
     var token =localStorage.getItem("token");
     var url = "/qianxun/1/manager/show/canteen/window";
     newWindowDatagrid(".window_display_canteen");
     $('.window_display_canteen').datagrid({
         onClickRow:function(index, data){
-            $('.another_window').window({
+            document.getElementById('window_add').innerHTML = '<div id ="another_window" ></div>';
+            $('#another_window').window({
                 href:'window_verify_canteen_form.html',
                 modal:true,
                 width:300,
@@ -17,7 +18,7 @@
                     setWindowStatus(data.id,data.windowName);
                 },
                 onClose:function(){
-                    document.getElementsByClassName("another_window").innerHTML = "";
+                    $('#another_window').window('destroy');
                     getAjaxData(".window_display_canteen", url,{token:token,page:1,count:20,order_by:'window_status'},"暂无窗口");
                 }
             });
@@ -33,13 +34,7 @@
     getAjaxData(".window_display_canteen", url,{token:token,page:1,count:20,order_by:'window_status'},"暂无窗口");
 
     function setWindowStatus(id,name){
-        var IdList = document.getElementsByName("windowId");
-        for(var i=0;i<IdList.length;i++){
-            IdList[i].value = id;
-        }
-        var NameList = document.getElementsByName("windowName");
-        for(var i=0;i<NameList.length;i++){
-            NameList[i].innerHTML = name;
-        }
+        var windowId = document.getElementById("windowId").value = id;
+        var windowStatus = document.getElementById("windowName").innerHTML = name;
     }
 </script>

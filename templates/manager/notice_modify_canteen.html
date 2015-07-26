@@ -1,13 +1,14 @@
 <table class="notice_modify_canteen"></table> 
 <div id ="window"></div>
-<div class ="another_window" ></div>
+<div id ="window_add" ></div>
 <script type="text/javascript">
     var token =localStorage.getItem("token");
-    var url = "/qianxun/1/manager/canteen/notice";
+    var url = "/qianxun/1/manager/show/canteen/notice";
     newNoticeDatagrid(".notice_modify_canteen");
     $('.notice_modify_canteen').datagrid({  
         onClickRow:function(index, data){
-            $('.another_window').window({
+            document.getElementById('window_add').innerHTML = '<div id ="another_window" ></div>';
+            $('#another_window').window({
                 href:'notice_modify_canteen_form.html',
                 modal:true,
                 width:800,
@@ -17,7 +18,7 @@
                     setNoticeData(data.id,data.title,data.content);
                 },
                 onClose:function(){
-                    document.getElementsByClassName("another_window").innerHTML = "";
+                    $('#another_window').window('destroy');
                     getAjaxData(".notice_modify_canteen", url,{token:token,page:1,count:20},"暂无公告");
                 }
             });
@@ -34,17 +35,8 @@
 
 
     function setNoticeData(id,title,content){
-        var IdList = document.getElementsByName("noticeId");
-        for(var i=0;i<IdList.length;i++){
-            IdList[i].value = id;
-        }
-        var TitleList = document.getElementsByName("noticeTitle");
-        for(var i=0;i<TitleList.length;i++){
-            TitleList[i].value = title;
-        }
-        var ContentList = document.getElementsByName("noticeContent");
-        for(var i=0;i<ContentList.length;i++){
-            ContentList[i].value = content;
-        }
+        document.getElementById("noticeId").value = id;
+        document.getElementById("noticeTitle").value = title;
+        document.getElementById("noticeContent").value = content;
     }
 </script>

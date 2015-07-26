@@ -180,9 +180,9 @@ class PaginationForm(forms.Form):
 
 
 class SalesForm(forms.Form):
-    token = forms.CharField(max_length=64)
-    start_date = forms.DateField()
-    end_date = forms.DateField()
+    token = forms.CharField(max_length=64)  
+    start_date = forms.DateTimeField()
+    end_date = forms.DateTimeField()
 
 
 class DeleteIdListForm(forms.Form):

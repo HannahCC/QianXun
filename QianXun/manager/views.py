@@ -19,7 +19,7 @@ from conf.resp_code import *
 from conf.enum_value import LOGINTYPE
 from conf.default_value import CANTEEN_FLAG, SCHOOL_FLAG
 from utils.Pagination import get_paginator
-from utils.SalesCalculator import stat_window_sales
+from utils.SalesStat import stat_window_sales
 
 # Create your views here.
 
