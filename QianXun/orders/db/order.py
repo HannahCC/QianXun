@@ -52,11 +52,11 @@ def get_order_bean_list_bycus(customer_id, order_status, pagination_dict):
 
 def get_order_bean_list_bywin(window_id, order_status, pagination_dict):
     paginator = get_paginator(pagination_dict)
-    if order_status:
-        order_list = Orders.objects.filter(window_id__exact=window_id, order_status=order_status,
+    if order_status == '':
+        order_list = Orders.objects.filter(window_id__exact=window_id, order_status__gt=ORDER_STATUS[0][0],
                                            is_valid2window=1).order_by('-update_time')[paginator[0]:paginator[1]]
     else:
-        order_list = Orders.objects.filter(window_id__exact=window_id, order_status__gt=ORDER_STATUS[0][0],
+        order_list = Orders.objects.filter(window_id__exact=window_id, order_status=order_status,
                                            is_valid2window=1).order_by('-update_time')[paginator[0]:paginator[1]]
     order_bean_list = []
     for my_order in order_list:
