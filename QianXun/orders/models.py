@@ -21,7 +21,6 @@ class DeliverTime(models.Model):
     class Meta:
         verbose_name = u'配送时间'
         verbose_name_plural = u'配送时间'
-        unique_together = ('window', 'date', 'time')
 
     def __unicode__(self):
         if self.time:
@@ -59,7 +58,6 @@ class Promotions(models.Model):
     class Meta:
         verbose_name = u'促销活动'
         verbose_name_plural = u'促销活动'
-        unique_together = ('window', 'rules')
 
     def __unicode__(self):
         return self.rules
@@ -86,7 +84,6 @@ class Dish(models.Model):
     class Meta:
         verbose_name = u'菜品'
         verbose_name_plural = u'菜品'
-        unique_together = ('window', 'dish_name')
         ordering = ['dish_name']
 
     def __unicode__(self):
