@@ -64,6 +64,7 @@ def window_promotion_delete(request):
         delete_id_list = delete_id_list_dict['data']
         window_model = request.user_meta['window_model']
         promotion.delete(window_model.id, delete_id_list)
+        window.update_promotion_number(window_model, -1)  # update promotion_number of window
         window.update_promotion_list(window_model)
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
@@ -114,8 +115,9 @@ def window_deliver_time_delete(request):
     if delete_id_list_form.is_valid():
         delete_id_list_dict = delete_id_list_form.cleaned_data
         delete_id_list = delete_id_list_dict['data']
-        window_id = request.user_meta['window_model'].id
-        deliver_time.delete(window_id, delete_id_list)
+        window_model = request.user_meta['window_model']
+        deliver_time.delete(window_model.id, delete_id_list)
+        window.update_deliver_time_number(window_model, -1)  # update deliver_time_number of window
         return json_response(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, delete_id_list_form.errors)
@@ -165,8 +167,9 @@ def window_dish_delete(request):
     if delete_id_list_form.is_valid():
         delete_id_list_dict = delete_id_list_form.cleaned_data
         delete_id_list = delete_id_list_dict['data']
-        window_id = request.user_meta['window_model'].id
-        dish.delete(window_id, delete_id_list)
+        window_model = request.user_meta['window_model']
+        dish.delete(window_model.id, delete_id_list)
+        window.update_dish_number(window_model, -1)  # update dish_number of window
         return json_response(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, delete_id_list_form.errors)
