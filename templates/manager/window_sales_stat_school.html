@@ -13,7 +13,6 @@
     $('.window_sales_stat_school').datagrid({
         onClickRow:function(index, data){
             var new_sales_dict = {};
-            new_sales_dict.sales_volumn = data.sales_dict.total;
             new_sales_dict.total = data.sales_dict.dishList.length;
             new_sales_dict.rows = data.sales_dict.dishList;
             if(new_sales_dict.total==0){
@@ -27,7 +26,10 @@
                     height:500,
                     title:"销量统计",
                     onLoad:function(){
-                        $('span[name="window_name"]').innerHTML = data.windowName;
+                        document.getElementById('window_name').innerHTML = data.windowName;
+                        document.getElementById('sales_volumn').innerHTML = data.sales_dict.total;
+                        document.getElementById('start_date_value').innerHTML = $("#start_date").datetimebox('getValue');
+                        document.getElementById('end_date_value').innerHTML = $("#end_date").datetimebox('getValue');
                         $('.window_sales_display').datagrid('loadData', new_sales_dict); 
                     },
                     onClose:function(){
