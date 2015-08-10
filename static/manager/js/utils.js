@@ -88,7 +88,7 @@ function newWindowDatagrid(gridName){
             {field:'name',title:'法人代表',width:100,algin:'center'},   
             {field:'userName',title:'联系方式',width:100,algin:'center'},  
             {field:'grade',title:'评级',width:50,algin:'center'},   
-            {field:'sales',title:'销量',width:50,algin:'center'}, 
+            {field:'sales',title:'总销量',width:50,algin:'center'}, 
             {field:'windowStatusDesc',title:'窗口状态',width:100,algin:'center'},
             {field:'windowStatus',title:'窗口状态值',hidden:true},
             {field:'id',title:'id',hidden:true}, 
