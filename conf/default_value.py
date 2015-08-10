@@ -24,8 +24,8 @@ TOKEN = 'default'
 VERIFY_CODE_INVALID = 30 # mins
 
 # jpush
-JPUSH_APP_KEY = u'7650fcb4ca095999e0c42089'
-MASTER_SECRET = u'f87a37b858722a7095808096'
+JPUSH_APP_KEY = u'0d6f83cf00b74fb48782062a'
+MASTER_SECRET = u'c3f4c0cbfb4bcda3f4604e0e'
 NEW_ORDER_MSG = u'主人，您有新订单啦~'
 
 # mob_msg
