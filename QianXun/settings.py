@@ -214,6 +214,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False
         },
+        'orders.management.commands.regular_task': {
+            'handlers': ['scripts_handler', 'console', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': False
+        },
         'django': {
             'handlers': ['default', 'mail_admins'],
             'level': 'DEBUG',
