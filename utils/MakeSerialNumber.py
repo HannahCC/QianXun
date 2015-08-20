@@ -24,3 +24,29 @@ def new_order_id(seed):
     random_num = random.randint(10000, 99999)
     serial_number = "".join([str(seed), str(timestamp), str(random_num)])
     return serial_number
+
+
+def new_batch_id():
+    """
+        Make serial number(12-25)
+        the serial number is made up of current_time(14), and a random number(5)
+        ......
+    """
+    now = datetime.now()
+    part1 = now.strftime('%Y%m%d%H%M%S')
+    part2 = random.randint(10000, 99999)
+    serial_number = "".join([part1, str(part2)])
+    return serial_number
+
+
+def new_refund_id():
+    """
+        Make serial number(16)
+        the serial number is made up of current_time(14), and a random number(2)
+        ......
+    """
+    now = datetime.now()
+    part1 = now.strftime('%Y%m%d%H%M%S')
+    part2 = random.randint(10, 99)
+    serial_number = "".join([part1, str(part2)])
+    return serial_number

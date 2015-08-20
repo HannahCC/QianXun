@@ -9,7 +9,7 @@ from conf.resp_code import *
 from conf.enum_value import ORDER_STATUS
 from conf.default_value import ORDER_DISH_MAX, PROMOTION_MAX, NEW_ORDER_MSG
 from forms import OrderCalculateForm, OrderCreateForm, OrderDetailDisplayForm, PaginationForm, CustomerOrderUpdateForm, \
-    CommentForm, DeleteIdListForm
+    CustomerOrderConfrimForm, CommentForm, DeleteIdListForm
 from db import promotion, order, orderdish
 from QianXun.account.db import customer
 
@@ -101,6 +101,26 @@ def customer_order_create(request):
     else:
         return json_response(PARAM_REQUIRED, order_form.errors)
 
+@exception_handled
+@customer_token_required
+@post_required
+def customer_order_confirm(request):
+    order_update_form = CustomerOrderConfrimForm(request.POST)
+    if order_update_form.is_valid():
+        order_update_dict = order_update_form.cleaned_data
+        customer_id = request.user_meta['customer_model'].id
+        impact = order.confrim_status_bycus(customer_id, order_update_dict)
+        if impact == 1:
+            jpush = JPush()
+            order_model = order.get_order_byid_bycus(customer_id, order_update_dict)
+            registration_id = order_model.window.registration_id
+            jpush.push_by_id(NEW_ORDER_MSG, registration_id)
+            return json_response(OK, CODE_MESSAGE.get(OK))
+        else:
+            return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))
+    else:
+        return json_response(PARAM_REQUIRED, order_update_form.errors)
+
 
 @exception_handled
 @customer_token_required
@@ -112,11 +132,6 @@ def customer_order_update(request):
         customer_id = request.user_meta['customer_model'].id
         impact = order.update_status_bycus(customer_id, order_update_dict)
         if impact == 1:
-            if order_update_dict['new_order_status'] == ORDER_STATUS[1][0]:
-                jpush = JPush()
-                order_model = order.get_order_byid_bycus(customer_id, order_update_dict)
-                registration_id = order_model.window.registration_id
-                jpush.push_by_id(NEW_ORDER_MSG, registration_id)
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:
             return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))

@@ -84,14 +84,20 @@ def get_order_detail_byid_bywin(window_id, order_detail_display_dict):
 # use old_order_status to make concurrency control
 def update_status_bycus(customer_id, order_update_dict):
     new_order_status = order_update_dict['new_order_status']
-    if new_order_status == ORDER_STATUS[1][0]:  # pay
-        impact = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_update_dict['order'],
-                                       order_status=order_update_dict['old_order_status'], is_valid2customer=1). \
-            update(order_status=new_order_status, deal_time=datetime.now(), update_time=datetime.now())
-    else:
-        impact = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_update_dict['order'],
-                                       order_status=order_update_dict['old_order_status'], is_valid2customer=1). \
-            update(order_status=new_order_status, update_time=datetime.now())
+    impact = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_update_dict['order'],
+                                   order_status=order_update_dict['old_order_status'], is_valid2customer=1). \
+        update(order_status=new_order_status, update_time=datetime.now())
+    return impact
+
+
+# order_status validation has done in FORM
+# use old_order_status to make concurrency control
+def confrim_status_bycus(customer_id, order_confrim_dict):  # pay
+    new_order_status = order_confrim_dict['new_order_status']
+    impact = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_confrim_dict['order'],
+                                   order_status=order_confrim_dict['old_order_status'], is_valid2customer=1). \
+        update(order_status=new_order_status, transaction_id=order_confrim_dict['transaction_id'],
+               deal_time=datetime.now(), update_time=datetime.now())
     return impact
 
 

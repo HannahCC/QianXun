@@ -4,9 +4,10 @@ __author__ = 'Hannah'
 from django import forms
 from conf.enum_value import ORDER_STATUS, ORDER_BY
 from QianXun.orders.models import Orders, Promotions, DeliverTime, Dish
-from utils.Validator import validate_order_status, validate_customer_order_status, validate_window_order_status, \
-    validate_pro_type, validate_image
+from utils.Validator import validate_order_status, validate_window_order_status, validate_customer_update_order_status,\
+    validate_customer_confirm_order_status, validate_pro_type, validate_image
 from utils.Serializer import json_back
+
 
 class OrderCalculateForm(forms.Form):
     token = forms.CharField(max_length=64)
@@ -76,7 +77,15 @@ class OrderUpdateForm(forms.Form):
 class CustomerOrderUpdateForm(OrderUpdateForm):
     def __init__(self, *args, **kwargs):
         super(CustomerOrderUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['new_order_status'].validators.append(validate_customer_order_status)
+        self.fields['new_order_status'].validators.append(validate_customer_update_order_status)
+
+
+class CustomerOrderConfrimForm(OrderUpdateForm):
+    transaction_id = forms.CharField(max_length=64)
+
+    def __init__(self, *args, **kwargs):
+        super(CustomerOrderConfrimForm, self).__init__(*args, **kwargs)
+        self.fields['new_order_status'].validators.append(validate_customer_confirm_order_status)
 
 
 class WindowOrderUpdateForm(OrderUpdateForm):
