@@ -39,7 +39,7 @@ def make_excel(order_list, note):
     filename = "".join(['d:\\refund\\', str(batch_id), '.csv'])
     csvf = file(filename, 'wb')
     writer = csv.writer(csvf)
-    writer.writerow([u'批次号', '总金额（元）'.decode('utf-8').encode('gb2312'), '总笔数'.decode('utf-8').encode('gb2312')])
+    writer.writerow(['批次号'.decode('utf-8').encode('gb2312'), '总金额（元）'.decode('utf-8').encode('gb2312'), '总笔数'.decode('utf-8').encode('gb2312')])
     number = 0
     total_cost = 0
     data = []
@@ -47,9 +47,9 @@ def make_excel(order_list, note):
         number += 1
         cost = order_model.food_cost + order_model.deliver_cost
         total_cost += cost
-        data.append((new_refund_id(), order_model.transaction_id, cost, note))
-    writer.writerows([batch_id, total_cost, number])
-    writer.writerow([u'商户退款流水号', '支付宝交易号'.decode('utf-8').encode('gb2312'),
+        data.append((new_refund_id(), order_model.transaction_id, cost, note.decode('utf-8').encode('gb2312')))
+    writer.writerow([batch_id, str(total_cost), str(number)])
+    writer.writerow(['商户退款流水号'.decode('utf-8').encode('gb2312'), '支付宝交易号'.decode('utf-8').encode('gb2312'),
                      '退款金额'.decode('utf-8').encode('gb2312'), '退款备注'.decode('utf-8').encode('gb2312')])
     writer.writerows(data)
     csvf.close()
