@@ -4,7 +4,7 @@ from QianXun.orders.models import Orders
 from conf.enum_value import ORDER_STATUS
 from datetime import datetime, timedelta
 from utils.MakeSerialNumber import new_batch_id, new_refund_id
-import xlwt
+import csv
 
 
 def auto_update_order():
@@ -35,30 +35,21 @@ def display_order(order_status):
 
 
 def make_excel(order_list, note):
-    book = xlwt.Workbook(encoding='utf-8', style_compression=0)
-    sheet = book.add_sheet('batch_refund', cell_overwrite_ok=True)
-    sheet.write(0, 0, u'批次号')
-    sheet.write(0, 1, u'总金额（元）')
-    sheet.write(0, 2, u'总笔数）')
-    sheet.write(2, 0, u'商户退款流水号')
-    sheet.write(2, 1, u'支付宝交易号')
-    sheet.write(2, 2, u'退款金额）')
-    sheet.write(2, 3, u'退款备注）')
+    batch_id = new_batch_id()
+    filename = "".join(['d:\\refund\\', str(batch_id), '.csv'])
+    csvf = file(filename, 'wb')
+    writer = csv.writer(csvf)
+    writer.writerow([u'批次号', '总金额（元）'.decode('utf-8').encode('gb2312'), '总笔数'.decode('utf-8').encode('gb2312')])
     number = 0
     total_cost = 0
+    data = []
     for order_model in order_list:
         number += 1
-        sheet.write(number+2, 0, new_refund_id())
-        sheet.write(number+3, 1, order_model.transaction_id)
         cost = order_model.food_cost + order_model.deliver_cost
         total_cost += cost
-        sheet.write(number+2, 2, cost)
-        sheet.write(number+2, 3, note)
-    batch_id = new_batch_id()
-    sheet.write(1, 0, batch_id)
-    sheet.write(1, 1, total_cost)
-    sheet.write(0, 2, number)
-    filename = "".join(['d:\\refund\\', str(batch_id), '.xls'])
-    book.save(filename)
-
-
+        data.append((new_refund_id(), order_model.transaction_id, cost, note))
+    writer.writerows([batch_id, total_cost, number])
+    writer.writerow([u'商户退款流水号', '支付宝交易号'.decode('utf-8').encode('gb2312'),
+                     '退款金额'.decode('utf-8').encode('gb2312'), '退款备注'.decode('utf-8').encode('gb2312')])
+    writer.writerows(data)
+    csvf.close()
