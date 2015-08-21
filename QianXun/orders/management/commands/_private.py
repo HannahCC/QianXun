@@ -11,7 +11,6 @@ def auto_update_order():
     # finish order ( change status from peisongzhong to daipingjia )
     now = datetime.now()
     start = now - timedelta(days=2)
-    print 'here is update_order'
     number = {}
     impact = Orders.objects.filter(order_status__exact=ORDER_STATUS[5][0], update_time__lte=start). \
             update(order_status=ORDER_STATUS[7][0], update_time=datetime.now())
@@ -34,22 +33,30 @@ def display_order(order_status):
     return order_list
 
 
-def make_excel(order_list, note):
+def make_excel(refused_order_list, canceled_order_list):
     batch_id = new_batch_id()
     filename = "".join(['d:\\refund\\', str(batch_id), '.csv'])
     csvf = file(filename, 'wb')
     writer = csv.writer(csvf)
-    writer.writerow(['批次号'.decode('utf-8').encode('gb2312'), '总金额（元）'.decode('utf-8').encode('gb2312'), '总笔数'.decode('utf-8').encode('gb2312')])
+    writer.writerow(['批次号'.decode('utf-8').encode('gb2312'), '总金额（元）'.decode('utf-8').encode('gb2312'), '总笔数'.decode('utf-8').encode('gb2312'),''])
     number = 0
     total_cost = 0
     data = []
-    for order_model in order_list:
+    for order_model in refused_order_list:
         number += 1
         cost = order_model.food_cost + order_model.deliver_cost
         total_cost += cost
-        data.append((new_refund_id(), order_model.transaction_id, cost, note.decode('utf-8').encode('gb2312')))
-    writer.writerow([batch_id, str(total_cost), str(number)])
+        data.append((new_refund_id(), order_model.transaction_id, cost, '【已拒绝】订单退款'.decode('utf-8').encode('gb2312')))
+
+    for order_model in canceled_order_list:
+        number += 1
+        cost = order_model.food_cost + order_model.deliver_cost
+        total_cost += cost
+        data.append((new_refund_id(), order_model.transaction_id, cost, '【已取消】订单退款'.decode('utf-8').encode('gb2312')))
+
+    writer.writerow([batch_id, str(total_cost), str(number),''])
     writer.writerow(['商户退款流水号'.decode('utf-8').encode('gb2312'), '支付宝交易号'.decode('utf-8').encode('gb2312'),
                      '退款金额'.decode('utf-8').encode('gb2312'), '退款备注'.decode('utf-8').encode('gb2312')])
     writer.writerows(data)
     csvf.close()
+    # , .decode('utf-8').encode('gb2312')

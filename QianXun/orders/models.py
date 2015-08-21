@@ -113,6 +113,7 @@ class Orders(models.Model):
     address = models.ForeignKey(Address, verbose_name=u'自定义地址', blank=True, null=True)
     # this should be a time of the window
     deliver_time = models.ForeignKey(DeliverTime, verbose_name=u'送达时间', blank=True, null=True)
+    transaction_id = models.CharField(u'交易号', max_length=64, blank=True, null=True) 
 
     notes = models.CharField(u'备注', max_length=64, default='', blank=True)
     promotion_list = models.CharField(u'优惠活动', max_length=1024, blank=True)
