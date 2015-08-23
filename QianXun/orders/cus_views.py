@@ -89,8 +89,8 @@ def customer_order_create(request):
             # initial the order_dict
             customer_model = request.user_meta['customer_model']
             order_dict.update({'customer': customer_model})
-            # window_id = order_dict['window'].id
-            # order_dict.update({'order_id': new_order_id(window_id)})
+            window_id = order_dict['window'].id
+            order_dict.update({'order_id': new_order_id(window_id)})
             my_order_model = order.create_bycus(order_dict)  # create a record in orders table,return a model with an id
 
             # add orders_dishes

@@ -29,7 +29,7 @@ class OrderCreateForm(forms.ModelForm):
 
     class Meta:
         model = Orders
-        fields = ['window', 'promotion_list', 'discount', 'food_cost', 'deliver_cost', 'order_id',
+        fields = ['window', 'promotion_list', 'discount', 'food_cost', 'deliver_cost',
                   'building', 'address', 'notes', 'deliver_time']
 
     def clean_address(self):
