@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render_to_response
+from django.http import HttpResponse
 from utils.Decorator import customer_token_required, post_required, exception_handled
 from utils.Serializer import json_response_from_object, json_response, json_back
 from utils.MakeSerialNumber import new_order_id
@@ -116,7 +117,7 @@ def customer_order_confirm(request):
             order_model = order.get_order_byid_bycus(customer_id, order_confirm_dict)
             registration_id = order_model.window.registration_id
             jpush.push_by_id(NEW_ORDER_MSG, registration_id)
-            return json_response(OK, CODE_MESSAGE.get(OK))
+            return HttpResponse("success")
         else:
             return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))
     else:
