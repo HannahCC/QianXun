@@ -32,20 +32,12 @@ def validate_window_status(value):
         raise ValidationError(u'请输入合法的窗口状态')
 
 
-def validate_customer_update_order_status(value):
+def validate_customer_order_status(value):
     order_status = int(value)
     if order_status == ORDER_STATUS[4][0] or order_status == ORDER_STATUS[7][0]:
         return value
     else:
         raise ValidationError(u'请输入合法的订单状态<权限错误>')
-
-
-def validate_customer_confirm_order_status(value):
-    order_status = int(value)
-    if order_status == ORDER_STATUS[1][0]:
-        return value
-    else:
-        raise ValidationError(u'请输入合法的订单状态')
 
 
 def validate_window_order_status(value):
