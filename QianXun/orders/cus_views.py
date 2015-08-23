@@ -88,8 +88,8 @@ def customer_order_create(request):
             # initial the order_dict
             customer_model = request.user_meta['customer_model']
             order_dict.update({'customer': customer_model})
-            window_id = order_dict['window'].id
-            order_dict.update({'order_id': new_order_id(window_id)})
+            # window_id = order_dict['window'].id
+            # order_dict.update({'order_id': new_order_id(window_id)})
             my_order_model = order.create_bycus(order_dict)  # create a record in orders table,return a model with an id
 
             # add orders_dishes
@@ -101,25 +101,26 @@ def customer_order_create(request):
     else:
         return json_response(PARAM_REQUIRED, order_form.errors)
 
+
 @exception_handled
 @customer_token_required
 @post_required
 def customer_order_confirm(request):
-    order_update_form = CustomerOrderConfrimForm(request.POST)
-    if order_update_form.is_valid():
-        order_update_dict = order_update_form.cleaned_data
+    order_confirm_form = CustomerOrderConfrimForm(request.POST)
+    if order_confirm_form.is_valid():
+        order_confirm_dict = order_confirm_form.cleaned_data
         customer_id = request.user_meta['customer_model'].id
-        impact = order.confrim_status_bycus(customer_id, order_update_dict)
+        impact = order.confirm_status_bycus(customer_id, order_confirm_dict)
         if impact == 1:
             jpush = JPush()
-            order_model = order.get_order_byid_bycus(customer_id, order_update_dict)
+            order_model = order.get_order_byid_bycus(customer_id, order_confirm_dict)
             registration_id = order_model.window.registration_id
             jpush.push_by_id(NEW_ORDER_MSG, registration_id)
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:
             return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))
     else:
-        return json_response(PARAM_REQUIRED, order_update_form.errors)
+        return json_response(PARAM_REQUIRED, order_confirm_form.errors)
 
 
 @exception_handled

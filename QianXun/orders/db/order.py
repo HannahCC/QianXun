@@ -90,14 +90,10 @@ def update_status_bycus(customer_id, order_update_dict):
     return impact
 
 
-# order_status validation has done in FORM
-# use old_order_status to make concurrency control
-def confrim_status_bycus(customer_id, order_confrim_dict):  # pay
-    new_order_status = order_confrim_dict['new_order_status']
-    impact = Orders.objects.filter(customer_id__exact=customer_id, id__exact=order_confrim_dict['order'],
-                                   order_status=order_confrim_dict['old_order_status'], is_valid2customer=1). \
-        update(order_status=new_order_status, transaction_id=order_confrim_dict['transaction_id'],
-               deal_time=datetime.now(), update_time=datetime.now())
+def confirm_status_bycus(customer_id, order_confrim_dict):  # pay
+    impact = Orders.objects.filter(customer_id__exact=customer_id, order_id__exact=order_confrim_dict['out_trade_no']). \
+        update(order_status=ORDER_STATUS[1][0], transaction_id=order_confrim_dict['trade_no'],
+               deal_time=order_confrim_dict['gmt_payment'], update_time=datetime.now())
     return impact
 
 

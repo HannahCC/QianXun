@@ -29,7 +29,7 @@ class OrderCreateForm(forms.ModelForm):
 
     class Meta:
         model = Orders
-        fields = ['window', 'promotion_list', 'discount', 'food_cost', 'deliver_cost',
+        fields = ['window', 'promotion_list', 'discount', 'food_cost', 'deliver_cost', 'order_id'
                   'building', 'address', 'notes', 'deliver_time']
 
     def clean_address(self):
@@ -59,6 +59,13 @@ class OrderCreateForm(forms.ModelForm):
         return dish_list
 
 
+class CustomerOrderConfrimForm(forms.Form):
+    gmt_payment = forms.DateTimeField()
+    trade_status = forms.CharField(max_length=64)
+    trade_no = forms.CharField(min_length=16, max_length=64)
+    out_trade_no = forms.CharField(max_length=64)
+
+
 class OrderUpdateForm(forms.Form):
     token = forms.CharField(max_length=64)
     order = forms.IntegerField()
@@ -78,14 +85,6 @@ class CustomerOrderUpdateForm(OrderUpdateForm):
     def __init__(self, *args, **kwargs):
         super(CustomerOrderUpdateForm, self).__init__(*args, **kwargs)
         self.fields['new_order_status'].validators.append(validate_customer_update_order_status)
-
-
-class CustomerOrderConfrimForm(OrderUpdateForm):
-    transaction_id = forms.CharField(max_length=64)
-
-    def __init__(self, *args, **kwargs):
-        super(CustomerOrderConfrimForm, self).__init__(*args, **kwargs)
-        self.fields['new_order_status'].validators.append(validate_customer_confirm_order_status)
 
 
 class WindowOrderUpdateForm(OrderUpdateForm):
