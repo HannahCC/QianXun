@@ -104,17 +104,15 @@ def customer_order_create(request):
 
 
 @exception_handled
-@customer_token_required
 @post_required
 def customer_order_confirm(request):
     order_confirm_form = CustomerOrderConfrimForm(request.POST)
     if order_confirm_form.is_valid():
         order_confirm_dict = order_confirm_form.cleaned_data
-        customer_id = request.user_meta['customer_model'].id
-        impact = order.confirm_status_bycus(customer_id, order_confirm_dict)
+        impact = order.confirm_status_bycus(order_confirm_dict)
         if impact == 1:
             jpush = JPush()
-            order_model = order.get_order_byid_bycus(customer_id, order_confirm_dict)
+            order_model = order.get_order_byid(order_confirm_dict)
             registration_id = order_model.window.registration_id
             jpush.push_by_id(NEW_ORDER_MSG, registration_id)
             return HttpResponse("success")
@@ -170,9 +168,8 @@ def customer_comment_create(request):
             for comment_json in comment_list:
                 orderdish.update_comment(my_order, comment_json)
             # update the status of my_order
-            order_update_dict = {'order': my_order.id, 'old_order_status': ORDER_STATUS[7][0],
-                                 'new_order_status': ORDER_STATUS[8][0]}
-            order.update_status_bycus(customer_id, order_update_dict)
+            my_order.order_status = ORDER_STATUS[8][0]
+            my_order.save()
             return json_response_from_object(OK, CODE_MESSAGE.get(OK))
         else:
             return json_response(ORDER_STATUS_ERROR, CODE_MESSAGE.get(ORDER_STATUS_ERROR))

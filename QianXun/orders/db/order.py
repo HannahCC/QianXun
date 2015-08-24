@@ -26,6 +26,11 @@ def create_bycus(order_dict):
     return my_order
 
 
+def get_order_byid(order_dict):
+    my_order = Orders.objects.get(id__exact=order_dict['order'])
+    return my_order
+
+
 def get_order_byid_bycus(customer_id, order_dict):
     my_order = Orders.objects.get(customer_id__exact=customer_id, id__exact=order_dict['order'], is_valid2customer=1)
     return my_order
@@ -90,8 +95,8 @@ def update_status_bycus(customer_id, order_update_dict):
     return impact
 
 
-def confirm_status_bycus(customer_id, order_confrim_dict):  # pay
-    impact = Orders.objects.filter(customer_id__exact=customer_id, order_id__exact=order_confrim_dict['out_trade_no']). \
+def confirm_status_bycus(order_confrim_dict):  # pay
+    impact = Orders.objects.filter(order_id__exact=order_confrim_dict['out_trade_no']). \
         update(order_status=ORDER_STATUS[1][0], transaction_id=order_confrim_dict['trade_no'],
                deal_time=order_confrim_dict['gmt_payment'], update_time=datetime.now())
     return impact
