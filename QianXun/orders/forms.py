@@ -110,11 +110,11 @@ class CommentForm(forms.Form):
                 if not isinstance(orders_dishes, int):
                     raise forms.ValidationError(u'请输入int型的orders_dishes')
                 grade = comment_json.get('grade', '')
-                if not isinstance(orders_dishes, int) or grade < 1 or grade > 5:
-                    raise forms.ValidationError(orders_dishes+u':请输入[1,5]范围的评分')
+                if not isinstance(grade, float) or grade < 1 or grade > 5:
+                    raise forms.ValidationError(str(orders_dishes)+u'-grade='+str(grade)+u':请输入[1,5]范围的评分')
                 text = comment_json.get('text', '')
                 if not isinstance(text, unicode) or len(text) == 0:
-                    raise forms.ValidationError(orders_dishes+u':评论不能为空')
+                    raise forms.ValidationError(str(orders_dishes)+u':评论不能为空')
         return comment_list
 
 

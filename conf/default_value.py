@@ -26,7 +26,7 @@ VERIFY_CODE_INVALID = 30 # mins
 # jpush
 JPUSH_APP_KEY = u'0d6f83cf00b74fb48782062a'
 MASTER_SECRET = u'c3f4c0cbfb4bcda3f4604e0e'
-NEW_ORDER_MSG = u'主人，您有新订单啦~'
+NEW_ORDER_MSG = u'您有新订单啦~请及时送餐'
 
 # mob_msg
 MOB_URL = 'https://api.sms.mob.com/sms/verify'
