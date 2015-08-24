@@ -25,12 +25,6 @@ def create_bycus(order_dict):
     my_order.save()
     return my_order
 
-
-def get_order_byid(order_dict):
-    my_order = Orders.objects.get(id__exact=order_dict['order'])
-    return my_order
-
-
 def get_order_byid_bycus(customer_id, order_dict):
     my_order = Orders.objects.get(customer_id__exact=customer_id, id__exact=order_dict['order'], is_valid2customer=1)
     return my_order
@@ -100,6 +94,11 @@ def confirm_status_bycus(order_confrim_dict):  # pay
         update(order_status=ORDER_STATUS[1][0], transaction_id=order_confrim_dict['trade_no'],
                deal_time=order_confrim_dict['gmt_payment'], update_time=datetime.now())
     return impact
+
+
+def get_order_byid(order_confrim_dict):
+    my_order = Orders.objects.get(order_id__exact=order_confrim_dict['out_trade_no'])
+    return my_order
 
 
 # order_status validation has done in FORM

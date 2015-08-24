@@ -29,13 +29,12 @@ class JPush():
         self.push.audience = jpush.audience(jpush.registration_id(registration_id))
         self.push.notification = jpush.notification(alert=notification)
         self.__push()
+        tip_message = 'JPush SUCCESS.To: %s'% (registration_id)
+        _LOGGER.info(tip_message)
 
     def __push(self):
         try:
-            if DEBUG:
-                _LOGGER.info("In Debug mode. It will not send msg for real.")
-            else:
-                self.push.send()
+            self.push.send()
         except JPushFailure:
             exc_type, value, tb = sys.exc_info()
             formatted_tb = traceback.format_tb(tb)
