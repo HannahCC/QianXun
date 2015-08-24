@@ -104,7 +104,6 @@ def customer_order_create(request):
 
 
 @exception_handled
-@customer_token_required
 @post_required
 def customer_order_confirm(request):
     order_confirm_form = CustomerOrderConfrimForm(request.POST)
