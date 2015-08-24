@@ -55,7 +55,7 @@ class OrderCreateForm(forms.ModelForm):
                     raise forms.ValidationError(u'请输入int型的dish_id')
                 number = dish_json.get('number', '')
                 if not isinstance(number, int):
-                    raise forms.ValidationError(orders_dishes+u':请菜品的份数')
+                    raise forms.ValidationError(str(orders_dishes)+u':请菜品的份数')
         return dish_list
 
 
