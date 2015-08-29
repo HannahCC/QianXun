@@ -16,7 +16,7 @@ class DeliverTimeInline(admin.TabularInline):
         }),
     )
     ordering = ('update_time',)
-    # readonly_fields = ('date', 'time', 'is_valid',)
+    readonly_fields = ('date', 'time', 'is_valid',)
 
 
 class PromotionsInline(admin.TabularInline):
@@ -46,7 +46,7 @@ class DishInline(admin.TabularInline):
         }),
     )
     ordering = ('sales', 'update_time')
-    # readonly_fields = ('dish_name', 'price',  'sales', 'grade', 'is_heat', 'description',  'is_valid',)
+    readonly_fields = ('dish_name', 'price',  'sales', 'grade', 'is_heat', 'description',  'is_valid',)
 
 
 class OrdersInline(admin.TabularInline):
@@ -80,7 +80,7 @@ class CommentInline(admin.TabularInline):
         }),
     )
     ordering = ('comment_time',)
-    # readonly_fields = ('orders', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
+    readonly_fields = ('orders', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
 
 
 class OrdersDishesInline(admin.TabularInline):
@@ -95,7 +95,7 @@ class OrdersDishesInline(admin.TabularInline):
         }),
     )
     ordering = ('dish', 'comment_time', )
-    # readonly_fields = ('dish', 'number', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
+    readonly_fields = ('dish', 'number', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
 
 
 class DeliverTimeAdmin(admin.ModelAdmin):
@@ -123,14 +123,14 @@ class PromotionsAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time', 'pro_type')
     search_fields = ('rules',)
     ordering = ('window', 'update_time',)
-    # readonly_fields = ('window', 'pro_type', 'rules', 'is_valid')
+    readonly_fields = ('window', 'pro_type', 'rules', 'is_valid')
 
 
 class DishAdmin(admin.ModelAdmin):
     inlines = [CommentInline, ]
     fieldsets = (
         (None, {
-            'fields': ('window', 'dish_name', 'img_addr', 'price', 'grade', 'comment_number', 'sales', 'is_heat', 'description', 'is_valid',)
+            'fields': ('window', 'dish_name', 'img_addr', 'price', 'grade', 'comment_number', 'sales', 'is_heat', 'description', 'is_valid')
         }),
     )
     list_display = ('dish_name', 'window',  'sales', 'is_valid', 'update_time')
@@ -138,7 +138,7 @@ class DishAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time',)
     search_fields = ('dish_name',)
     ordering = ('window', 'sales', 'update_time')
-    # readonly_fields = ('window', 'dish_name','img_addr', 'price', 'grade', 'sales', 'is_heat', 'description', 'is_valid',)
+    readonly_fields = ('window', 'dish_name', 'img_addr', 'price', 'grade', 'comment_number', 'sales', 'is_heat', 'description', 'is_valid')
 
 
 class OrdersAdmin(admin.ModelAdmin):
@@ -156,9 +156,9 @@ class OrdersAdmin(admin.ModelAdmin):
     list_filter = ('is_valid2customer', 'is_valid2window', 'update_time', 'order_status',)
     search_fields = ('window',)
     ordering = ('window', 'update_time', )
-    #readonly_fields = ('order_id', 'window', 'customer', 'building', 'address',  'promotion_list', 'discount',
-                      # 'food_cost', 'deliver_cost', 'order_status',
-    #                   'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window')
+    readonly_fields = ('order_id', 'window', 'customer', 'building', 'address',  'promotion_list', 'discount',
+                       'food_cost', 'deliver_cost', 'order_status',
+                       'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window')
 
 
 admin.site.register(Promotions, PromotionsAdmin)

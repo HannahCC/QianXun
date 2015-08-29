@@ -4,6 +4,7 @@ from django.contrib import admin
 from QianXun.account.models import Window, Customer, Address
 from QianXun.orders.admin import OrdersInline, PromotionsInline, DishInline, DeliverTimeInline
 
+
 class AddressInline(admin.TabularInline):
     model = Address
     fieldsets = (
@@ -28,6 +29,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time', 'user_type', 'school', )
     search_fields = ('user_name',)
     ordering = ('school', 'user_name', 'update_time',)
+    list_per_page = 2
     # readonly_fields = ('user_name', 'nick_name', 'user_type', 'school', 'address', 'is_valid')
 
 

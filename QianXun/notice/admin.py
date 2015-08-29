@@ -16,7 +16,7 @@ class SchoolNoticeAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time', )
     search_fields = ('title',)
     ordering = ('update_time', 'title', )
-    # readonly_fields = ('title', 'school',  'manager', 'content', 'is_valid',)
+    readonly_fields = ('title', 'school',  'manager', 'content', 'is_valid',)
 
 
 class CanteenNoticeAdmin(admin.ModelAdmin):
@@ -31,7 +31,7 @@ class CanteenNoticeAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time', )
     search_fields = ('title',)
     ordering = ('update_time', 'title', )
-    # readonly_fields = ('title', 'canteen', 'manager', 'content', 'is_valid',)
+    readonly_fields = ('title', 'canteen', 'manager', 'content', 'is_valid',)
 
 
 admin.site.register(SchoolNotice, SchoolNoticeAdmin)
