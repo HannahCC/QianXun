@@ -17,3 +17,4 @@ class Command(BaseCommand):
         print 'Cancel '+str(number.get('cancel', 0))+' order by script. '+str(datetime.now())
         _LOGGER.info('Finish '+str(number.get('finish', 0))+' order by script. '+str(datetime.now()))
         _LOGGER.info('Cancel '+str(number.get('cancel', 0))+' order by script. '+str(datetime.now()))
+        return
