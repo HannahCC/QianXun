@@ -112,9 +112,14 @@ def create(window, is_commit=True):
 
 def update_profile(window_model, window_profile_dict):
     window_model.name = window_profile_dict['name']
-    window_model.img_addr = window_profile_dict['img_addr']
     window_model.window_name = window_profile_dict['window_name']
     window_model.window_status = window_profile_dict['window_status']
+    window_model.save()
+    return window_model
+
+
+def update_profile_image(window_model, window_profile_dict):
+    window_model.img_addr = window_profile_dict['img_addr']
     window_model.save()
     return window_model
 

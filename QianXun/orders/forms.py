@@ -175,8 +175,29 @@ class DishForm(forms.ModelForm):
         fields = ['dish_name', 'price', 'is_heat', 'description', 'img_addr']
 
 
-class DishUpdateForm(DishForm):
+class DishUpdateForm(forms.ModelForm):
+    token = forms.CharField(max_length=64)
     dish = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super(DishUpdateForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Dish
+        fields = ['dish_name', 'price', 'is_heat', 'description']
+
+
+class DishUpdateImageForm(forms.ModelForm):
+    token = forms.CharField(max_length=64)
+    dish = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super(DishUpdateImageForm, self).__init__(*args, **kwargs)
+        self.fields['img_addr'].validators.append(validate_image)
+
+    class Meta:
+        model = Dish
+        fields = ['img_addr']
 
 
 class PaginationForm(forms.Form):

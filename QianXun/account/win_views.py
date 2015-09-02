@@ -2,8 +2,8 @@
 from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
 from smtplib import SMTPAuthenticationError
-from forms import WindowForm, WindowProfileForm, LoginForm, PasswordResetForm, PasswordUpdateForm, UsernameForm, \
-    FeedbackForm
+from forms import WindowForm, WindowProfileForm, WindowProfileImageForm, LoginForm, PasswordResetForm,\
+    PasswordUpdateForm, UsernameForm, FeedbackForm
 from db import window
 from utils.Serializer import json_response, json_response_from_object
 from utils.Decorator import window_token_required, post_required, exception_handled, verify_code_required
@@ -99,11 +99,25 @@ def window_profile_display(request):
 @window_token_required
 @post_required
 def window_profile_update(request):
-    window_profile_form = WindowProfileForm(request.POST, request.FILES)
+    window_profile_form = WindowProfileForm(request.POST)
     if window_profile_form.is_valid():
         window_profile_dict = window_profile_form.cleaned_data
         window_model = request.user_meta['window_model']
         window.update_profile(window_model, window_profile_dict)
+        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+    else:
+        return json_response(PARAM_REQUIRED, window_profile_form.errors)
+
+
+@exception_handled
+@window_token_required
+@post_required
+def window_profile_image_update(request):
+    window_profile_form = WindowProfileImageForm(request.POST, request.FILES)
+    if window_profile_form.is_valid():
+        window_profile_dict = window_profile_form.cleaned_data
+        window_model = request.user_meta['window_model']
+        window.update_profile_image(window_model, window_profile_dict)
         return json_response_from_object(OK, CODE_MESSAGE.get(OK))
     else:
         return json_response(PARAM_REQUIRED, window_profile_form.errors)

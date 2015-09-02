@@ -37,11 +37,22 @@ class WindowProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(WindowProfileForm, self).__init__(*args, **kwargs)
         self.fields['window_status'].validators.append(validate_window_status)
+
+    class Meta:
+        model = Window
+        fields = ['name', 'window_status']
+
+
+class WindowProfileImageForm(forms.ModelForm):
+    token = forms.CharField(max_length=64)
+
+    def __init__(self, *args, **kwargs):
+        super(WindowProfileImageForm, self).__init__(*args, **kwargs)
         self.fields['img_addr'].validators.append(validate_image)
 
     class Meta:
         model = Window
-        fields = ['name', 'window_status', 'img_addr']
+        fields = ['img_addr']
 
 
 class CustomerForm(forms.ModelForm):

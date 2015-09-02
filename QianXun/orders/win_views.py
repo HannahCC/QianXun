@@ -7,9 +7,8 @@ from conf.resp_code import *
 from conf.default_value import PROMOTION_MAX, DELIVER_TIME_MAX, DISH_MAX
 from conf.enum_value import ORDER_STATUS
 from forms import PaginationForm, PromotionForm, PromotionUpdateForm, DeliverTimeForm, DeliverTimeUpdateForm, DishForm, \
-    DishUpdateForm, OrderDetailDisplayForm, WindowOrderUpdateForm, ReplyForm, SalesForm, DeleteIdListForm
+    DishUpdateForm, DishUpdateImageForm, OrderDetailDisplayForm, WindowOrderUpdateForm, ReplyForm, SalesForm, DeleteIdListForm
 from QianXun.orders.db import promotion, deliver_time, dish, order, orderdish
-from QianXun.orders.beans import DishSaleBean
 from QianXun.account.db import window
 
 def index(request):
@@ -151,6 +150,23 @@ def window_dish_update(request):
         dish_update_dict = dish_update_form.cleaned_data
         window_id = request.user_meta['window_model'].id
         impact = dish.update(window_id, dish_update_dict)
+        if impact == 1:
+            return json_response(OK, CODE_MESSAGE.get(OK))
+        else:
+            return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))
+    else:
+        return json_response(PARAM_REQUIRED, dish_update_form.errors)
+
+
+@exception_handled
+@window_token_required
+@post_required
+def window_dish_image_update(request):
+    dish_update_form = DishUpdateImageForm(request.POST, request.FILES)
+    if dish_update_form.is_valid():
+        dish_update_dict = dish_update_form.cleaned_data
+        window_id = request.user_meta['window_model'].id
+        impact = dish.update_image(window_id, dish_update_dict)
         if impact == 1:
             return json_response(OK, CODE_MESSAGE.get(OK))
         else:

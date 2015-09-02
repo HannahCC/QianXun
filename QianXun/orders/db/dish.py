@@ -61,11 +61,16 @@ def create(dish_model, is_commit=True):
     return new_dish_model
 
 
-
 def update(window_id, dish_update_dict):
     impact = Dish.objects.filter(id__exact=dish_update_dict['dish'], window_id__exact=window_id, is_valid=1).update(
         dish_name=dish_update_dict['dish_name'], description=dish_update_dict['description'],
-        is_heat=dish_update_dict['is_heat'], price=dish_update_dict['price'], img_addr=dish_update_dict['img_addr'])
+        is_heat=dish_update_dict['is_heat'], price=dish_update_dict['price'])
+    return impact
+
+
+def update_image(window_id, dish_update_dict):
+    impact = Dish.objects.filter(id__exact=dish_update_dict['dish'], window_id__exact=window_id, is_valid=1).update(
+        img_addr=dish_update_dict['img_addr'])
     return impact
 
 
