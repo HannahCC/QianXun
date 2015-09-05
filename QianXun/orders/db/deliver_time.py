@@ -37,3 +37,8 @@ def delete(window_id, delete_id_list):
         impact += DeliverTime.objects.filter(id__exact=deliver_time_id['id'], window_id__exact=window_id, is_valid=1)\
             .update(is_valid=0)
     return impact
+
+
+def delete_all():
+    impact = DeliverTime.objects.all().delete()
+    return impact

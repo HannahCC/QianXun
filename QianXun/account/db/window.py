@@ -158,3 +158,8 @@ def update_status(window_verify_dict):
     window_model.window_status = window_status
     window_model.save()
     return window_model
+
+
+def delete_all():
+    impact = Window.objects.all().delete()
+    return impact

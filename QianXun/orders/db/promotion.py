@@ -50,3 +50,8 @@ def delete(window_id, delete_id_list):
         impact += Promotions.objects.filter(id__exact=promotion_id['id'], window_id__exact=window_id, is_valid=1)\
             .update(is_valid=0)
     return impact
+
+
+def delete_all():
+    impact = Promotions.objects.all().delete()
+    return impact

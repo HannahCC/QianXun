@@ -5,8 +5,9 @@ from utils.Serializer import json_response_from_object, json_response
 from conf.resp_code import *
 from conf.enum_value import ORDER_BY
 from forms import PaginationForm
-from QianXun.orders.db import promotion, deliver_time, dish, orderdish
-
+from QianXun.orders.db import promotion, deliver_time, dish, orderdish, order
+from QianXun.account.db import customer, window, verifycode
+from QianXun.notice.db import notice
 
 def index(request):
     return render_to_response('test/testCommon.html')
@@ -87,3 +88,24 @@ def common_comment_display_bydish(request):
     else:
         return json_response(PARAM_REQUIRED, CODE_MESSAGE.get(PARAM_REQUIRED))
 
+
+@exception_handled
+def common_delete_all(request):
+    dish_number = dish.delete_all()
+    deliver_time_number = deliver_time.delete_all()
+    promotion_number = promotion.delete_all()
+    orderdish_number = orderdish.delete_all()
+    order_number = order.delete_all()
+    customer_number = customer.delete_all()
+    window_number = window.delete_all()
+    verifycode_number = verifycode.delete_all()
+
+    result = {'dish_number':dish_number,
+    'deliver_time_number':deliver_time_number,
+    'promotion_number':promotion_number,
+    'orderdish_number':orderdish_number,
+    'order_number':order_number,
+    'customer_number':customer_number,
+    'window_number':window_number,
+    'verifycode_number':verifycode_number}
+    return json_response(OK, result)

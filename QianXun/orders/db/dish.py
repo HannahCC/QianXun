@@ -87,3 +87,7 @@ def delete(window_id, delete_id_list):
     return impact
 
 
+
+def delete_all():
+    impact = Dish.objects.all().delete()
+    return impact

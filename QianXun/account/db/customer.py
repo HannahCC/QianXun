@@ -134,3 +134,8 @@ def has_vip_balance(customer_model):
         return True
     else:
         return False
+
+
+def delete_all():
+    impact = Customer.objects.all().delete()
+    return impact

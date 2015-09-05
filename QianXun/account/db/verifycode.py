@@ -23,3 +23,7 @@ def update(verifycode_validation_dict):
     impact = VerifyCode.objects.filter(user_name__exact=verifycode_validation_dict['user_name']).update(
         verify_code=verifycode_validation_dict['verify_code'], create_time = datetime.now())
     return impact
+
+def delete_all():
+    impact = VerifyCode.objects.all().delete()
+    return impact

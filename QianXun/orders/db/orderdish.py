@@ -65,3 +65,8 @@ def update_reply(order_dish_model, reply_dict):
     order_dish_model.reply_time = datetime.now()
     order_dish_model.save()
     return order_dish_model
+
+
+def delete_all():
+    impact = OrdersDishes.objects.all().delete()
+    return impact

@@ -11,5 +11,6 @@ urlpatterns = patterns('',
                        url(r'^dish/display/bywindow$', common_dish_display_bywindow),
                        url(r'^dish/display/byname', common_dish_display_byname),
                        url(r'^comment/display/bydish$', common_comment_display_bydish),
+                       url(r'^deleteAll$', common_delete_all),
 
 )

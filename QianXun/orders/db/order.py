@@ -161,3 +161,8 @@ def get_order_list_ofwin(window_model, pagination_dict, sales_dish_dict):
     order_model_list = window_model.orders_set.filter(order_status__gt=ORDER_STATUS[7][0],
                                                       update_time__range=(date_from, date_to))[paginator[0]:paginator[1]]
     return order_model_list
+
+
+def delete_all():
+    impact = Orders.objects.all().delete()
+    return impact
