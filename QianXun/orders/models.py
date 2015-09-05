@@ -166,3 +166,7 @@ class OrdersDishes(models.Model):
     def __unicode__(self):
         return "-".join([self.dish.dish_name, str(self.number)+u"份"])
 
+    def show_price(self):
+        return self.dish.price
+    show_price.short_description = u'单价'
+

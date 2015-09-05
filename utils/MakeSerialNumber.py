@@ -21,8 +21,8 @@ def new_order_id(seed):
     seed = seed % 10000 + 10000
     now = datetime.now()
     timestamp = calendar.timegm(now.timetuple())
-    random_num = random.randint(10000, 99999)
-    serial_number = "".join([str(seed), str(timestamp), str(random_num)])
+    random_num = random.randint(10000000, 99999999)
+    serial_number = "-".join([str(timestamp), str(random_num)])
     return serial_number
 
 

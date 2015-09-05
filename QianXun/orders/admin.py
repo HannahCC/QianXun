@@ -91,11 +91,11 @@ class OrdersDishesInline(admin.TabularInline):
     model = OrdersDishes
     fieldsets = (
         (None, {
-            'fields': ('dish', 'number', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
+            'fields': ('dish', 'show_price', 'number', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
         }),
     )
     ordering = ('dish', 'comment_time', )
-    readonly_fields = ('dish', 'number', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
+    readonly_fields = ('dish', 'show_price', 'number', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
 
 
 class DeliverTimeAdmin(admin.ModelAdmin):
