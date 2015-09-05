@@ -25,7 +25,7 @@ def customer_register(request):
     if customer_form.is_valid():
         customer_dict = customer_form.cleaned_data
         if customer.isUnregistered(customer_dict['user_name']):
-            customer.create(customer_form)
+            customer.create(customer_dict)
             verify_code_model = request.verify_code_meta['verify_code_model']
             verify_code_model.delete()
             return json_response_from_object(OK, CODE_MESSAGE.get(OK))

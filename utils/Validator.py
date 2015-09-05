@@ -12,6 +12,7 @@ def validate_phone(value):
         raise ValidationError(u'联系方式的长度应该为11位')
     if not value.isdigit():
         raise ValidationError(u'联系方式应该由纯数字组成')
+    return value
 
 
 def validate_password(value):
@@ -21,6 +22,7 @@ def validate_password(value):
         raise ValidationError(u'请输入只含有字母和数字的密码')
     if value.isdigit():
         raise ValidationError(u'请输入含有字母的密码')
+    return value
 
 
 def validate_window_status(value):

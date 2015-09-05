@@ -17,9 +17,16 @@ def isUnregistered(user_name):
         return False
 
 
-# register
-def create(customer):
-    customer_model = customer.save()
+def create(customer_dict):
+    customer_model = Customer()
+    customer_model.school = customer_dict['school']
+    customer_model.user_name = customer_dict['user_name']
+    customer_model.client_id = customer_dict['client_id']
+    customer_model.registration_id = customer_dict['registration_id']
+    customer_model.password = customer_dict['password']
+    customer_model.user_type = customer_dict['user_type']
+    customer_model.nick_name = customer_dict['nick_name']
+    customer_model.version = customer_dict['version']
     return customer_model
 
 
