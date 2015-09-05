@@ -15,6 +15,7 @@ def window_sales_calculate(window_model):
     window_model.save()   # 更新数据库中窗口的销量的计算时间
     if len(order_model_list) == 0 :
         return window_model
+    print "window_sales_calculate running"
     sales = window_model.sales
     for order_model in order_model_list:
         order_dish_model_list = orderdish.get_dish_list_byorder(order_model)
@@ -31,5 +32,5 @@ def __dish_sales_calculate(dish_model, orderdish_model):
     每次计算窗口的销量时，同时计算窗口下菜品的销量
     """
     dish_model.sales += orderdish_model.number
-    dish_model.save()  # 更新数据库中菜品的销量、评级、评论数
+    dish_model.save()  # 更新数据库中菜品的销量
     return dish_model

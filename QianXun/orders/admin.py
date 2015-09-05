@@ -158,7 +158,7 @@ class OrdersAdmin(admin.ModelAdmin):
     ordering = ('window', 'update_time', )
     readonly_fields = ('order_id', 'window', 'customer', 'building', 'address',  'promotion_list', 'discount',
                        'food_cost', 'deliver_cost', 'order_status',
-                       'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window')
+                       'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window')#'order_status',
 
 
 admin.site.register(Promotions, PromotionsAdmin)
