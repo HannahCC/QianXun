@@ -27,6 +27,7 @@ def create(customer_dict):
     customer_model.user_type = customer_dict['user_type']
     customer_model.nick_name = customer_dict['nick_name']
     customer_model.version = customer_dict['version']
+    customer_model.save()
     return customer_model
 
 

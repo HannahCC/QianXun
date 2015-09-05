@@ -13,7 +13,7 @@ class AddressInline(admin.TabularInline):
         }),
     )
     ordering = ('update_time', )
-    # readonly_fields = ('customer', 'addr', 'is_valid', )
+    readonly_fields = ('customer', 'addr', 'is_valid', )
 
 
 class CustomerAdmin(admin.ModelAdmin):
@@ -30,7 +30,7 @@ class CustomerAdmin(admin.ModelAdmin):
     search_fields = ('user_name',)
     ordering = ('school', 'user_name', 'update_time',)
     list_per_page = 2
-    # readonly_fields = ('user_name', 'nick_name', 'user_type', 'school', 'address', 'is_valid')
+    readonly_fields = ('user_name', 'nick_name','user_type', 'school', 'building', 'is_valid')
 
 
 class WindowAdmin(admin.ModelAdmin):
@@ -45,7 +45,7 @@ class WindowAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time', 'window_status')
     search_fields = ('window_name', 'user_name',)
     ordering = ('canteen', 'window_name', 'update_time',)
-    # readonly_fields = ('school', 'canteen',  'window_name', 'grade', 'sales', 'name', 'user_name', 'is_valid',)
+    readonly_fields = ('school', 'canteen', 'img_addr', 'window_name', 'grade', 'comment_number', 'sales', 'name', 'user_name', 'is_valid',)
 
 
 admin.site.register(Customer, CustomerAdmin)

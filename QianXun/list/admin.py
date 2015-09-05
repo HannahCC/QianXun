@@ -14,7 +14,6 @@ class PromotionTypeAdmin(admin.ModelAdmin):
     list_filter = ('is_valid', 'update_time')
     search_fields = ('pro_type_name',)
     ordering = ('pro_type_name', 'update_time',)
-    # readonly_fields = ('pro_type_name',)
 
 
 class BuildingAdmin(admin.ModelAdmin):
