@@ -117,8 +117,8 @@ def window_profile_image_update(request):
     if window_profile_form.is_valid():
         window_profile_dict = window_profile_form.cleaned_data
         window_model = request.user_meta['window_model']
-        window.update_profile_image(window_model, window_profile_dict)
-        return json_response_from_object(OK, CODE_MESSAGE.get(OK))
+        window_model = window.update_profile_image(window_model, window_profile_dict)
+        return json_response_from_object(OK, window_model.img_addr, 'ImgAddr')
     else:
         return json_response(PARAM_REQUIRED, window_profile_form.errors)
 

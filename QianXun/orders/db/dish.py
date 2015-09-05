@@ -24,7 +24,7 @@ def get_dish_list_cost(particular_dish_model_list):
 
 def get_dish_list_bywin(window_id, pagination_dict, order_by='-sales'):
     paginator = get_paginator(pagination_dict)
-    dish_model_list = Dish.objects.filter(window_id__exact=window_id, is_valid=1).order_by(order_by)[paginator[0]:paginator[1]]
+    dish_model_list = Dish.objects.filter(window_id__exact=window_id).order_by(order_by)[paginator[0]:paginator[1]]
     return dish_model_list
 
 
@@ -69,9 +69,14 @@ def update(window_id, dish_update_dict):
 
 
 def update_image(window_id, dish_update_dict):
-    impact = Dish.objects.filter(id__exact=dish_update_dict['dish'], window_id__exact=window_id, is_valid=1).update(
-        img_addr=dish_update_dict['img_addr'])
-    return impact
+    dish_model = Dish.objects.get(id__exact=dish_update_dict['dish'], window_id__exact=window_id, is_valid=1)
+    dish_model.img_addr = dish_update_dict['img_addr']
+    dish_model.save()
+    return dish_model
+
+    # impact = Dish.objects.filter(id__exact=dish_update_dict['dish'], window_id__exact=window_id, is_valid=1).update(
+    #     img_addr=dish_update_dict['img_addr'])
+    # return impact
 
 
 def delete(window_id, delete_id_list):

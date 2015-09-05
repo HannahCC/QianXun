@@ -23,6 +23,7 @@ class DishSaleBean:
     def __init__(self, dish_model, sales):
         self.dishId = dish_model.id
         self.dishName = dish_model.dish_name
+        self.isValid = dish_model.is_valid
         self.price = dish_model.price
         self.sales = sales
 

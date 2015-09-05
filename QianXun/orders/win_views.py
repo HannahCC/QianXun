@@ -166,11 +166,8 @@ def window_dish_image_update(request):
     if dish_update_form.is_valid():
         dish_update_dict = dish_update_form.cleaned_data
         window_id = request.user_meta['window_model'].id
-        impact = dish.update_image(window_id, dish_update_dict)
-        if impact == 1:
-            return json_response(OK, CODE_MESSAGE.get(OK))
-        else:
-            return json_response(DB_ERROR, CODE_MESSAGE.get(DB_ERROR))
+        dish_model = dish.update_image(window_id, dish_update_dict)
+        return json_response_from_object(OK, dish_model.img_addr, 'ImgAddr')
     else:
         return json_response(PARAM_REQUIRED, dish_update_form.errors)
 
