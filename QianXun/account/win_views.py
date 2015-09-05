@@ -118,7 +118,8 @@ def window_profile_image_update(request):
         window_profile_dict = window_profile_form.cleaned_data
         window_model = request.user_meta['window_model']
         window_model = window.update_profile_image(window_model, window_profile_dict)
-        return json_response_from_object(OK, window_model.img_addr, 'ImgAddr')
+        result = {"ImgAddr": str(window_model.img_addr)}
+        return json_response(OK, result)
     else:
         return json_response(PARAM_REQUIRED, window_profile_form.errors)
 

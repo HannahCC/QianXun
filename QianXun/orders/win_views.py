@@ -167,7 +167,8 @@ def window_dish_image_update(request):
         dish_update_dict = dish_update_form.cleaned_data
         window_id = request.user_meta['window_model'].id
         dish_model = dish.update_image(window_id, dish_update_dict)
-        return json_response_from_object(OK, dish_model.img_addr, 'ImgAddr')
+        result = {"ImgAddr": str(dish_model.img_addr)}
+        return json_response(OK, result)
     else:
         return json_response(PARAM_REQUIRED, dish_update_form.errors)
 
