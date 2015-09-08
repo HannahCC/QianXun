@@ -15,6 +15,9 @@ class PromotionTypeAdmin(admin.ModelAdmin):
     search_fields = ('pro_type_name',)
     ordering = ('pro_type_name', 'update_time',)
 
+    def has_add_permission(self, request):
+        return False
+
 
 class BuildingAdmin(admin.ModelAdmin):
 

@@ -4,7 +4,12 @@ from django.contrib import admin
 from QianXun.notice.models import SchoolNotice, CanteenNotice
 
 
-class SchoolNoticeAdmin(admin.ModelAdmin):
+class MyModelAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+        
+
+class SchoolNoticeAdmin(MyModelAdmin):
 
     fieldsets = (
         (None, {
@@ -19,7 +24,7 @@ class SchoolNoticeAdmin(admin.ModelAdmin):
     readonly_fields = ('title', 'school',  'manager', 'content', 'is_valid',)
 
 
-class CanteenNoticeAdmin(admin.ModelAdmin):
+class CanteenNoticeAdmin(MyModelAdmin):
 
     fieldsets = (
         (None, {

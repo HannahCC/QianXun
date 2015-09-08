@@ -5,7 +5,17 @@ from QianXun.account.models import Window, Customer, Address
 from QianXun.orders.admin import OrdersInline, PromotionsInline, DishInline, DeliverTimeInline
 
 
-class AddressInline(admin.TabularInline):
+class MyModelAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+
+
+class MyTabularInline(admin.TabularInline):
+    def has_add_permission(self, request):
+        return False
+
+
+class AddressInline(MyTabularInline):
     model = Address
     fieldsets = (
         (None, {
@@ -16,7 +26,7 @@ class AddressInline(admin.TabularInline):
     readonly_fields = ('customer', 'addr', 'is_valid', )
 
 
-class CustomerAdmin(admin.ModelAdmin):
+class CustomerAdmin(MyModelAdmin):
     inlines = [AddressInline, OrdersInline]
     fieldsets = (
         (None, {
@@ -33,7 +43,7 @@ class CustomerAdmin(admin.ModelAdmin):
     readonly_fields = ('user_name', 'nick_name','user_type', 'school', 'building', 'is_valid')
 
 
-class WindowAdmin(admin.ModelAdmin):
+class WindowAdmin(MyModelAdmin):
     inlines = [PromotionsInline, DeliverTimeInline, DishInline]
     fieldsets = (
         (None, {

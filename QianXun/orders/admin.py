@@ -4,7 +4,17 @@ from django.contrib import admin
 from QianXun.orders.models import Promotions, Dish, OrdersDishes, Orders, DeliverTime
 
 
-class DeliverTimeInline(admin.TabularInline):
+class MyModelAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+
+
+class MyTabularInline(admin.TabularInline):
+    def has_add_permission(self, request):
+        return False
+
+
+class DeliverTimeInline(MyTabularInline):
     """
     used by account.admin.WindowAdmin
     superuser can read windows' promotions
@@ -19,7 +29,7 @@ class DeliverTimeInline(admin.TabularInline):
     readonly_fields = ('date', 'time', 'is_valid',)
 
 
-class PromotionsInline(admin.TabularInline):
+class PromotionsInline(MyTabularInline):
     """
     used by account.admin.WindowAdmin
     superuser can read windows' promotions
@@ -34,7 +44,7 @@ class PromotionsInline(admin.TabularInline):
     readonly_fields = ('pro_type', 'rules', 'is_valid',)
 
 
-class DishInline(admin.TabularInline):
+class DishInline(MyTabularInline):
     """
     used by account.admin.WindowAdmin
     superuser can read windows' dishes
@@ -49,7 +59,7 @@ class DishInline(admin.TabularInline):
     readonly_fields = ('dish_name', 'price',  'sales', 'grade', 'is_heat', 'description',  'is_valid',)
 
 
-class OrdersInline(admin.TabularInline):
+class OrdersInline(MyTabularInline):
     """
     used by account.admin.CustomerAdmin
     superuser can read orders related to specific customer
@@ -68,7 +78,7 @@ class OrdersInline(admin.TabularInline):
                        'deliver_time', 'deal_time', 'notes', 'is_valid2customer', 'is_valid2window', )
 
 
-class CommentInline(admin.TabularInline):
+class CommentInline(MyTabularInline):
     """
     used by DishAdmin
     superuser can read comments related to specific dish
@@ -83,7 +93,7 @@ class CommentInline(admin.TabularInline):
     readonly_fields = ('orders', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
 
 
-class OrdersDishesInline(admin.TabularInline):
+class OrdersDishesInline(MyTabularInline):
     """
     used by OrdersAdmin
     superuser can read Dishes related to specific Order
@@ -98,7 +108,7 @@ class OrdersDishesInline(admin.TabularInline):
     readonly_fields = ('dish', 'show_price', 'number', 'grade', 'text', 'comment_time', 'reply', 'reply_time')
 
 
-class DeliverTimeAdmin(admin.ModelAdmin):
+class DeliverTimeAdmin(MyModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('window', 'date', 'show_time', 'is_valid', )
@@ -112,7 +122,7 @@ class DeliverTimeAdmin(admin.ModelAdmin):
     readonly_fields = ('window', 'date', 'show_time', 'is_valid',)
 
 
-class PromotionsAdmin(admin.ModelAdmin):
+class PromotionsAdmin(MyModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('window', 'pro_type', 'rules', 'is_valid')
@@ -126,7 +136,7 @@ class PromotionsAdmin(admin.ModelAdmin):
     readonly_fields = ('window', 'pro_type', 'rules', 'is_valid')
 
 
-class DishAdmin(admin.ModelAdmin):
+class DishAdmin(MyModelAdmin):
     inlines = [CommentInline, ]
     fieldsets = (
         (None, {
@@ -140,8 +150,14 @@ class DishAdmin(admin.ModelAdmin):
     ordering = ('window', 'sales', 'update_time')
     readonly_fields = ('window', 'dish_name', 'img_addr', 'price', 'grade', 'comment_number', 'sales', 'is_heat', 'description', 'is_valid')
 
+    def has_add_permission(self, request):
+        return False
 
-class OrdersAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+
+
+class OrdersAdmin(MyModelAdmin):
     inlines = [OrdersDishesInline]
     fieldsets = (
         (None, {
