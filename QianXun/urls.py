@@ -19,6 +19,11 @@ urlpatterns = patterns('',
 
                        url(r'^qianxun/1/manager/', include('QianXun.manager.urls')),
                        )
-urlpatterns += static(settings.TEMPLATE_URL, document_root=settings.TEMPLATE_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += patterns('',
+                       url(r'^qianxun/img/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT }),
+                       url(r'^static/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.STATIC_ROOT }),
+                       url(r'^qianxun/template/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.TEMPLATE_ROOT }),
+                       )
+# urlpatterns += static(settings.TEMPLATE_URL, document_root=settings.TEMPLATE_ROOT)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
