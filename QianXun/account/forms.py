@@ -2,8 +2,9 @@
 __author__ = 'Hannah'
 
 from django import forms
+
 from QianXun.account.models import Window, Customer
-from utils.Validator import validate_phone, validate_password, validate_window_status, validate_image
+from QianXun.utils.Validator import validate_phone, validate_password, validate_window_status, validate_image
 from conf.enum_value import FEEDBACK_TYPE
 
 

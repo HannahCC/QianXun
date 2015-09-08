@@ -1,7 +1,7 @@
 __author__ = 'Hannah'
 
 from QianXun.list.models import School, District, Building, Canteen, PromotionType
-from utils.Pagination import get_paginator
+from QianXun.utils.Pagination import get_paginator
 from QianXun.list.beans import *
 
 

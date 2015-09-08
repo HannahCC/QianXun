@@ -1,11 +1,12 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
-from utils.Decorator import customer_token_required, post_required, exception_handled
-from utils.Serializer import json_response_from_object, json_response, json_back
-from utils.MakeSerialNumber import new_order_id
-from utils.CostCalculator import get_vip_discount, get_promotions_dict, get_promotions_discount, get_promotion_str_from_dict, get_deliver_cost
-from utils.Push import JPush
+
+from QianXun.utils.Decorator import customer_token_required, post_required, exception_handled
+from QianXun.utils.Serializer import json_response_from_object, json_response
+from QianXun.utils.MakeSerialNumber import new_order_id
+from QianXun.utils.CostCalculator import get_vip_discount, get_promotions_dict, get_promotions_discount, get_promotion_str_from_dict, get_deliver_cost
+from QianXun.utils.Push import JPush
 from conf.resp_code import *
 from conf.enum_value import ORDER_STATUS
 from conf.default_value import ORDER_DISH_MAX, PROMOTION_MAX, NEW_ORDER_MSG

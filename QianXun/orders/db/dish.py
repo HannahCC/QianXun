@@ -1,9 +1,9 @@
 __author__ = 'Hannah'
 from QianXun.orders.models import Dish
 from QianXun.orders.beans import DishBean
-from utils.Pagination import get_paginator
-from utils.SalesCalculator import window_sales_calculate
-from utils.GradeCalculator import dish_grade_calculate
+from QianXun.utils.Pagination import get_paginator
+from QianXun.utils.SalesCalculator import window_sales_calculate
+from QianXun.utils.GradeCalculator import dish_grade_calculate
 
 
 def dish_model_to_bean(dish_model):

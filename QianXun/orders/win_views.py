@@ -1,8 +1,8 @@
 from django.shortcuts import render_to_response
 
-from utils.Decorator import window_token_required, post_required, exception_handled
-from utils.Serializer import json_response, json_response_from_object, json_back
-from utils.SalesStat import stat_window_sales
+from QianXun.utils.Decorator import window_token_required, post_required, exception_handled
+from QianXun.utils.Serializer import json_response, json_response_from_object
+from QianXun.utils.SalesStat import stat_window_sales
 from conf.resp_code import *
 from conf.default_value import PROMOTION_MAX, DELIVER_TIME_MAX, DISH_MAX
 from conf.enum_value import ORDER_STATUS

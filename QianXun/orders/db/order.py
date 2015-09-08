@@ -1,10 +1,11 @@
 __author__ = 'Hannah'
 
+from datetime import datetime
+
 from QianXun.orders.models import Orders
 from QianXun.orders.beans import OrderBean, OrderDetailBean
 from QianXun.orders.db import orderdish
-from utils.Pagination import get_paginator
-from datetime import datetime
+from QianXun.utils.Pagination import get_paginator
 from conf.enum_value import ORDER_STATUS
 
 

@@ -8,7 +8,8 @@ import datetime
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-from utils.Serializer import json_response
+
+from QianXun.utils.Serializer import json_response
 from conf.resp_code import *
 from conf.default_value import TOKEN, VERIFY_CODE_INVALID, CANTEEN_FLAG, SCHOOL_FLAG
 from QianXun.account.db import window, customer, verifycode

@@ -21,11 +21,11 @@ SECRET_KEY = '^6!y)#4lk(6vl$)gw(6gj^ud#vyhp(a@5wx*%*q%g3t=mmvt6u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -91,11 +91,11 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "QianXun/static")
 TEMPLATE_URL = '/qianxun/template/'
-TEMPLATE_ROOT = os.path.join(BASE_DIR, "templates")
+TEMPLATE_ROOT = os.path.join(BASE_DIR, "QianXun/templates")
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
+    os.path.join(BASE_DIR, 'QianXun/templates'),
 )
 
 STATICFILES_DIRS = (

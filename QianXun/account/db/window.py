@@ -1,12 +1,15 @@
 __author__ = 'Hannah'
-from QianXun.account.models import Window
-from QianXun.account.beans import WindowBean
 from datetime import datetime
-from utils.Pagination import get_paginator
+
+from QianXun.account.models import Window
+
+from QianXun.account.beans import WindowBean
+from QianXun.utils.Pagination import get_paginator
 from utils.MakeSerialNumber import new_token
 from utils.SalesCalculator import window_sales_calculate
 from utils.CostCalculator import get_promotion_str_from_list
 from conf.enum_value import WINDOW_STATUS
+
 
 
 # register

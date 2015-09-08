@@ -2,10 +2,11 @@
 __author__ = 'Hannah'
 import simplejson
 from django.db import models
-from django.core.serializers import serialize, deserialize
+from django.core.serializers import serialize
 from django.db.models.query import QuerySet
 from django.http import HttpResponse
-from utils.TimeLocalize import localize_time
+
+from QianXun.utils.TimeLocalize import localize_time
 
 
 class ModelEncoder(simplejson.JSONEncoder):

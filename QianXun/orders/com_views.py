@@ -1,13 +1,13 @@
 from django.shortcuts import render_to_response
 
-from utils.Decorator import token_required, post_required, exception_handled
-from utils.Serializer import json_response_from_object, json_response
+from QianXun.utils.Decorator import token_required, post_required, exception_handled
+from QianXun.utils.Serializer import json_response_from_object, json_response
 from conf.resp_code import *
 from conf.enum_value import ORDER_BY
 from forms import PaginationForm
 from QianXun.orders.db import promotion, deliver_time, dish, orderdish, order
 from QianXun.account.db import customer, window, verifycode
-from QianXun.notice.db import notice
+
 
 def index(request):
     return render_to_response('test/testCommon.html')

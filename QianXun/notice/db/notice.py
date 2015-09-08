@@ -1,6 +1,6 @@
 __author__ = 'Hannah'
 from QianXun.notice.models import CanteenNotice, SchoolNotice
-from utils.Pagination import get_paginator
+from QianXun.utils.Pagination import get_paginator
 from QianXun.notice.beans import CanteenNoticeDetailBean, SchoolNoticeDetailBean
 
 

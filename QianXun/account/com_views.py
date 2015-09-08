@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 
 from utils.Decorator import token_required, post_required, exception_handled
 from utils.Serializer import json_response_from_object, json_response
-from utils.SendMsg import MobSMS
+from QianXun.utils.SendMsg import MobSMS
 from conf.resp_code import *
 from conf.default_value import ZONE
 from forms import PaginationForm, VerifycodeValidationForm

@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
-from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.exceptions import ObjectDoesNotExist
-from forms import LoginForm, PaginationForm, WindowVerifyForm, PasswordResetForm, PasswordUpdateForm, SalesForm
+
+from forms import LoginForm, PaginationForm, WindowVerifyForm, PasswordUpdateForm, SalesForm
 from QianXun.account.db import window
 from QianXun.account.beans import WindowBean
 from QianXun.notice.db import notice
@@ -11,15 +11,13 @@ from QianXun.notice.forms import ChangeCNoticeForm, CreateCNoticeForm, ChangeSNo
 from db import manager
 from utils.Serializer import json_response, json_response_from_object
 from utils.Decorator import school_manager_token_required, canteen_manager_token_required, post_required,\
-    exception_handled, manager_token_required, verify_code_required
-from utils.SendEmail import email
-from utils.MakeSerialNumber import new_order_id
-from QianXun.settings import ADMIN_EMAIL
+    exception_handled, manager_token_required
 from conf.resp_code import *
 from conf.enum_value import LOGINTYPE
-from conf.default_value import CANTEEN_FLAG, SCHOOL_FLAG
-from utils.Pagination import get_paginator
+from conf.default_value import CANTEEN_FLAG
+from QianXun.utils.Pagination import get_paginator
 from utils.SalesStat import stat_window_sales
+
 
 # Create your views here.
 

@@ -2,11 +2,12 @@
 __author__ = 'Hannah'
 
 from django import forms
+
 from conf.enum_value import ORDER_STATUS, ORDER_BY
 from QianXun.orders.models import Orders, Promotions, DeliverTime, Dish
-from utils.Validator import validate_order_status, validate_window_order_status, validate_customer_order_status,\
+from QianXun.utils.Validator import validate_order_status, validate_window_order_status, validate_customer_order_status,\
     validate_pro_type, validate_image
-from utils.Serializer import json_back
+from QianXun.utils.Serializer import json_back
 
 
 class OrderCalculateForm(forms.Form):

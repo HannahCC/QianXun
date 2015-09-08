@@ -2,7 +2,7 @@
 __author__ = 'Hannah'
 from QianXun.orders.models import Promotions
 from QianXun.orders.beans import PromotionBean
-from utils.Pagination import get_paginator
+from QianXun.utils.Pagination import get_paginator
 
 
 def get_window_id_list_byprotype(school_id, pro_type_id, pagination_dict):

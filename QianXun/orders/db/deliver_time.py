@@ -2,7 +2,7 @@
 __author__ = 'Hannah'
 from QianXun.orders.models import DeliverTime
 from QianXun.orders.beans import DeliverTimeBean
-from utils.Pagination import get_paginator
+from QianXun.utils.Pagination import get_paginator
 
 
 def get_deliver_time_bean_list_bywindow(window_id, pagination_dict):

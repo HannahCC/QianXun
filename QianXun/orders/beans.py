@@ -1,6 +1,7 @@
 __author__ = 'Hannah'
-from utils.TimeLocalize import convert_to_localtime, datetime_format, time_format
 from datetime import time
+
+from QianXun.utils.TimeLocalize import convert_to_localtime, datetime_format, time_format
 
 
 class PromotionBean:

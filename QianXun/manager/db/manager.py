@@ -7,8 +7,8 @@ from QianXun.account.beans import WindowBean
 from QianXun.notice.models import SchoolNotice, CanteenNotice
 from QianXun.manager.beans import ManagerBean
 from QianXun.notice.beans import SchoolNoticeDetailBean, CanteenNoticeDetailBean
-from utils.Pagination import get_paginator
-from utils.MakeSerialNumber import new_token
+from QianXun.utils.Pagination import get_paginator
+from QianXun.utils.MakeSerialNumber import new_token
 from conf.enum_value import IS_VALID
 
 

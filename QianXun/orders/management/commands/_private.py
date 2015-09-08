@@ -1,10 +1,11 @@
 # -*- coding: UTF-8 -*-
 __author__ = 'Hannah'
+from datetime import datetime, timedelta
+import csv
+
 from QianXun.orders.models import Orders
 from conf.enum_value import ORDER_STATUS
-from datetime import datetime, timedelta
-from utils.MakeSerialNumber import new_batch_id, new_refund_id
-import csv
+from QianXun.utils.MakeSerialNumber import new_batch_id, new_refund_id
 
 
 def auto_update_order():

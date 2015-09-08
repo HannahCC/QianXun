@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 
-from utils.Decorator import token_required, post_required, exception_handled
-from utils.Serializer import json_response_from_object, json_response
+from QianXun.utils.Decorator import token_required, post_required, exception_handled
+from QianXun.utils.Serializer import json_response_from_object, json_response
 from conf.resp_code import *
 from forms import PaginationForm
 from db import list
