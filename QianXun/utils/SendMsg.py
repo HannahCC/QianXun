@@ -20,7 +20,7 @@ class MobSMS:
 
     def verify_sms_code(self, zone, phone, code):
         body = {'appkey': self.appkey, 'phone': phone, 'zone': zone, 'code': code}
-        res = self.session.post(self.verify_url, data=body)
+        res = self.session.post(self.verify_url, data=body, verify=False)
         if res.status_code == 200:  # success to link sever
             res_json = res.json()
             status = res_json.get('status', 500)

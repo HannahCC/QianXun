@@ -47,7 +47,6 @@ def get_window_bean_list_bycanteen(canteen_id, pagination_dict):
     window_model_list = Window.objects.filter(canteen__exact=canteen_id, is_valid=1, window_status=WINDOW_STATUS[3][0]).order_by('-sales')[paginator[0]: paginator[1]]
     window_bean_list = []
     for window_model in window_model_list:
-        print 'here'
         window_bean = window_model_to_bean(window_model)
         window_bean_list.append(window_bean)
     return window_bean_list

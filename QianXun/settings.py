@@ -118,7 +118,7 @@ ADMINS = (
 
 ADMIN_EMAIL = {
     'APP_DEVELPOER_EMAIL': ['whulichen@163.com'],  # app crash report will send to here
-    'MANAGER_EMAIL': ['whulichen@163.com'],  # users feedback will send to here
+    'MANAGER_EMAIL': ['flycame@126.com'],  # users feedback will send to here
 }
 
 SEND_BROKEN_LINK_EMAILS = True         # set link interrupted warning
