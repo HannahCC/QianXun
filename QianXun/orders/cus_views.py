@@ -110,6 +110,7 @@ def customer_order_confirm(request):
     order_confirm_form = CustomerOrderConfrimForm(request.POST)
     if order_confirm_form.is_valid():
         order_confirm_dict = order_confirm_form.cleaned_data
+        # print order_confirm_dict
         impact = order.confirm_status_bycus(order_confirm_dict)
         if impact == 1:
             jpush = JPush()

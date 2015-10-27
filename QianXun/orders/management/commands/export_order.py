@@ -20,10 +20,10 @@ class Command(BaseCommand):
         else:
             make_excel(refused_order_list, canceled_order_list)
             print u'文件导出完成。请在“D:\\refund\\”下找到最新的退款文件，其文件名即为退款批次号。'
-            print u'请在10分钟内完成订单退款操作。【10分钟后用户订单状态将改为已退款】'
+            print u'请在5分钟内完成订单退款操作。【5分钟后用户订单状态将改为已退款】'
             print u'请不要关闭该窗口，直到提示关闭'
             # 10 min after export data, order' status will change to refunded
-            time.sleep(60*10)
+            time.sleep(60*5)
             update_order(refused_order_list, ORDER_STATUS[6][0])
             update_order(canceled_order_list, ORDER_STATUS[6][0])
             print u'已更新订单状态，请关闭该窗口'

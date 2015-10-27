@@ -91,7 +91,7 @@ def update_status_bycus(customer_id, order_update_dict):
 
 
 def confirm_status_bycus(order_confrim_dict):  # pay
-    impact = Orders.objects.filter(order_id__exact=order_confrim_dict['out_trade_no']). \
+    impact = Orders.objects.filter(order_id__exact=order_confrim_dict['out_trade_no'],order_status__exact=ORDER_STATUS[0][0]). \
         update(order_status=ORDER_STATUS[1][0], transaction_id=order_confrim_dict['trade_no'],
                deal_time=order_confrim_dict['gmt_payment'], update_time=datetime.now())
     return impact

@@ -16,7 +16,7 @@ def auto_update_order():
     impact = Orders.objects.filter(order_status__exact=ORDER_STATUS[5][0], update_time__lte=start). \
             update(order_status=ORDER_STATUS[7][0], update_time=datetime.now())
     number.update({'finish': impact})
-    # cancel order ( change status from weifukuan to yiquxiao )
+    # cancel order ( change status from yifukuan to yiquxiao )
     impact = Orders.objects.filter(order_status__exact=ORDER_STATUS[1][0], update_time__lte=start). \
             update(order_status=ORDER_STATUS[4][0], update_time=datetime.now())
     number.update({'cancel': impact})
