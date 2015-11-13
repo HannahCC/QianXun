@@ -23,7 +23,7 @@ def stat_window_sales(window_model, sales_dict):
         order_model_list = order.get_order_list_ofwin(window_model, {'page': page, 'count': 1000}, sales_dict)
         for order_model in order_model_list:
             sales_volume += order_model.food_cost
-            print order_model.food_cost
+            # print order_model.food_cost
             order_dish_model_list = orderdish.get_dish_list_byorder(order_model)
             for order_dish_model in order_dish_model_list:
                 dish_model = order_dish_model.dish

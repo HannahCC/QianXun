@@ -282,6 +282,7 @@ def window_sales_dish(request):
     sales_form = SalesForm(request.POST)
     if sales_form.is_valid():
         sales_dict = sales_form.cleaned_data
+        # print sales_dict
         window_model = request.user_meta['window_model']
         result_dict = stat_window_sales(window_model, sales_dict)
         return json_response_from_object(OK, result_dict)
